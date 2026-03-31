@@ -1,4 +1,4 @@
-export const SCHOOL_NAME = "Maxwell High School";
+export const SCHOOL_NAME = "Shri Radha Bihari Public School";
 export const SCHOOL_TAGLINE = "Empowering Minds, Shaping Futures";
 export const SCHOOL_MOTTO = "Excellence in Education Since 1952";
 

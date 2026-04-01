@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,18 +14,52 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-    body {
-      @apply font-sans bg-slate-950 text-white overflow-hidden;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      width: 100vw;
-    }
-  
-    #root {
-      height: 100vh;
-      width: 100vw;
-    }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* Light theme (default) */
+  :root,
+  [data-theme="light"] {
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-elevated: #ffffff;
+    --border: #e2e8f0;
+    --border-subtle: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --scrollbar-thumb: #cbd5e1;
+    --scrollbar-track: #f1f5f9;
+  }
+
+  /* Dark theme */
+  [data-theme="dark"] {
+    --bg-base: #030712;
+    --bg-surface: #111827;
+    --bg-elevated: #1f2937;
+    --border: #1f2937;
+    --border-subtle: #111827;
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --accent: #818cf8;
+    --accent-hover: #6366f1;
+    --scrollbar-thumb: #374151;
+    --scrollbar-track: #1f2937;
+  }
 }
 
 @layer components {
@@ -39,7 +75,7 @@
   }
 
   .input-field {
-    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 pt-6 pb-2 text-white placeholder-transparent focus:outline-none focus:border-indigo-500/60 focus:bg-white/8 transition-all duration-300 ease-out text-sm;
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 pt-6 pb-2 text-white placeholder-transparent focus:outline-none focus:border-indigo-500/60 transition-all duration-300 ease-out text-sm;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
@@ -101,15 +137,39 @@
   .glow-indigo {
     box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
   }
+}
 
-  .border-gradient {
-    border: 1px solid transparent;
-    background-clip: padding-box;
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
 
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  display: none;
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 ::selection {

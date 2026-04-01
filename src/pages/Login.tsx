@@ -26,14 +26,15 @@ interface FormErrors {
   general?: string;
 }
 
+interface LoginPageProps {
+  onLogin: () => void;
+}
+
 const DEMO_CREDENTIALS = { username: "student", password: "maxwell2024" };
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.5, staggerChildren: 0.1 },
-  },
+  visible: { opacity: 1, transition: { duration: 0.5, staggerChildren: 0.1 } },
 };
 
 const itemVariants = {
@@ -67,7 +68,7 @@ const ORBITS = [
   { size: "42vw", duration: 44, color: "rgba(56,189,248,0.04)", delay: 8 },
 ];
 
-function LoginPage() {
+function LoginPage({ onLogin }: LoginPageProps) {
   const [form, setForm] = useState<FormState>({
     username: "",
     password: "",
@@ -95,6 +96,13 @@ function LoginPage() {
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
+
+  useEffect(() => {
+    if (loginSuccess) {
+      const timer = setTimeout(() => onLogin(), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [loginSuccess, onLogin]);
 
   const validate = useCallback((): boolean => {
     const newErrors: FormErrors = {};
@@ -205,9 +213,7 @@ function LoginPage() {
       <motion.img
         src="/cartoon.png"
         alt="Students"
-        className="hidden lg:block absolute z-30 pointer-events-none select-none 
-             bottom-0 left-[20%] -translate-x-1/2 
-             w-[60vw] max-w-[900px]"
+        className="hidden lg:block absolute z-30 pointer-events-none select-none bottom-0 left-[20%] -translate-x-1/2 w-[60vw] max-w-[900px]"
         style={{
           objectFit: "contain",
           filter:
@@ -353,37 +359,26 @@ function LoginPage() {
         transition={{ duration: 0.6, delay: 0.1 }}
         style={{ background: "#05070f" }}
       >
-        {/* Animated aurora blobs */}
         <motion.div
-          className="absolute rounded-full blur-[120px] opacity-20 pointer-events-none 
-           w-[30vw] h-[30vw] max-w-[500px] max-h-[500px]"
+          className="absolute rounded-full blur-[120px] opacity-20 pointer-events-none w-[30vw] h-[30vw] max-w-[500px] max-h-[500px]"
           style={{
             background:
               "radial-gradient(circle, #6366f1 0%, #a855f7 50%, transparent 80%)",
             top: "-15%",
             right: "-10%",
           }}
-          animate={{
-            scale: [1, 1.15, 1],
-            x: [0, 20, 0],
-            y: [0, -20, 0],
-          }}
+          animate={{ scale: [1, 1.15, 1], x: [0, 20, 0], y: [0, -20, 0] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute rounded-full blur-[100px] opacity-15 pointer-events-none 
-           w-[25vw] h-[25vw] max-w-[400px] max-h-[400px]"
+          className="absolute rounded-full blur-[100px] opacity-15 pointer-events-none w-[25vw] h-[25vw] max-w-[400px] max-h-[400px]"
           style={{
             background:
               "radial-gradient(circle, #38bdf8 0%, #6366f1 60%, transparent 80%)",
             bottom: "-10%",
             right: "10%",
           }}
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, -30, 0],
-            y: [0, 20, 0],
-          }}
+          animate={{ scale: [1, 1.2, 1], x: [0, -30, 0], y: [0, 20, 0] }}
           transition={{
             duration: 18,
             repeat: Infinity,
@@ -392,19 +387,14 @@ function LoginPage() {
           }}
         />
         <motion.div
-          className="absolute rounded-full blur-[80px] opacity-10 pointer-events-none 
-           w-[20vw] h-[20vw] max-w-[300px] max-h-[300px]"
+          className="absolute rounded-full blur-[80px] opacity-10 pointer-events-none w-[20vw] h-[20vw] max-w-[300px] max-h-[300px]"
           style={{
             background:
               "radial-gradient(circle, #e879f9 0%, #a855f7 60%, transparent 80%)",
             top: "40%",
             right: "5%",
           }}
-          animate={{
-            scale: [1, 1.3, 1],
-            x: [0, 15, 0],
-            y: [0, -30, 0],
-          }}
+          animate={{ scale: [1, 1.3, 1], x: [0, 15, 0], y: [0, -30, 0] }}
           transition={{
             duration: 12,
             repeat: Infinity,
@@ -413,7 +403,6 @@ function LoginPage() {
           }}
         />
 
-        {/* Orbiting rings */}
         {ORBITS.map((orbit, i) => (
           <motion.div
             key={i}
@@ -449,7 +438,6 @@ function LoginPage() {
           </motion.div>
         ))}
 
-        {/* Floating particles */}
         {PARTICLES.map((p) => (
           <motion.div
             key={p.id}
@@ -476,7 +464,6 @@ function LoginPage() {
           />
         ))}
 
-        {/* Mouse-follow glow */}
         <div
           className="absolute pointer-events-none rounded-full blur-[80px] opacity-10 transition-all duration-700"
           style={{
@@ -489,8 +476,6 @@ function LoginPage() {
             transform: "translate(-50%, -50%)",
           }}
         />
-
-        {/* Hex grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.018]"
           style={{
@@ -498,8 +483,6 @@ function LoginPage() {
             backgroundSize: "56px 100px",
           }}
         />
-
-        {/* Diagonal scan line */}
         <motion.div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -510,8 +493,6 @@ function LoginPage() {
           animate={{ backgroundPositionY: ["0px", "8px"] }}
           transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
         />
-
-        {/* Separator */}
         <div
           className="hidden lg:block absolute left-0 top-0 bottom-0 w-px"
           style={{
@@ -520,7 +501,6 @@ function LoginPage() {
           }}
         />
 
-        {/* Login card */}
         <motion.div
           className="relative z-10 w-full max-w-sm px-6 lg:ml-[5vw]"
           variants={containerVariants}
@@ -537,7 +517,6 @@ function LoginPage() {
             </h1>
           </motion.div>
 
-          {/* Glassmorphic card */}
           <motion.div
             variants={itemVariants}
             className="rounded-2xl p-8 relative overflow-hidden"
@@ -550,7 +529,6 @@ function LoginPage() {
                 "0 0 0 1px rgba(255,255,255,0.04), 0 32px 80px -16px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2)",
             }}
           >
-            {/* Card inner top shimmer */}
             <div
               className="absolute top-0 left-0 right-0 h-px"
               style={{
@@ -558,8 +536,6 @@ function LoginPage() {
                   "linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)",
               }}
             />
-
-            {/* Card glow accent */}
             <div
               className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-3xl pointer-events-none"
               style={{ background: "rgba(99,102,241,0.08)" }}
@@ -755,7 +731,6 @@ function LoginPage() {
               <span className="font-medium">Continue with Google SSO</span>
             </motion.button>
 
-            {/* Bottom card shimmer */}
             <div
               className="absolute bottom-0 left-0 right-0 h-px"
               style={{

@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import {
   User,
   Lock,
@@ -51,6 +51,22 @@ const statsData = [
   { icon: Users, label: "Faculty", value: "120+" },
 ];
 
+const PARTICLES = Array.from({ length: 36 }, (_, i) => ({
+  id: i,
+  x: Math.random() * 100,
+  y: Math.random() * 100,
+  size: Math.random() * 2.5 + 0.5,
+  duration: Math.random() * 10 + 8,
+  delay: Math.random() * 6,
+  opacity: Math.random() * 0.4 + 0.1,
+}));
+
+const ORBITS = [
+  { size: "22vw", duration: 22, color: "rgba(99,102,241,0.07)", delay: 0 },
+  { size: "32vw", duration: 32, color: "rgba(168,85,247,0.05)", delay: 4 },
+  { size: "42vw", duration: 44, color: "rgba(56,189,248,0.04)", delay: 8 },
+];
+
 function LoginPage() {
   const [form, setForm] = useState<FormState>({
     username: "",
@@ -64,6 +80,21 @@ function LoginPage() {
     password: false,
   });
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!rightPanelRef.current) return;
+      const rect = rightPanelRef.current.getBoundingClientRect();
+      setMousePos({
+        x: (e.clientX - rect.left) / rect.width,
+        y: (e.clientY - rect.top) / rect.height,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   const validate = useCallback((): boolean => {
     const newErrors: FormErrors = {};
@@ -89,12 +120,9 @@ function LoginPage() {
       );
       return;
     }
-
     setIsLoading(true);
     setErrors({});
-
     await new Promise((res) => setTimeout(res, 1800));
-
     if (
       form.username === DEMO_CREDENTIALS.username &&
       form.password === DEMO_CREDENTIALS.password
@@ -173,30 +201,30 @@ function LoginPage() {
   }
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden">
+    <div className="min-h-screen w-full flex overflow-hidden">
       <motion.img
         src="/cartoon.png"
         alt="Students"
-        className="hidden lg:block absolute left-[20%] -translate-x-[42%] bottom-[-20%] z-20 pointer-events-none select-none"
+        className="hidden lg:block absolute z-30 pointer-events-none select-none 
+             bottom-0 left-[20%] -translate-x-1/2 
+             w-[60vw] max-w-[900px]"
         style={{
-          height: "76%",
-          width: "auto",
           objectFit: "contain",
           filter:
-            "drop-shadow(-12px 0 40px rgba(99,102,241,0.3)) drop-shadow(12px 0 30px rgba(0,0,0,0.7))",
+            "drop-shadow(-20px 0 60px rgba(99,102,241,0.45)) drop-shadow(20px 0 40px rgba(0,0,0,0.9))",
         }}
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.9, delay: 0.5 }}
       />
+
       {/* LEFT PANEL */}
       <motion.div
-        className="hidden lg:flex lg:w-[52%] relative overflow-hidden flex-col items-center justify-center"
+        className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col items-center justify-center"
         initial={{ opacity: 0, x: -40 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Animated gradient background */}
         <div
           className="absolute inset-0"
           style={{
@@ -206,8 +234,6 @@ function LoginPage() {
             animation: "gradientShift 12s ease infinite",
           }}
         />
-
-        {/* Radial overlays */}
         <div
           className="absolute inset-0"
           style={{
@@ -229,25 +255,16 @@ function LoginPage() {
               "radial-gradient(ellipse at 70% 80%, rgba(56,189,248,0.06) 0%, transparent 50%)",
           }}
         />
-
-        {/* Grid overlay */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
-            `,
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
             backgroundSize: "60px 60px",
           }}
         />
-
-        {/* Floating shapes */}
         {FLOATING_SHAPES.map((shape) => (
           <FloatingShape key={shape.id} {...shape} />
         ))}
-
-        {/* Content — pushed left to give room for character */}
         <motion.div
           className="relative z-10 text-center px-12 max-w-lg lg:pr-28"
           variants={containerVariants}
@@ -257,7 +274,6 @@ function LoginPage() {
           <motion.div variants={itemVariants} className="mb-8">
             <SchoolCrest />
           </motion.div>
-
           <motion.div variants={itemVariants} className="mb-3">
             <span
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium text-indigo-300/80"
@@ -270,10 +286,9 @@ function LoginPage() {
               Student Portal 2024–25
             </span>
           </motion.div>
-
           <motion.h1
             variants={itemVariants}
-            className="text-4xl font-bold mb-3 leading-tight"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight"
           >
             <span
               style={{
@@ -287,15 +302,12 @@ function LoginPage() {
               {SCHOOL_NAME}
             </span>
           </motion.h1>
-
           <motion.p
             variants={itemVariants}
             className="text-white/45 text-sm leading-relaxed mb-10 font-light"
           >
             {SCHOOL_TAGLINE}
           </motion.p>
-
-          {/* Stats */}
           <motion.div
             variants={itemVariants}
             className="grid grid-cols-3 gap-3"
@@ -323,8 +335,6 @@ function LoginPage() {
             ))}
           </motion.div>
         </motion.div>
-
-        {/* Bottom accent */}
         <div
           className="absolute bottom-0 left-0 right-0 h-px"
           style={{
@@ -336,49 +346,187 @@ function LoginPage() {
 
       {/* RIGHT PANEL */}
       <motion.div
+        ref={rightPanelRef}
         className="flex-1 flex items-center justify-center relative overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        style={{ background: "#080b14" }}
+        style={{ background: "#05070f" }}
       >
-        {/* Subtle dot texture */}
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)`,
-            backgroundSize: "24px 24px",
-          }}
-        />
-
-        {/* Glow */}
-        <div
-          className="absolute inset-0"
+        {/* Animated aurora blobs */}
+        <motion.div
+          className="absolute rounded-full blur-[120px] opacity-20 pointer-events-none 
+           w-[30vw] h-[30vw] max-w-[500px] max-h-[500px]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 50%, rgba(99,102,241,0.05) 0%, transparent 70%)",
+              "radial-gradient(circle, #6366f1 0%, #a855f7 50%, transparent 80%)",
+            top: "-15%",
+            right: "-10%",
+          }}
+          animate={{
+            scale: [1, 1.15, 1],
+            x: [0, 20, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute rounded-full blur-[100px] opacity-15 pointer-events-none 
+           w-[25vw] h-[25vw] max-w-[400px] max-h-[400px]"
+          style={{
+            background:
+              "radial-gradient(circle, #38bdf8 0%, #6366f1 60%, transparent 80%)",
+            bottom: "-10%",
+            right: "10%",
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, -30, 0],
+            y: [0, 20, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 3,
+          }}
+        />
+        <motion.div
+          className="absolute rounded-full blur-[80px] opacity-10 pointer-events-none 
+           w-[20vw] h-[20vw] max-w-[300px] max-h-[300px]"
+          style={{
+            background:
+              "radial-gradient(circle, #e879f9 0%, #a855f7 60%, transparent 80%)",
+            top: "40%",
+            right: "5%",
+          }}
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, 15, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 6,
           }}
         />
 
-        {/* Separator line */}
+        {/* Orbiting rings */}
+        {ORBITS.map((orbit, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full pointer-events-none"
+            style={{
+              width: orbit.size,
+              height: orbit.size,
+              border: `1px solid ${orbit.color}`,
+              top: "50%",
+              right: "-8%",
+              transform: "translateY(-50%)",
+            }}
+            animate={{ rotate: 360 }}
+            transition={{
+              duration: orbit.duration,
+              repeat: Infinity,
+              ease: "linear",
+              delay: orbit.delay,
+            }}
+          >
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                width: 6,
+                height: 6,
+                background: orbit.color.replace("0.0", "0.6"),
+                top: "50%",
+                left: 0,
+                transform: "translate(-50%, -50%)",
+                boxShadow: `0 0 10px ${orbit.color.replace("0.0", "0.8")}`,
+              }}
+            />
+          </motion.div>
+        ))}
+
+        {/* Floating particles */}
+        {PARTICLES.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full pointer-events-none"
+            style={{
+              width: p.size,
+              height: p.size,
+              left: `${p.x}%`,
+              top: `${p.y}%`,
+              background: `rgba(${p.id % 3 === 0 ? "99,102,241" : p.id % 3 === 1 ? "168,85,247" : "56,189,248"},${p.opacity})`,
+              boxShadow: `0 0 ${p.size * 3}px rgba(99,102,241,0.3)`,
+            }}
+            animate={{
+              y: [0, -40, 0],
+              x: [0, Math.sin(p.id) * 20, 0],
+              opacity: [p.opacity, p.opacity * 2.5, p.opacity],
+            }}
+            transition={{
+              duration: p.duration,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: p.delay,
+            }}
+          />
+        ))}
+
+        {/* Mouse-follow glow */}
+        <div
+          className="absolute pointer-events-none rounded-full blur-[80px] opacity-10 transition-all duration-700"
+          style={{
+            width: 350,
+            height: 350,
+            background:
+              "radial-gradient(circle, rgba(99,102,241,0.8), transparent 70%)",
+            left: `${mousePos.x * 100}%`,
+            top: `${mousePos.y * 100}%`,
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+
+        {/* Hex grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.018]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66zm0-2l26-15V18L28 3 2 18v31L28 64z' fill='%23ffffff'/%3E%3C/svg%3E")`,
+            backgroundSize: "56px 100px",
+          }}
+        />
+
+        {/* Diagonal scan line */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(transparent 0%, rgba(99,102,241,0.015) 50%, transparent 100%)",
+            backgroundSize: "100% 8px",
+          }}
+          animate={{ backgroundPositionY: ["0px", "8px"] }}
+          transition={{ duration: 0.3, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Separator */}
         <div
           className="hidden lg:block absolute left-0 top-0 bottom-0 w-px"
           style={{
             background:
-              "linear-gradient(180deg, transparent, rgba(99,102,241,0.2), transparent)",
+              "linear-gradient(180deg, transparent, rgba(99,102,241,0.25), transparent)",
           }}
         />
 
-        {/* Cartoon characters straddling the partition */}
-
-        {/* Login card — offset right to give room to characters */}
+        {/* Login card */}
         <motion.div
-          className="relative z-10 w-full max-w-sm px-6 lg:ml-20"
+          className="relative z-10 w-full max-w-sm px-6 lg:ml-[5vw]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Mobile logo */}
           <motion.div
             variants={itemVariants}
             className="flex lg:hidden flex-col items-center mb-8"
@@ -389,46 +537,70 @@ function LoginPage() {
             </h1>
           </motion.div>
 
-          {/* Card */}
+          {/* Glassmorphic card */}
           <motion.div
             variants={itemVariants}
-            className="rounded-2xl p-8"
+            className="rounded-2xl p-8 relative overflow-hidden"
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.07)",
-              backdropFilter: "blur(32px)",
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              backdropFilter: "blur(48px)",
+              WebkitBackdropFilter: "blur(48px)",
               boxShadow:
-                "0 32px 80px -16px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.07)",
+                "0 0 0 1px rgba(255,255,255,0.04), 0 32px 80px -16px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2)",
             }}
           >
-            {/* Header */}
-            <div className="mb-7">
-              <h2 className="text-xl font-bold text-white/95 mb-1">Sign in</h2>
-              <p className="text-sm text-white/35">
-                Enter your credentials to access the portal
+            {/* Card inner top shimmer */}
+            <div
+              className="absolute top-0 left-0 right-0 h-px"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)",
+              }}
+            />
+
+            {/* Card glow accent */}
+            <div
+              className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-3xl pointer-events-none"
+              style={{ background: "rgba(99,102,241,0.08)" }}
+            />
+
+            <div className="mb-7 relative z-10">
+              <div className="flex items-center gap-2 mb-1">
+                <div
+                  className="w-1 h-5 rounded-full"
+                  style={{
+                    background: "linear-gradient(180deg, #6366f1, #a855f7)",
+                  }}
+                />
+                <h2 className="text-xl font-bold text-white/95">Sign in</h2>
+              </div>
+              <p className="text-sm text-white/30 pl-3">
+                Access your student portal
               </p>
             </div>
 
-            {/* General error */}
-            {errors.general && (
-              <motion.div
-                initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="mb-5 rounded-xl px-4 py-3 flex items-center gap-2.5"
-                style={{
-                  background: "rgba(239,68,68,0.08)",
-                  border: "1px solid rgba(239,68,68,0.2)",
-                }}
-              >
-                <div className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                <span className="text-sm text-red-300/90">
-                  {errors.general}
-                </span>
-              </motion.div>
-            )}
+            <AnimatePresence>
+              {errors.general && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  className="mb-5 rounded-xl px-4 py-3 flex items-center gap-2.5 relative z-10"
+                  style={{
+                    background: "rgba(239,68,68,0.06)",
+                    border: "1px solid rgba(239,68,68,0.18)",
+                  }}
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
+                  <span className="text-sm text-red-300/90">
+                    {errors.general}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            {/* Form */}
-            <div className="space-y-4" onKeyDown={handleKeyDown}>
+            <div className="space-y-4 relative z-10" onKeyDown={handleKeyDown}>
               <Input
                 label="Username"
                 icon={User}
@@ -442,7 +614,6 @@ function LoginPage() {
                 hasError={shakeFields.username || !!errors.username}
                 autoComplete="username"
               />
-
               <Input
                 label="Password"
                 icon={Lock}
@@ -458,7 +629,6 @@ function LoginPage() {
                 autoComplete="current-password"
               />
 
-              {/* Remember me + Forgot */}
               <div className="flex items-center justify-between pt-1">
                 <label className="flex items-center gap-2.5 cursor-pointer group">
                   <div className="relative">
@@ -471,14 +641,14 @@ function LoginPage() {
                       className="sr-only"
                     />
                     <motion.div
-                      className="w-4 h-4 rounded flex items-center justify-center transition-all duration-200"
+                      className="w-4 h-4 rounded flex items-center justify-center"
                       style={{
                         background: form.rememberMe
                           ? "linear-gradient(135deg, #6366f1, #8b5cf6)"
-                          : "rgba(255,255,255,0.05)",
+                          : "rgba(255,255,255,0.04)",
                         border: form.rememberMe
                           ? "1px solid rgba(99,102,241,0.6)"
-                          : "1px solid rgba(255,255,255,0.12)",
+                          : "1px solid rgba(255,255,255,0.1)",
                         boxShadow: form.rememberMe
                           ? "0 0 12px rgba(99,102,241,0.3)"
                           : "none",
@@ -510,22 +680,20 @@ function LoginPage() {
                       )}
                     </motion.div>
                   </div>
-                  <span className="text-xs text-white/40 group-hover:text-white/60 transition-colors select-none">
+                  <span className="text-xs text-white/35 group-hover:text-white/55 transition-colors select-none">
                     Remember me
                   </span>
                 </label>
-
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="text-xs text-indigo-400/80 hover:text-indigo-300 transition-colors focus:outline-none font-medium"
+                  className="text-xs text-indigo-400/70 hover:text-indigo-300 transition-colors focus:outline-none font-medium"
                   type="button"
                 >
                   Forgot password?
                 </motion.button>
               </div>
 
-              {/* Submit */}
               <div className="pt-2">
                 <Button fullWidth isLoading={isLoading} onClick={handleSubmit}>
                   <span>Sign In</span>
@@ -542,29 +710,27 @@ function LoginPage() {
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="flex items-center gap-3 my-6">
+            <div className="flex items-center gap-3 my-5 relative z-10">
               <div
                 className="flex-1 h-px"
-                style={{ background: "rgba(255,255,255,0.06)" }}
+                style={{ background: "rgba(255,255,255,0.05)" }}
               />
-              <span className="text-[0.65rem] text-white/20 font-medium uppercase tracking-wider">
+              <span className="text-[0.65rem] text-white/18 font-medium uppercase tracking-wider">
                 or
               </span>
               <div
                 className="flex-1 h-px"
-                style={{ background: "rgba(255,255,255,0.06)" }}
+                style={{ background: "rgba(255,255,255,0.05)" }}
               />
             </div>
 
-            {/* SSO Button */}
             <motion.button
-              whileHover={{ scale: 1.01 }}
+              whileHover={{ scale: 1.01, borderColor: "rgba(99,102,241,0.3)" }}
               whileTap={{ scale: 0.99 }}
-              className="w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm text-white/50 hover:text-white/70 transition-all duration-200 focus:outline-none"
+              className="relative z-10 w-full flex items-center justify-center gap-3 py-3 rounded-xl text-sm text-white/40 hover:text-white/65 transition-all duration-200 focus:outline-none"
               style={{
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(255,255,255,0.07)",
+                background: "rgba(255,255,255,0.015)",
+                border: "1px solid rgba(255,255,255,0.06)",
               }}
               type="button"
             >
@@ -588,25 +754,32 @@ function LoginPage() {
               </svg>
               <span className="font-medium">Continue with Google SSO</span>
             </motion.button>
+
+            {/* Bottom card shimmer */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-px"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, rgba(99,102,241,0.1), transparent)",
+              }}
+            />
           </motion.div>
 
-          {/* Footer */}
           <motion.p
             variants={itemVariants}
-            className="text-center text-xs text-white/20 mt-6"
+            className="text-center text-xs text-white/15 mt-6"
           >
             Having trouble?{" "}
-            <button className="text-indigo-400/60 hover:text-indigo-300/80 transition-colors underline underline-offset-2 focus:outline-none">
+            <button className="text-indigo-400/50 hover:text-indigo-300/70 transition-colors underline underline-offset-2 focus:outline-none">
               Contact IT Support
             </button>
           </motion.p>
-
-          {/* <motion.p
+          <motion.p
             variants={itemVariants}
-            className="text-center text-[0.65rem] text-white/15 mt-3"
+            className="text-center text-[0.65rem] text-white/10 mt-2"
           >
-            © 2024 Maxwell High School. All rights reserved.
-          </motion.p> */}
+            © 2024 Shri Radha Bihari Public School. All rights reserved.
+          </motion.p>
         </motion.div>
       </motion.div>
     </div>

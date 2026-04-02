@@ -295,7 +295,11 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       >
         <button
           onClick={onLogout}
-          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isDark ? "text-gray-500 hover:bg-red-900/20 hover:text-red-400" : "text-gray-500 hover:bg-red-50 hover:text-red-600"}`}
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+            isDark
+              ? "text-gray-500 hover:bg-red-900/20 hover:text-red-400"
+              : "text-gray-500 hover:bg-red-50 hover:text-red-600"
+          }`}
         >
           <LogOut size={17} />
           {sidebarOpen && <span>Logout</span>}
@@ -484,14 +488,12 @@ function DashboardHome() {
           boxShadow: "0 8px 32px rgba(15, 52, 96, 0.35)",
         }}
       >
-        {/* Top gold accent line */}
         <div
           className="absolute top-0 left-0 right-0 h-[3px]"
           style={{
             background: "linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b)",
           }}
         />
-        {/* Dot grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.07]"
           style={{
@@ -499,7 +501,6 @@ function DashboardHome() {
             backgroundSize: "22px 22px",
           }}
         />
-        {/* Gold radial glow */}
         <div
           className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
           style={{
@@ -507,7 +508,6 @@ function DashboardHome() {
               "radial-gradient(circle at top right, rgba(251,191,36,0.14), transparent 70%)",
           }}
         />
-        {/* Blue glow */}
         <div
           className="absolute bottom-0 left-0 w-40 h-40 pointer-events-none"
           style={{
@@ -515,7 +515,6 @@ function DashboardHome() {
               "radial-gradient(circle at bottom left, rgba(99,102,241,0.18), transparent 70%)",
           }}
         />
-        {/* Content */}
         <div className="relative z-10">
           <p className="text-white/50 text-xs font-medium mb-1 tracking-wide">
             Good morning 👋
@@ -527,7 +526,6 @@ function DashboardHome() {
             Here's what's happening at Maxwell High School today.
           </p>
         </div>
-        {/* Right icon box */}
         <div className="absolute right-5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-2">
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center"
@@ -548,7 +546,7 @@ function DashboardHome() {
         </div>
       </div>
 
-      {/* Stats — Horizontal: icon left, value + label right */}
+      {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {STATS.map((stat, i) => (
           <motion.div
@@ -556,13 +554,28 @@ function DashboardHome() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
-            className={`rounded-xl px-4 py-3.5 flex items-center gap-3.5 ${
-              isDark
-                ? "bg-gray-900 border border-gray-800"
-                : "bg-white border border-gray-200 shadow-sm"
+            className={`rounded-xl px-4 py-3.5 flex items-center gap-3.5 relative overflow-hidden ${
+              isDark ? "bg-gray-900 border border-gray-800" : "border"
             }`}
+            style={
+              !isDark
+                ? {
+                    background: `linear-gradient(135deg, #ffffff 55%, ${stat.color}12 100%)`,
+                    borderColor: `${stat.color}35`,
+                    boxShadow: `0 2px 14px ${stat.color}18`,
+                  }
+                : {}
+            }
           >
-            {/* Icon — left */}
+            {/* Light theme colored top border */}
+            {!isDark && (
+              <div
+                className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl"
+                style={{ background: stat.color }}
+              />
+            )}
+
+            {/* Icon */}
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${stat.color}18` }}
@@ -570,34 +583,32 @@ function DashboardHome() {
               <stat.icon size={18} style={{ color: stat.color }} />
             </div>
 
-            {/* Value + label — right */}
+            {/* Value + label */}
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <p
-                  className={`text-base font-bold leading-tight ${
-                    isDark ? "text-white" : "text-gray-900"
-                  }`}
+                  className={`text-base font-bold leading-tight ${isDark ? "text-white" : "text-gray-900"}`}
                 >
                   {stat.value}
                 </p>
                 <span
-                  className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
-                    stat.change === "This month"
-                      ? isDark
-                        ? "bg-gray-700 text-gray-400"
-                        : "bg-gray-100 text-gray-500"
-                      : isDark
-                        ? "bg-emerald-900/20 text-emerald-400"
-                        : "bg-emerald-50 text-emerald-600"
-                  }`}
+                  className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                  style={
+                    !isDark
+                      ? { background: `${stat.color}15`, color: stat.color }
+                      : stat.change === "This month"
+                        ? { background: "#374151", color: "#9ca3af" }
+                        : {
+                            background: "rgba(16,185,129,0.15)",
+                            color: "#34d399",
+                          }
+                  }
                 >
                   {stat.change}
                 </span>
               </div>
               <p
-                className={`text-[11px] mt-0.5 truncate ${
-                  isDark ? "text-gray-500" : "text-gray-400"
-                }`}
+                className={`text-[11px] mt-0.5 truncate ${isDark ? "text-gray-500" : "text-gray-500"}`}
               >
                 {stat.label}
               </p>
@@ -608,29 +619,19 @@ function DashboardHome() {
 
       {/* Recent Admissions Table */}
       <div
-        className={`rounded-xl ${
-          isDark
-            ? "bg-gray-900 border border-gray-800"
-            : "bg-white border border-gray-200 shadow-sm"
-        }`}
+        className={`rounded-xl ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-gray-200 shadow-sm"}`}
       >
         <div
-          className={`flex items-center justify-between px-5 py-3.5 border-b ${
-            isDark ? "border-gray-800" : "border-gray-200"
-          }`}
+          className={`flex items-center justify-between px-5 py-3.5 border-b ${isDark ? "border-gray-800" : "border-gray-200"}`}
         >
           <div>
             <h3
-              className={`font-bold text-sm ${
-                isDark ? "text-white" : "text-gray-900"
-              }`}
+              className={`font-bold text-sm ${isDark ? "text-white" : "text-gray-900"}`}
             >
               Recent Admissions
             </h3>
             <p
-              className={`text-xs mt-0.5 ${
-                isDark ? "text-gray-500" : "text-gray-400"
-              }`}
+              className={`text-xs mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}
             >
               Latest student registrations
             </p>
@@ -642,14 +643,12 @@ function DashboardHome() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className={`${isDark ? "bg-gray-800/50" : "bg-gray-50"}`}>
+              <tr className={isDark ? "bg-gray-800/50" : "bg-gray-50"}>
                 {["Student Name", "Class", "Admission Date", "Status"].map(
                   (h) => (
                     <th
                       key={h}
-                      className={`px-5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider ${
-                        isDark ? "text-gray-500" : "text-gray-400"
-                      }`}
+                      className={`px-5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider ${isDark ? "text-gray-500" : "text-gray-400"}`}
                     >
                       {h}
                     </th>
@@ -658,9 +657,7 @@ function DashboardHome() {
               </tr>
             </thead>
             <tbody
-              className={`divide-y ${
-                isDark ? "divide-gray-800" : "divide-gray-100"
-              }`}
+              className={`divide-y ${isDark ? "divide-gray-800" : "divide-gray-100"}`}
             >
               {RECENT_ADMISSIONS.map((row, i) => (
                 <motion.tr
@@ -668,14 +665,10 @@ function DashboardHome() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 + i * 0.05 }}
-                  className={`transition-colors ${
-                    isDark ? "hover:bg-gray-800/50" : "hover:bg-gray-50"
-                  }`}
+                  className={`transition-colors ${isDark ? "hover:bg-gray-800/50" : "hover:bg-indigo-50/40"}`}
                 >
                   <td
-                    className={`px-5 py-3 text-xs font-medium ${
-                      isDark ? "text-gray-200" : "text-gray-800"
-                    }`}
+                    className={`px-5 py-3 text-xs font-medium ${isDark ? "text-gray-200" : "text-gray-800"}`}
                   >
                     <div className="flex items-center gap-2.5">
                       <div
@@ -690,16 +683,12 @@ function DashboardHome() {
                     </div>
                   </td>
                   <td
-                    className={`px-5 py-3 text-xs ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
+                    className={`px-5 py-3 text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}
                   >
                     {row.class}
                   </td>
                   <td
-                    className={`px-5 py-3 text-xs ${
-                      isDark ? "text-gray-400" : "text-gray-500"
-                    }`}
+                    className={`px-5 py-3 text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}
                   >
                     {row.date}
                   </td>

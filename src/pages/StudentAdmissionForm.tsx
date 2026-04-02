@@ -6,17 +6,17 @@ import {
   MapPin,
   DollarSign,
   ChevronDown,
-  Upload,
   CheckCircle,
   AlertCircle,
   Plus,
   Trash2,
   RotateCcw,
   ChevronRight,
+  GraduationCap,
+  Camera,
+  Sparkles,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
-
-// ── Reusable Components ──────────────────────────────────────
 
 function Label({
   children,
@@ -28,11 +28,11 @@ function Label({
   const { isDark } = useTheme();
   return (
     <label
-      className={`block text-[11px] font-bold mb-1 tracking-wide uppercase
-      ${isDark ? "text-gray-400" : "text-gray-800"}`}
+      className={`block text-[10.5px] font-bold mb-1.5 tracking-widest uppercase
+      ${isDark ? "text-gray-400" : "text-slate-500"}`}
     >
       {children}
-      {required && <span className="text-red-500 ml-0.5">*</span>}
+      {required && <span className="text-rose-500 ml-0.5">*</span>}
     </label>
   );
 }
@@ -75,13 +75,13 @@ function TextInput({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       disabled={disabled}
-      className={`w-full px-2.5 py-1.5 rounded-lg text-xs border outline-none transition-all duration-200
+      className={`w-full px-3 py-2 rounded-lg text-xs border-2 outline-none transition-all duration-200
         ${
           isDark
-            ? "bg-gray-800 border-gray-700 text-white placeholder-gray-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
-            : "bg-white border-gray-400 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/15"
+            ? "bg-gray-800/80 border-gray-600 text-white placeholder-gray-500 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 focus:bg-gray-800"
+            : "bg-white border-gray-900 text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 focus:bg-white shadow-sm hover:border-black"
         }
-        ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+        ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
     />
   );
 }
@@ -106,14 +106,14 @@ function SelectInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className={`w-full px-2.5 py-1.5 rounded-lg text-xs border outline-none transition-all duration-200 appearance-none pr-7
+        className={`w-full px-3 py-2 rounded-lg text-xs border-2 outline-none transition-all duration-200 appearance-none pr-7
           ${
             isDark
-              ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
-              : "bg-white border-gray-400 text-gray-900 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/15"
+              ? "bg-gray-800/80 border-gray-600 text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
+              : "bg-white border-gray-900 text-slate-800 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 shadow-sm hover:border-black"
           }
-          ${!value ? (isDark ? "text-gray-500" : "text-gray-400") : ""}
-          ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          ${!value ? (isDark ? "text-gray-500" : "text-slate-400") : ""}
+          ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
       >
         <option value="">{placeholder}</option>
         {options.map((o) => (
@@ -124,8 +124,8 @@ function SelectInput({
       </select>
       <ChevronDown
         size={12}
-        className={`absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none
-        ${isDark ? "text-gray-500" : "text-gray-400"}`}
+        className={`absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none
+        ${isDark ? "text-gray-500" : "text-slate-400"}`}
       />
     </div>
   );
@@ -135,10 +135,12 @@ function PhotoUpload({
   label,
   value,
   onChange,
+  size = "md",
 }: {
   label: string;
   value: string | null;
   onChange: (v: string | null) => void;
+  size?: "md" | "lg";
 }) {
   const { isDark } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -149,13 +151,17 @@ function PhotoUpload({
     reader.onload = () => onChange(reader.result as string);
     reader.readAsDataURL(file);
   };
+  const dim = size === "lg" ? "w-28 h-32" : "w-24 h-28";
   return (
-    <div>
-      <Label>{label}</Label>
+    <div className="flex flex-col items-center gap-1.5">
       <div
         onClick={() => inputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center w-20 h-20 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-200 overflow-hidden
-          ${isDark ? "border-gray-700 hover:border-indigo-500 bg-gray-800" : "border-gray-300 hover:border-indigo-400 bg-gray-50"}`}
+        className={`relative ${dim} rounded-xl border-2 border-dashed cursor-pointer transition-all duration-300 overflow-hidden group
+          ${
+            isDark
+              ? "border-gray-600 hover:border-indigo-400 bg-gray-800"
+              : "border-slate-300 hover:border-indigo-400 bg-gradient-to-br from-slate-50 to-indigo-50"
+          }`}
       >
         {value ? (
           <>
@@ -164,28 +170,37 @@ function PhotoUpload({
               alt="preview"
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <Camera size={18} className="text-white" />
+            </div>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onChange(null);
               }}
-              className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center"
+              className="absolute top-1 right-1 w-5 h-5 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center shadow-lg transition-colors"
             >
-              <Trash2 size={8} className="text-white" />
+              <Trash2 size={9} className="text-white" />
             </button>
           </>
         ) : (
-          <>
-            <Upload
-              size={16}
-              className={isDark ? "text-gray-600" : "text-gray-400"}
-            />
-            <span
-              className={`text-[9px] mt-1 font-medium ${isDark ? "text-gray-600" : "text-gray-400"}`}
+          <div className="flex flex-col items-center justify-center h-full gap-1.5 p-2">
+            <div
+              className={`w-10 h-10 rounded-full flex items-center justify-center
+              ${isDark ? "bg-gray-700" : "bg-indigo-100"}`}
             >
-              Upload
+              <Camera
+                size={18}
+                className={isDark ? "text-gray-400" : "text-indigo-400"}
+              />
+            </div>
+            <span
+              className={`text-[9px] font-semibold text-center leading-tight
+              ${isDark ? "text-gray-500" : "text-slate-400"}`}
+            >
+              Click to Upload
             </span>
-          </>
+          </div>
         )}
         <input
           ref={inputRef}
@@ -195,6 +210,12 @@ function PhotoUpload({
           onChange={handleFile}
         />
       </div>
+      <span
+        className={`text-[9.5px] font-bold text-center uppercase tracking-wide
+        ${isDark ? "text-gray-500" : "text-slate-400"}`}
+      >
+        {label}
+      </span>
     </div>
   );
 }
@@ -212,19 +233,27 @@ function RadioGroup({
   return (
     <div className="flex flex-wrap gap-2">
       {options.map((opt) => (
-        <label key={opt} className="flex items-center gap-1.5 cursor-pointer">
+        <label
+          key={opt}
+          onClick={() => onChange(opt)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-2 cursor-pointer transition-all text-xs font-semibold
+            ${
+              value === opt
+                ? "border-indigo-500 bg-indigo-500/10 text-indigo-600"
+                : isDark
+                  ? "border-gray-700 text-gray-400 hover:border-gray-600"
+                  : "border-slate-200 text-slate-600 hover:border-slate-300"
+            }`}
+        >
           <div
-            onClick={() => onChange(opt)}
-            className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center transition-all
-              ${value === opt ? "border-indigo-500 bg-indigo-500" : isDark ? "border-gray-600" : "border-gray-400"}`}
+            className={`w-3 h-3 rounded-full border-2 flex items-center justify-center
+            ${value === opt ? "border-indigo-500" : isDark ? "border-gray-600" : "border-slate-400"}`}
           >
-            <div className="w-1.5 h-1.5 rounded-full bg-white" />
+            {value === opt && (
+              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+            )}
           </div>
-          <span
-            className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}
-          >
-            {opt}
-          </span>
+          {opt}
         </label>
       ))}
     </div>
@@ -242,14 +271,16 @@ function CheckboxField({
 }) {
   const { isDark } = useTheme();
   return (
-    <label className="flex items-center gap-2 cursor-pointer">
+    <label
+      className="flex items-center gap-2 cursor-pointer"
+      onClick={() => onChange(!checked)}
+    >
       <div
-        onClick={() => onChange(!checked)}
-        className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-all
-          ${checked ? "bg-indigo-600 border-indigo-600" : isDark ? "border-gray-600" : "border-gray-400"}`}
+        className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all
+        ${checked ? "bg-indigo-600 border-indigo-600" : isDark ? "border-gray-600" : "border-slate-400"}`}
       >
         {checked && (
-          <svg width="8" height="8" viewBox="0 0 9 9" fill="none">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
             <path
               d="M1.5 4.5L3.5 6.5L7.5 2.5"
               stroke="white"
@@ -260,56 +291,70 @@ function CheckboxField({
           </svg>
         )}
       </div>
-      <span className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+      <span
+        className={`text-xs font-medium ${isDark ? "text-gray-300" : "text-slate-600"}`}
+      >
         {label}
       </span>
     </label>
   );
 }
 
-// ── Section Accordion ────────────────────────────────────────
-
 function Section({
   title,
   icon: Icon,
   color,
+  badge,
   children,
 }: {
   title: string;
   icon: React.ElementType;
   color: string;
+  badge?: string;
   children: React.ReactNode;
 }) {
   const { isDark } = useTheme();
   const [open, setOpen] = useState(true);
   return (
     <div
-      className={`rounded-xl border overflow-hidden
-      ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200 shadow-sm"}`}
+      className={`rounded-2xl overflow-hidden transition-all
+      ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-slate-200 shadow-sm"}`}
     >
       <button
         onClick={() => setOpen(!open)}
-        className={`w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors
-          ${isDark ? "hover:bg-gray-800/50" : "hover:bg-gray-50"}`}
+        className={`w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors
+          ${isDark ? "hover:bg-gray-800/40" : "hover:bg-slate-50/80"}`}
       >
         <div
-          className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-          style={{ background: `${color}18` }}
+          className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
+          style={{
+            background: `linear-gradient(135deg, ${color}22, ${color}44)`,
+            border: `1.5px solid ${color}40`,
+          }}
         >
-          <Icon size={13} style={{ color }} />
+          <Icon size={15} style={{ color }} />
         </div>
         <span
-          className={`font-bold text-xs flex-1 ${isDark ? "text-white" : "text-gray-900"}`}
+          className="font-bold text-sm flex-1"
+          style={{ color: isDark ? "#f1f5f9" : color }}
         >
           {title}
         </span>
+        {badge && (
+          <span
+            className="px-2 py-0.5 rounded-full text-[10px] font-bold"
+            style={{ background: `${color}18`, color }}
+          >
+            {badge}
+          </span>
+        )}
         <motion.div
           animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
         >
           <ChevronDown
-            size={14}
-            className={isDark ? "text-gray-500" : "text-gray-400"}
+            size={16}
+            className={isDark ? "text-gray-500" : "text-slate-400"}
           />
         </motion.div>
       </button>
@@ -319,11 +364,18 @@ function Section({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.22, ease: "easeInOut" }}
             className="overflow-hidden"
           >
             <div
-              className={`px-4 pb-4 pt-2 border-t ${isDark ? "border-gray-800" : "border-gray-100"}`}
+              className={`px-5 pb-5 pt-4 border-t ${isDark ? "border-gray-800" : "border-slate-100"}`}
+              style={
+                !isDark
+                  ? {
+                      background: `linear-gradient(180deg, ${color}04 0%, transparent 60px)`,
+                    }
+                  : {}
+              }
             >
               {children}
             </div>
@@ -334,7 +386,6 @@ function Section({
   );
 }
 
-// ── Grid Helpers ─────────────────────────────────────────────
 const G2 = ({ children }: { children: React.ReactNode }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{children}</div>
 );
@@ -344,30 +395,41 @@ const G3 = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 const G4 = ({ children }: { children: React.ReactNode }) => (
-  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-    {children}
-  </div>
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">{children}</div>
 );
 
-// ── Sub-section heading ──────────────────────────────────────
 function SubHeading({ label, color }: { label: string; color: string }) {
+  const { isDark } = useTheme();
   return (
-    <p
-      className="text-[10px] font-black uppercase tracking-widest mb-3"
-      style={{ color }}
+    <div
+      className={`flex items-center gap-2 mb-3 pb-2 border-b`}
+      style={{ borderColor: isDark ? "#374151" : `${color}30` }}
     >
-      {label}
-    </p>
+      <div
+        className="w-1.5 h-4 rounded-full"
+        style={{ background: `linear-gradient(180deg, ${color}, ${color}80)` }}
+      />
+      <p
+        className="text-[10.5px] font-black uppercase tracking-widest"
+        style={{ color }}
+      >
+        {label}
+      </p>
+    </div>
   );
 }
 
-// ── Main Component ───────────────────────────────────────────
+function Divider() {
+  const { isDark } = useTheme();
+  return (
+    <div className={`h-px my-2 ${isDark ? "bg-gray-800" : "bg-slate-100"}`} />
+  );
+}
 
 export default function StudentAdmissionForm() {
   const { isDark } = useTheme();
   const [submitted, setSubmitted] = useState(false);
 
-  // 1.0 Student Detail
   const [admissionNo, setAdmissionNo] = useState("");
   const [cls, setCls] = useState("");
   const [section, setSection] = useState("");
@@ -394,11 +456,9 @@ export default function StudentAdmissionForm() {
   const [siblings, setSiblings] = useState<{ name: string; cls: string }[]>([]);
   const [studentPhoto, setStudentPhoto] = useState<string | null>(null);
 
-  // 2.0 Custom Fields
   const [penNumber, setPenNumber] = useState("");
   const [apaarId, setApaarId] = useState("");
 
-  // 3.0 Parents / Guardian
   const [fatherName, setFatherName] = useState("");
   const [fatherMobile, setFatherMobile] = useState("");
   const [fatherDob, setFatherDob] = useState("");
@@ -418,7 +478,6 @@ export default function StudentAdmissionForm() {
   const [guardianAddress1, setGuardianAddress1] = useState("");
   const [guardianAddress2, setGuardianAddress2] = useState("");
 
-  // Address
   const [guardianIsCurrent, setGuardianIsCurrent] = useState(false);
   const [permanentIsCurrent, setPermanentIsCurrent] = useState(false);
   const [currentAddress, setCurrentAddress] = useState({
@@ -436,7 +495,6 @@ export default function StudentAdmissionForm() {
     pin: "",
   });
 
-  // Fee
   const [feeGroup, setFeeGroup] = useState("");
   const [discount, setDiscount] = useState("");
   const [discountList, setDiscountList] = useState("");
@@ -515,94 +573,171 @@ export default function StudentAdmissionForm() {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
-          className={`text-center max-w-sm p-8 rounded-2xl
-            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-gray-100 shadow-xl"}`}
+          className={`text-center max-w-sm p-10 rounded-3xl
+            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-slate-100 shadow-2xl"}`}
         >
-          <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle size={24} className="text-emerald-600" />
-          </div>
-          <h2
-            className={`text-base font-bold mb-1.5 ${isDark ? "text-white" : "text-gray-900"}`}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
+            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-500/30"
           >
-            Admission Submitted!
+            <CheckCircle size={30} className="text-white" />
+          </motion.div>
+          <h2
+            className={`text-lg font-bold mb-2 ${isDark ? "text-white" : "text-slate-900"}`}
+          >
+            Admission Submitted! 🎉
           </h2>
           <p
-            className={`text-xs mb-5 ${isDark ? "text-gray-500" : "text-gray-500"}`}
+            className={`text-xs mb-6 leading-relaxed ${isDark ? "text-gray-500" : "text-slate-500"}`}
           >
-            Student admission form has been successfully submitted for review.
+            Student admission form has been successfully submitted for review by
+            the administration.
           </p>
           <button
             onClick={() => setSubmitted(false)}
-            className="px-5 py-2 rounded-lg text-xs font-semibold text-white transition-all"
-            style={{ background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
+            className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #6366f1, #a855f7)",
+              boxShadow: "0 8px 20px rgba(99,102,241,0.35)",
+            }}
           >
-            Add Another Student
+            + Add Another Student
           </button>
         </motion.div>
       </div>
     );
   }
 
+  const classOptions = [
+    "Nursery",
+    "LKG",
+    "UKG",
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+    "XII",
+  ];
+  const stateOptions = [
+    "Bihar",
+    "Uttar Pradesh",
+    "Delhi",
+    "Maharashtra",
+    "Gujarat",
+    "Rajasthan",
+    "Madhya Pradesh",
+    "West Bengal",
+    "Tamil Nadu",
+    "Karnataka",
+    "Other",
+  ];
+
   return (
-    <div className={`min-h-full ${isDark ? "bg-gray-950" : "bg-gray-50"}`}>
-      {/* Page Header */}
+    <div
+      className={`min-h-full ${isDark ? "bg-gray-950" : "bg-gradient-to-br from-slate-100 via-indigo-50/30 to-purple-50/20"}`}
+    >
+      {/* HEADER */}
       <div
-        className={`sticky top-0 z-20 px-4 py-2.5 border-b flex items-center justify-between
-        ${isDark ? "bg-gray-950 border-gray-800" : "bg-gray-50 border-gray-200"}`}
+        className={`sticky top-0 z-20 border-b backdrop-blur-md
+        ${isDark ? "bg-gray-950/95 border-gray-800" : "bg-white/90 border-indigo-100"}`}
+        style={!isDark ? { boxShadow: "0 2px 16px rgba(99,102,241,0.08)" } : {}}
       >
-        <div>
+        {!isDark && (
           <div
-            className={`flex items-center gap-1.5 text-[10px] mb-0.5
-            ${isDark ? "text-gray-500" : "text-gray-400"}`}
-          >
-            <span>Student</span>
-            <ChevronRight size={10} />
-            <span
-              className={`font-semibold ${isDark ? "text-gray-300" : "text-gray-600"}`}
+            className="h-0.5 w-full"
+            style={{
+              background:
+                "linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #f59e0b)",
+            }}
+          />
+        )}
+        <div className="px-5 py-3 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"
+              style={{
+                background: "linear-gradient(135deg, #6366f1, #a855f7)",
+              }}
             >
-              Admission Form
-            </span>
+              <GraduationCap size={20} className="text-white" />
+            </div>
+            <div>
+              <div
+                className={`flex items-center gap-1 text-[10px] mb-0.5
+                ${isDark ? "text-gray-600" : "text-slate-400"}`}
+              >
+                <span>Students</span>
+                <ChevronRight size={9} />
+                <span
+                  className={`font-semibold ${isDark ? "text-indigo-400" : "text-indigo-500"}`}
+                >
+                  New Admission
+                </span>
+              </div>
+              <h1
+                className={`text-sm font-bold leading-tight ${isDark ? "text-white" : "text-slate-800"}`}
+              >
+                Student Admission Form
+              </h1>
+            </div>
           </div>
-          <h1
-            className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}
-          >
-            Student Admission Form
-          </h1>
-        </div>
-        <div className="flex items-center gap-2">
-         {/*  <button
-            onClick={handleReset}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors
-              ${
-                isDark
-                  ? "text-gray-400 bg-gray-800 hover:bg-gray-700"
-                  : "text-gray-600 bg-white border border-gray-300 hover:bg-gray-50"
-              }`}
-          >
-            <RotateCcw size={12} />
-            Reset
-          </button> */}
-        {/*   <button
-            onClick={handleSubmit}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
-            style={{ background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
-          >
-            Submit Admission
-          </button> */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <div
+              className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[10px] font-semibold
+              ${isDark ? "bg-gray-800/60 border-gray-700 text-gray-400" : "bg-indigo-50 border-indigo-200 text-indigo-600"}`}
+            >
+              <Sparkles size={10} /> New Admission
+            </div>
+            <button
+              onClick={handleReset}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all hover:scale-105 active:scale-95
+                ${
+                  isDark
+                    ? "text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700"
+                    : "text-slate-600 bg-white border-slate-300 hover:bg-slate-50 shadow-sm"
+                }`}
+            >
+              <RotateCcw size={12} /> Reset
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-md"
+              style={{
+                background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                boxShadow: "0 4px 14px rgba(99,102,241,0.4)",
+              }}
+            >
+              <CheckCircle size={13} /> Submit Admission
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Form Body */}
-      <div className="px-4 py-4 space-y-3">
+      {/* FORM BODY */}
+      <div className="px-5 py-4 space-y-3">
         {/* 1.0 Student Detail */}
-        <Section title="1.0 Student Details" icon={User} color="#6366f1">
-          <div className="space-y-3">
+        <Section
+          title="1.0 Student Details"
+          icon={User}
+          color="#6366f1"
+          badge="Required"
+        >
+          <div className="space-y-4">
             <G4>
               <Field label="Admission No." required>
                 <TextInput
                   value={admissionNo}
                   onChange={setAdmissionNo}
-                  placeholder="e.g. ADM2024001"
+                  placeholder="ADM2024001"
                 />
               </Field>
               <Field label="Class" required>
@@ -610,23 +745,7 @@ export default function StudentAdmissionForm() {
                   value={cls}
                   onChange={setCls}
                   placeholder="Select Class"
-                  options={[
-                    "Nursery",
-                    "LKG",
-                    "UKG",
-                    "I",
-                    "II",
-                    "III",
-                    "IV",
-                    "V",
-                    "VI",
-                    "VII",
-                    "VIII",
-                    "IX",
-                    "X",
-                    "XI",
-                    "XII",
-                  ]}
+                  options={classOptions}
                 />
               </Field>
               <Field label="Section">
@@ -665,23 +784,7 @@ export default function StudentAdmissionForm() {
                   value={admittedClass}
                   onChange={setAdmittedClass}
                   placeholder="Select Class"
-                  options={[
-                    "Nursery",
-                    "LKG",
-                    "UKG",
-                    "I",
-                    "II",
-                    "III",
-                    "IV",
-                    "V",
-                    "VI",
-                    "VII",
-                    "VIII",
-                    "IX",
-                    "X",
-                    "XI",
-                    "XII",
-                  ]}
+                  options={classOptions}
                 />
               </Field>
               <Field label="As on Date">
@@ -693,14 +796,9 @@ export default function StudentAdmissionForm() {
               </Field>
             </G4>
 
-            <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
+            <Divider />
 
-            <div className="flex flex-wrap gap-4 items-start">
-              <PhotoUpload
-                label="Student Photo"
-                value={studentPhoto}
-                onChange={setStudentPhoto}
-              />
+            <div className="flex gap-5">
               <div className="flex-1 min-w-0 space-y-3">
                 <G3>
                   <Field label="First Name" required>
@@ -761,6 +859,14 @@ export default function StudentAdmissionForm() {
                     />
                   </Field>
                 </G3>
+              </div>
+              <div className="flex-shrink-0 pt-0.5">
+                <PhotoUpload
+                  label="Student Photo"
+                  value={studentPhoto}
+                  onChange={setStudentPhoto}
+                  size="lg"
+                />
               </div>
             </div>
 
@@ -825,14 +931,14 @@ export default function StudentAdmissionForm() {
                 <TextInput
                   value={height}
                   onChange={setHeight}
-                  placeholder="Height in cm"
+                  placeholder="cm"
                 />
               </Field>
               <Field label="Weight (kg)">
                 <TextInput
                   value={weight}
                   onChange={setWeight}
-                  placeholder="Weight in kg"
+                  placeholder="kg"
                 />
               </Field>
             </G4>
@@ -846,26 +952,25 @@ export default function StudentAdmissionForm() {
               </Field>
             </G2>
 
-            {/* Siblings */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <Label>Add Sibling</Label>
+                <Label>Siblings</Label>
                 <button
                   onClick={addSibling}
-                  className="flex items-center gap-1 text-[11px] font-semibold text-indigo-500 hover:text-indigo-600 transition-colors"
+                  className="flex items-center gap-1 text-[11px] font-bold text-indigo-500 hover:text-indigo-600 transition-colors px-2 py-1 rounded-lg hover:bg-indigo-50"
                 >
                   <Plus size={11} /> Add Sibling
                 </button>
               </div>
               {siblings.length === 0 ? (
                 <div
-                  className={`text-[11px] py-2.5 px-3 rounded-lg border border-dashed text-center
-                  ${isDark ? "text-gray-600 border-gray-700" : "text-gray-400 border-gray-300"}`}
+                  className={`text-[11px] py-3 px-4 rounded-xl border-2 border-dashed text-center
+                  ${isDark ? "text-gray-600 border-gray-700" : "text-slate-400 border-slate-200"}`}
                 >
-                  No siblings added yet.
+                  No siblings added yet. Click "Add Sibling" to add.
                 </div>
               ) : (
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   {siblings.map((s, i) => (
                     <div key={i} className="flex gap-2 items-center">
                       <TextInput
@@ -877,29 +982,13 @@ export default function StudentAdmissionForm() {
                         value={s.cls}
                         onChange={(v) => updateSibling(i, "cls", v)}
                         placeholder="Class"
-                        options={[
-                          "Nursery",
-                          "LKG",
-                          "UKG",
-                          "I",
-                          "II",
-                          "III",
-                          "IV",
-                          "V",
-                          "VI",
-                          "VII",
-                          "VIII",
-                          "IX",
-                          "X",
-                          "XI",
-                          "XII",
-                        ]}
+                        options={classOptions}
                       />
                       <button
                         onClick={() => removeSibling(i)}
-                        className="text-red-400 hover:text-red-500 flex-shrink-0"
+                        className="text-red-400 hover:text-red-500 flex-shrink-0 p-1 rounded-lg hover:bg-red-50 transition-colors"
                       >
-                        <Trash2 size={13} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   ))}
@@ -936,14 +1025,8 @@ export default function StudentAdmissionForm() {
           color="#f59e0b"
         >
           <div className="space-y-4">
-            {/* Father */}
             <SubHeading label="Father's Information" color="#6366f1" />
-            <div className="flex flex-wrap gap-4 items-start">
-              <PhotoUpload
-                label="Father Photo"
-                value={fatherPhoto}
-                onChange={setFatherPhoto}
-              />
+            <div className="flex gap-5">
               <div className="flex-1 min-w-0 space-y-3">
                 <G3>
                   <Field label="Father Name">
@@ -986,18 +1069,19 @@ export default function StudentAdmissionForm() {
                   </Field>
                 </G2>
               </div>
+              <div className="flex-shrink-0 pt-0.5">
+                <PhotoUpload
+                  label="Father Photo"
+                  value={fatherPhoto}
+                  onChange={setFatherPhoto}
+                />
+              </div>
             </div>
 
-            <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
+            <Divider />
 
-            {/* Mother */}
             <SubHeading label="Mother's Information" color="#ec4899" />
-            <div className="flex flex-wrap gap-4 items-start">
-              <PhotoUpload
-                label="Mother Photo"
-                value={motherPhoto}
-                onChange={setMotherPhoto}
-              />
+            <div className="flex gap-5">
               <div className="flex-1 min-w-0 space-y-3">
                 <G3>
                   <Field label="Mother Name">
@@ -1031,11 +1115,17 @@ export default function StudentAdmissionForm() {
                   />
                 </Field>
               </div>
+              <div className="flex-shrink-0 pt-0.5">
+                <PhotoUpload
+                  label="Mother Photo"
+                  value={motherPhoto}
+                  onChange={setMotherPhoto}
+                />
+              </div>
             </div>
 
-            <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
+            <Divider />
 
-            {/* Guardian */}
             <SubHeading label="Guardian Information" color="#10b981" />
             <div className="mb-3">
               <Label>If Guardian is</Label>
@@ -1105,9 +1195,8 @@ export default function StudentAdmissionForm() {
         {/* Address */}
         <Section title="Student Address Details" icon={MapPin} color="#10b981">
           <div className="space-y-4">
-            {/* Current Address */}
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-3">
                 <SubHeading label="Current Address" color="#10b981" />
                 <CheckboxField
                   label="Same as Guardian Address"
@@ -1169,19 +1258,7 @@ export default function StudentAdmissionForm() {
                       }
                       placeholder="Select State"
                       disabled={guardianIsCurrent}
-                      options={[
-                        "Bihar",
-                        "Uttar Pradesh",
-                        "Delhi",
-                        "Maharashtra",
-                        "Gujarat",
-                        "Rajasthan",
-                        "Madhya Pradesh",
-                        "West Bengal",
-                        "Tamil Nadu",
-                        "Karnataka",
-                        "Other",
-                      ]}
+                      options={stateOptions}
                     />
                   </Field>
                   <Field label="PIN Code">
@@ -1199,11 +1276,10 @@ export default function StudentAdmissionForm() {
               </div>
             </div>
 
-            <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
+            <Divider />
 
-            {/* Permanent Address */}
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-3">
                 <SubHeading label="Permanent Address" color="#3b82f6" />
                 <CheckboxField
                   label="Same as Current Address"
@@ -1273,19 +1349,7 @@ export default function StudentAdmissionForm() {
                       }
                       placeholder="Select State"
                       disabled={permanentIsCurrent}
-                      options={[
-                        "Bihar",
-                        "Uttar Pradesh",
-                        "Delhi",
-                        "Maharashtra",
-                        "Gujarat",
-                        "Rajasthan",
-                        "Madhya Pradesh",
-                        "West Bengal",
-                        "Tamil Nadu",
-                        "Karnataka",
-                        "Other",
-                      ]}
+                      options={stateOptions}
                     />
                   </Field>
                   <Field label="PIN Code">
@@ -1383,37 +1447,42 @@ export default function StudentAdmissionForm() {
 
         {/* Submit Bar */}
         <div
-          className={`flex items-center justify-between px-4 py-3 rounded-xl border
-          ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200 shadow-sm"}`}
+          className={`flex items-center justify-between px-5 py-3.5 rounded-2xl border
+          ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-slate-200 shadow-md"}`}
+          style={
+            !isDark ? { boxShadow: "0 4px 20px rgba(99,102,241,0.1)" } : {}
+          }
         >
-          <div className="flex items-center gap-1.5">
-            <AlertCircle
-              size={12}
-              className={isDark ? "text-gray-600" : "text-gray-400"}
-            />
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
             <span
-              className={`text-[11px] ${isDark ? "text-gray-500" : "text-gray-400"}`}
+              className={`text-[11px] font-medium ${isDark ? "text-gray-500" : "text-slate-500"}`}
             >
-              Fields marked with <span className="text-red-500">*</span> are
-              required.
+              Fields marked <span className="text-rose-500 font-bold">*</span>{" "}
+              are required
             </span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleReset}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors
-                ${isDark ? "text-gray-400 bg-gray-800 hover:bg-gray-700" : "text-gray-600 bg-gray-100 hover:bg-gray-200"}`}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all hover:scale-105 active:scale-95
+                ${
+                  isDark
+                    ? "text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700"
+                    : "text-slate-600 bg-white border-slate-300 hover:bg-slate-50 shadow-sm"
+                }`}
             >
               <RotateCcw size={11} /> Reset Form
             </button>
             <button
               onClick={handleSubmit}
-              className="flex items-center gap-1.5 px-5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+              className="flex items-center gap-1.5 px-6 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95"
               style={{
                 background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                boxShadow: "0 4px 14px rgba(99,102,241,0.4)",
               }}
             >
-              Submit Admission
+              <CheckCircle size={13} /> Submit Admission
             </button>
           </div>
         </div>

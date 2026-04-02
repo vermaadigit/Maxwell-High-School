@@ -6,7 +6,6 @@ import {
   MapPin,
   DollarSign,
   ChevronDown,
-  Upload,
   CheckCircle,
   AlertCircle,
   Plus,

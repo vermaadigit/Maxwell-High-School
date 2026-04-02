@@ -169,7 +169,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     >
       {/* Logo */}
       <div
-        className={`flex items-center gap-3 px-5 h-16 border-b ${isDark ? "border-gray-800" : "border-gray-100"}`}
+        className={`flex items-center gap-3 px-5 h-16 border-b ${isDark ? "border-gray-800" : "border-gray-200"}`}
       >
         <div
           className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -291,7 +291,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
       {/* Footer */}
       <div
-        className={`p-3 border-t ${isDark ? "border-gray-800" : "border-gray-100"}`}
+        className={`p-3 border-t ${isDark ? "border-gray-800" : "border-gray-200"}`}
       >
         <button
           onClick={onLogout}
@@ -364,12 +364,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
           {/* Breadcrumb */}
           <div
-            className={`hidden sm:flex items-center gap-2 text-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}
+            className={`hidden sm:flex items-center gap-2 text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}
           >
             <span>Home</span>
             {activeMenu !== "dashboard" && (
               <>
-                <ChevronRight size={14} />
+                <ChevronRight size={12} />
                 <span
                   className={`font-medium ${isDark ? "text-gray-200" : "text-gray-700"}`}
                 >
@@ -385,12 +385,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
           {/* Search */}
           <div
-            className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl text-sm ${isDark ? "bg-gray-800 text-gray-400" : "bg-gray-100 text-gray-400"} transition-colors`}
+            className={`hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs ${isDark ? "bg-gray-800 text-gray-400" : "bg-gray-100 text-gray-400 border border-gray-200"} transition-colors`}
           >
-            <Search size={15} />
+            <Search size={13} />
             <span>Search...</span>
             <span
-              className={`ml-4 text-xs px-1.5 py-0.5 rounded ${isDark ? "bg-gray-700" : "bg-gray-200"}`}
+              className={`ml-4 text-[10px] px-1.5 py-0.5 rounded ${isDark ? "bg-gray-700" : "bg-gray-200"}`}
             >
               ⌘K
             </span>
@@ -399,7 +399,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 ${isDark ? "bg-gray-800 text-amber-400 hover:bg-gray-700" : "bg-gray-100 text-indigo-600 hover:bg-gray-200"}`}
+            className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-300 ${isDark ? "bg-gray-800 text-amber-400 hover:bg-gray-700" : "bg-gray-100 text-indigo-600 hover:bg-gray-200 border border-gray-200"}`}
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -409,23 +409,23 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
                 transition={{ duration: 0.2 }}
               >
-                {isDark ? <Sun size={17} /> : <Moon size={17} />}
+                {isDark ? <Sun size={15} /> : <Moon size={15} />}
               </motion.div>
             </AnimatePresence>
           </button>
 
           {/* Notifications */}
           <button
-            className={`relative flex items-center justify-center w-9 h-9 rounded-xl transition-colors ${isDark ? "bg-gray-800 text-gray-400 hover:bg-gray-700" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
+            className={`relative flex items-center justify-center w-8 h-8 rounded-xl transition-colors ${isDark ? "bg-gray-800 text-gray-400 hover:bg-gray-700" : "bg-gray-100 text-gray-500 hover:bg-gray-200 border border-gray-200"}`}
           >
-            <Bell size={17} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
+            <Bell size={15} />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
           </button>
 
           {/* Avatar */}
-          <div className="flex items-center gap-2.5 ml-1">
+          <div className="flex items-center gap-2 ml-1">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+              className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
               style={{
                 background: "linear-gradient(135deg, #6366f1, #a855f7)",
               }}
@@ -473,89 +473,164 @@ function DashboardHome() {
   const { isDark } = useTheme();
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-5 space-y-5">
       {/* Welcome Banner */}
       <div
         className="relative rounded-2xl overflow-hidden p-6"
         style={{
           background:
-            "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%)",
+            "linear-gradient(135deg, #1a1a3e 0%, #16213e 45%, #0f3460 100%)",
+          border: "1px solid rgba(255,255,255,0.07)",
+          boxShadow: "0 8px 32px rgba(15, 52, 96, 0.35)",
         }}
       >
+        {/* Top gold accent line */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute top-0 left-0 right-0 h-[3px]"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            background: "linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b)",
           }}
         />
+        {/* Dot grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
+            backgroundSize: "22px 22px",
+          }}
+        />
+        {/* Gold radial glow */}
+        <div
+          className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle at top right, rgba(251,191,36,0.14), transparent 70%)",
+          }}
+        />
+        {/* Blue glow */}
+        <div
+          className="absolute bottom-0 left-0 w-40 h-40 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle at bottom left, rgba(99,102,241,0.18), transparent 70%)",
+          }}
+        />
+        {/* Content */}
         <div className="relative z-10">
-          <p className="text-white/70 text-sm font-medium mb-1">
+          <p className="text-white/50 text-xs font-medium mb-1 tracking-wide">
             Good morning 👋
           </p>
-          <h2 className="text-2xl font-bold text-white mb-1">
-            Welcome back, Admin
+          <h2 className="text-xl font-bold mb-1" style={{ color: "#f1f5f9" }}>
+            Welcome back, <span style={{ color: "#fbbf24" }}>Admin</span>
           </h2>
-          <p className="text-white/60 text-sm">
+          <p className="text-white/40 text-xs max-w-xs">
             Here's what's happening at Maxwell High School today.
           </p>
         </div>
-        <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden md:block">
-          <div className="w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center">
-            <GraduationCap size={40} className="text-white/80" />
+        {/* Right icon box */}
+        <div className="absolute right-5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-2">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            style={{
+              background: "rgba(251,191,36,0.10)",
+              border: "1px solid rgba(251,191,36,0.22)",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <GraduationCap size={28} style={{ color: "#fbbf24" }} />
           </div>
+          <span
+            className="text-[9px] font-semibold tracking-widest uppercase"
+            style={{ color: "rgba(251,191,36,0.5)" }}
+          >
+            Maxwell
+          </span>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Stats — Horizontal: icon left, value + label right */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {STATS.map((stat, i) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.07 }}
-            className={`rounded-2xl p-5 ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-gray-100 shadow-sm"}`}
+            className={`rounded-xl px-4 py-3.5 flex items-center gap-3.5 ${
+              isDark
+                ? "bg-gray-900 border border-gray-800"
+                : "bg-white border border-gray-200 shadow-sm"
+            }`}
           >
-            <div className="flex items-start justify-between mb-4">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: `${stat.color}18` }}
-              >
-                <stat.icon size={20} style={{ color: stat.color }} />
-              </div>
-              <span className="text-xs font-semibold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">
-                {stat.change}
-              </span>
+            {/* Icon — left */}
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: `${stat.color}18` }}
+            >
+              <stat.icon size={18} style={{ color: stat.color }} />
             </div>
-            <p
-              className={`text-2xl font-bold mb-1 ${isDark ? "text-white" : "text-gray-900"}`}
-            >
-              {stat.value}
-            </p>
-            <p
-              className={`text-xs ${isDark ? "text-gray-500" : "text-gray-500"}`}
-            >
-              {stat.label}
-            </p>
+
+            {/* Value + label — right */}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <p
+                  className={`text-base font-bold leading-tight ${
+                    isDark ? "text-white" : "text-gray-900"
+                  }`}
+                >
+                  {stat.value}
+                </p>
+                <span
+                  className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
+                    stat.change === "This month"
+                      ? isDark
+                        ? "bg-gray-700 text-gray-400"
+                        : "bg-gray-100 text-gray-500"
+                      : isDark
+                        ? "bg-emerald-900/20 text-emerald-400"
+                        : "bg-emerald-50 text-emerald-600"
+                  }`}
+                >
+                  {stat.change}
+                </span>
+              </div>
+              <p
+                className={`text-[11px] mt-0.5 truncate ${
+                  isDark ? "text-gray-500" : "text-gray-400"
+                }`}
+              >
+                {stat.label}
+              </p>
+            </div>
           </motion.div>
         ))}
       </div>
 
       {/* Recent Admissions Table */}
       <div
-        className={`rounded-2xl ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-gray-100 shadow-sm"}`}
+        className={`rounded-xl ${
+          isDark
+            ? "bg-gray-900 border border-gray-800"
+            : "bg-white border border-gray-200 shadow-sm"
+        }`}
       >
         <div
-          className={`flex items-center justify-between px-6 py-4 border-b ${isDark ? "border-gray-800" : "border-gray-100"}`}
+          className={`flex items-center justify-between px-5 py-3.5 border-b ${
+            isDark ? "border-gray-800" : "border-gray-200"
+          }`}
         >
           <div>
             <h3
-              className={`font-bold text-sm ${isDark ? "text-white" : "text-gray-900"}`}
+              className={`font-bold text-sm ${
+                isDark ? "text-white" : "text-gray-900"
+              }`}
             >
               Recent Admissions
             </h3>
             <p
-              className={`text-xs mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}
+              className={`text-xs mt-0.5 ${
+                isDark ? "text-gray-500" : "text-gray-400"
+              }`}
             >
               Latest student registrations
             </p>
@@ -572,7 +647,9 @@ function DashboardHome() {
                   (h) => (
                     <th
                       key={h}
-                      className={`px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider ${isDark ? "text-gray-500" : "text-gray-400"}`}
+                      className={`px-5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider ${
+                        isDark ? "text-gray-500" : "text-gray-400"
+                      }`}
                     >
                       {h}
                     </th>
@@ -581,7 +658,9 @@ function DashboardHome() {
               </tr>
             </thead>
             <tbody
-              className={`divide-y ${isDark ? "divide-gray-800" : "divide-gray-50"}`}
+              className={`divide-y ${
+                isDark ? "divide-gray-800" : "divide-gray-100"
+              }`}
             >
               {RECENT_ADMISSIONS.map((row, i) => (
                 <motion.tr
@@ -589,14 +668,18 @@ function DashboardHome() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 + i * 0.05 }}
-                  className={`transition-colors ${isDark ? "hover:bg-gray-800/50" : "hover:bg-gray-50"}`}
+                  className={`transition-colors ${
+                    isDark ? "hover:bg-gray-800/50" : "hover:bg-gray-50"
+                  }`}
                 >
                   <td
-                    className={`px-6 py-3.5 text-sm font-medium ${isDark ? "text-gray-200" : "text-gray-800"}`}
+                    className={`px-5 py-3 text-xs font-medium ${
+                      isDark ? "text-gray-200" : "text-gray-800"
+                    }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5">
                       <div
-                        className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
                         style={{
                           background: `hsl(${(i * 60 + 200) % 360}, 70%, 55%)`,
                         }}
@@ -607,16 +690,20 @@ function DashboardHome() {
                     </div>
                   </td>
                   <td
-                    className={`px-6 py-3.5 text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}
+                    className={`px-5 py-3 text-xs ${
+                      isDark ? "text-gray-400" : "text-gray-500"
+                    }`}
                   >
                     {row.class}
                   </td>
                   <td
-                    className={`px-6 py-3.5 text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}
+                    className={`px-5 py-3 text-xs ${
+                      isDark ? "text-gray-400" : "text-gray-500"
+                    }`}
                   >
                     {row.date}
                   </td>
-                  <td className="px-6 py-3.5">
+                  <td className="px-5 py-3">
                     <StatusBadge status={row.status} />
                   </td>
                 </motion.tr>

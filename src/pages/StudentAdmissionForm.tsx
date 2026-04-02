@@ -11,13 +11,12 @@ import {
   AlertCircle,
   Plus,
   Trash2,
-  Save,
   RotateCcw,
   ChevronRight,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
-/* ─── tiny reusable field components ──────────────────────────────────── */
+// ── Reusable Components ──────────────────────────────────────
 
 function Label({
   children,
@@ -29,7 +28,8 @@ function Label({
   const { isDark } = useTheme();
   return (
     <label
-      className={`block text-xs font-semibold mb-1.5 tracking-wide ${isDark ? "text-gray-400" : "text-gray-600"}`}
+      className={`block text-[11px] font-bold mb-1 tracking-wide uppercase
+      ${isDark ? "text-gray-400" : "text-gray-800"}`}
     >
       {children}
       {required && <span className="text-red-500 ml-0.5">*</span>}
@@ -75,11 +75,13 @@ function TextInput({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       disabled={disabled}
-      className={`w-full px-3.5 py-2.5 rounded-xl text-sm border outline-none transition-all duration-200 ${
-        isDark
-          ? "bg-gray-800 border-gray-700 text-white placeholder-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-          : "bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15"
-      } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`w-full px-2.5 py-1.5 rounded-lg text-xs border outline-none transition-all duration-200
+        ${
+          isDark
+            ? "bg-gray-800 border-gray-700 text-white placeholder-gray-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
+            : "bg-white border-gray-400 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/15"
+        }
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     />
   );
 }
@@ -89,11 +91,13 @@ function SelectInput({
   value,
   onChange,
   placeholder,
+  disabled,
 }: {
   options: string[];
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
+  disabled?: boolean;
 }) {
   const { isDark } = useTheme();
   return (
@@ -101,13 +105,17 @@ function SelectInput({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full px-3.5 py-2.5 rounded-xl text-sm border outline-none transition-all duration-200 appearance-none pr-9 ${
-          isDark
-            ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-            : "bg-white border-gray-200 text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15"
-        } ${!value ? (isDark ? "text-gray-600" : "text-gray-400") : ""}`}
+        disabled={disabled}
+        className={`w-full px-2.5 py-1.5 rounded-lg text-xs border outline-none transition-all duration-200 appearance-none pr-7
+          ${
+            isDark
+              ? "bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
+              : "bg-white border-gray-400 text-gray-900 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/15"
+          }
+          ${!value ? (isDark ? "text-gray-500" : "text-gray-400") : ""}
+          ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        {placeholder && <option value="">{placeholder}</option>}
+        <option value="">{placeholder}</option>
         {options.map((o) => (
           <option key={o} value={o}>
             {o}
@@ -115,8 +123,9 @@ function SelectInput({
         ))}
       </select>
       <ChevronDown
-        size={14}
-        className={`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? "text-gray-500" : "text-gray-400"}`}
+        size={12}
+        className={`absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none
+        ${isDark ? "text-gray-500" : "text-gray-400"}`}
       />
     </div>
   );
@@ -145,11 +154,8 @@ function PhotoUpload({
       <Label>{label}</Label>
       <div
         onClick={() => inputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center w-28 h-28 rounded-xl border-2 border-dashed cursor-pointer transition-all duration-200 overflow-hidden ${
-          isDark
-            ? "border-gray-700 hover:border-indigo-500 bg-gray-800"
-            : "border-gray-200 hover:border-indigo-400 bg-gray-50"
-        }`}
+        className={`relative flex flex-col items-center justify-center w-20 h-20 rounded-lg border-2 border-dashed cursor-pointer transition-all duration-200 overflow-hidden
+          ${isDark ? "border-gray-700 hover:border-indigo-500 bg-gray-800" : "border-gray-300 hover:border-indigo-400 bg-gray-50"}`}
       >
         {value ? (
           <>
@@ -163,32 +169,32 @@ function PhotoUpload({
                 e.stopPropagation();
                 onChange(null);
               }}
-              className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center"
+              className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center"
             >
-              <Trash2 size={10} className="text-white" />
+              <Trash2 size={8} className="text-white" />
             </button>
           </>
         ) : (
           <>
             <Upload
-              size={20}
+              size={16}
               className={isDark ? "text-gray-600" : "text-gray-400"}
             />
             <span
-              className={`text-[10px] mt-1.5 font-medium ${isDark ? "text-gray-600" : "text-gray-400"}`}
+              className={`text-[9px] mt-1 font-medium ${isDark ? "text-gray-600" : "text-gray-400"}`}
             >
-              Upload Photo
+              Upload
             </span>
           </>
         )}
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFile}
+        />
       </div>
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFile}
-      />
     </div>
   );
 }
@@ -204,25 +210,18 @@ function RadioGroup({
 }) {
   const { isDark } = useTheme();
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap gap-2">
       {options.map((opt) => (
-        <label key={opt} className="flex items-center gap-2 cursor-pointer">
+        <label key={opt} className="flex items-center gap-1.5 cursor-pointer">
           <div
             onClick={() => onChange(opt)}
-            className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
-              value === opt
-                ? "border-indigo-500 bg-indigo-500"
-                : isDark
-                  ? "border-gray-600"
-                  : "border-gray-300"
-            }`}
+            className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center transition-all
+              ${value === opt ? "border-indigo-500 bg-indigo-500" : isDark ? "border-gray-600" : "border-gray-400"}`}
           >
-            {value === opt && (
-              <div className="w-1.5 h-1.5 rounded-full bg-white" />
-            )}
+            <div className="w-1.5 h-1.5 rounded-full bg-white" />
           </div>
           <span
-            className={`text-sm ${isDark ? "text-gray-300" : "text-gray-700"}`}
+            className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}
           >
             {opt}
           </span>
@@ -243,13 +242,14 @@ function CheckboxField({
 }) {
   const { isDark } = useTheme();
   return (
-    <label className="flex items-center gap-2.5 cursor-pointer">
+    <label className="flex items-center gap-2 cursor-pointer">
       <div
         onClick={() => onChange(!checked)}
-        className={`w-4 h-4 rounded flex items-center justify-center border transition-all ${checked ? "bg-indigo-600 border-indigo-600" : isDark ? "border-gray-600" : "border-gray-300"}`}
+        className={`w-3.5 h-3.5 rounded flex items-center justify-center border transition-all
+          ${checked ? "bg-indigo-600 border-indigo-600" : isDark ? "border-gray-600" : "border-gray-400"}`}
       >
         {checked && (
-          <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
+          <svg width="8" height="8" viewBox="0 0 9 9" fill="none">
             <path
               d="M1.5 4.5L3.5 6.5L7.5 2.5"
               stroke="white"
@@ -260,14 +260,15 @@ function CheckboxField({
           </svg>
         )}
       </div>
-      <span className={`text-sm ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+      <span className={`text-xs ${isDark ? "text-gray-300" : "text-gray-700"}`}>
         {label}
       </span>
     </label>
   );
 }
 
-/* ─── Section wrapper ──────────────────────────────────────────────────── */
+// ── Section Accordion ────────────────────────────────────────
+
 function Section({
   title,
   icon: Icon,
@@ -283,20 +284,22 @@ function Section({
   const [open, setOpen] = useState(true);
   return (
     <div
-      className={`rounded-2xl border overflow-hidden ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100 shadow-sm"}`}
+      className={`rounded-xl border overflow-hidden
+      ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200 shadow-sm"}`}
     >
       <button
         onClick={() => setOpen(!open)}
-        className={`w-full flex items-center gap-3 px-6 py-4 text-left transition-colors ${isDark ? "hover:bg-gray-800/50" : "hover:bg-gray-50"}`}
+        className={`w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors
+          ${isDark ? "hover:bg-gray-800/50" : "hover:bg-gray-50"}`}
       >
         <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+          className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
           style={{ background: `${color}18` }}
         >
-          <Icon size={16} style={{ color }} />
+          <Icon size={13} style={{ color }} />
         </div>
         <span
-          className={`font-bold text-sm flex-1 ${isDark ? "text-white" : "text-gray-900"}`}
+          className={`font-bold text-xs flex-1 ${isDark ? "text-white" : "text-gray-900"}`}
         >
           {title}
         </span>
@@ -305,7 +308,7 @@ function Section({
           transition={{ duration: 0.2 }}
         >
           <ChevronDown
-            size={16}
+            size={14}
             className={isDark ? "text-gray-500" : "text-gray-400"}
           />
         </motion.div>
@@ -316,11 +319,11 @@ function Section({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
             <div
-              className={`px-6 pb-6 pt-2 border-t ${isDark ? "border-gray-800" : "border-gray-100"}`}
+              className={`px-4 pb-4 pt-2 border-t ${isDark ? "border-gray-800" : "border-gray-100"}`}
             >
               {children}
             </div>
@@ -331,22 +334,35 @@ function Section({
   );
 }
 
-/* ─── Grid helpers ─────────────────────────────────────────────────────── */
+// ── Grid Helpers ─────────────────────────────────────────────
 const G2 = ({ children }: { children: React.ReactNode }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">{children}</div>
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{children}</div>
 );
 const G3 = ({ children }: { children: React.ReactNode }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
     {children}
   </div>
 );
 const G4 = ({ children }: { children: React.ReactNode }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
     {children}
   </div>
 );
 
-/* ─── Main Component ────────────────────────────────────────────────────── */
+// ── Sub-section heading ──────────────────────────────────────
+function SubHeading({ label, color }: { label: string; color: string }) {
+  return (
+    <p
+      className="text-[10px] font-black uppercase tracking-widest mb-3"
+      style={{ color }}
+    >
+      {label}
+    </p>
+  );
+}
+
+// ── Main Component ───────────────────────────────────────────
+
 export default function StudentAdmissionForm() {
   const { isDark } = useTheme();
   const [submitted, setSubmitted] = useState(false);
@@ -382,7 +398,7 @@ export default function StudentAdmissionForm() {
   const [penNumber, setPenNumber] = useState("");
   const [apaarId, setApaarId] = useState("");
 
-  // 3.0 Parents/Guardian
+  // 3.0 Parents / Guardian
   const [fatherName, setFatherName] = useState("");
   const [fatherMobile, setFatherMobile] = useState("");
   const [fatherDob, setFatherDob] = useState("");
@@ -429,14 +445,12 @@ export default function StudentAdmissionForm() {
   const addSibling = () => setSiblings([...siblings, { name: "", cls: "" }]);
   const removeSibling = (i: number) =>
     setSiblings(siblings.filter((_, idx) => idx !== i));
-  const updateSibling = (i: number, field: "name" | "cls", val: string) => {
+  const updateSibling = (i: number, field: "name" | "cls", val: string) =>
     setSiblings(
       siblings.map((s, idx) => (idx === i ? { ...s, [field]: val } : s)),
     );
-  };
 
   const handleReset = () => {
-    // simplified reset
     setFirstName("");
     setLastName("");
     setAdmissionNo("");
@@ -501,24 +515,25 @@ export default function StudentAdmissionForm() {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
-          className={`text-center max-w-sm p-10 rounded-3xl ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-gray-100 shadow-xl"}`}
+          className={`text-center max-w-sm p-8 rounded-2xl
+            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-gray-100 shadow-xl"}`}
         >
-          <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
-            <CheckCircle size={32} className="text-emerald-600" />
+          <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
+            <CheckCircle size={24} className="text-emerald-600" />
           </div>
           <h2
-            className={`text-xl font-bold mb-2 ${isDark ? "text-white" : "text-gray-900"}`}
+            className={`text-base font-bold mb-1.5 ${isDark ? "text-white" : "text-gray-900"}`}
           >
             Admission Submitted!
           </h2>
           <p
-            className={`text-sm mb-6 ${isDark ? "text-gray-500" : "text-gray-500"}`}
+            className={`text-xs mb-5 ${isDark ? "text-gray-500" : "text-gray-500"}`}
           >
             Student admission form has been successfully submitted for review.
           </p>
           <button
             onClick={() => setSubmitted(false)}
-            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+            className="px-5 py-2 rounded-lg text-xs font-semibold text-white transition-all"
             style={{ background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
           >
             Add Another Student
@@ -528,23 +543,20 @@ export default function StudentAdmissionForm() {
     );
   }
 
-  // const inputBase = isDark
-  //   ? "bg-gray-800 border-gray-700 text-white placeholder-gray-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
-  //   : "bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15";
-  // const textareaBase = `w-full px-3.5 py-2.5 rounded-xl text-sm border outline-none transition-all duration-200 resize-none ${inputBase}`;
-
   return (
     <div className={`min-h-full ${isDark ? "bg-gray-950" : "bg-gray-50"}`}>
       {/* Page Header */}
       <div
-        className={`sticky top-0 z-20 px-6 py-4 border-b flex items-center justify-between ${isDark ? "bg-gray-950 border-gray-800" : "bg-gray-50 border-gray-200"}`}
+        className={`sticky top-0 z-20 px-4 py-2.5 border-b flex items-center justify-between
+        ${isDark ? "bg-gray-950 border-gray-800" : "bg-gray-50 border-gray-200"}`}
       >
         <div>
           <div
-            className={`flex items-center gap-2 text-xs mb-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}
+            className={`flex items-center gap-1.5 text-[10px] mb-0.5
+            ${isDark ? "text-gray-500" : "text-gray-400"}`}
           >
             <span>Student</span>
-            <ChevronRight size={12} />
+            <ChevronRight size={10} />
             <span
               className={`font-semibold ${isDark ? "text-gray-300" : "text-gray-600"}`}
             >
@@ -552,33 +564,39 @@ export default function StudentAdmissionForm() {
             </span>
           </div>
           <h1
-            className={`text-xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}
+            className={`text-sm font-bold ${isDark ? "text-white" : "text-gray-900"}`}
           >
             Student Admission Form
           </h1>
         </div>
-        <div className="flex items-center gap-3">
-          <button
+        <div className="flex items-center gap-2">
+         {/*  <button
             onClick={handleReset}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${isDark ? "text-gray-400 bg-gray-800 hover:bg-gray-700" : "text-gray-600 bg-white border border-gray-200 hover:bg-gray-50"}`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors
+              ${
+                isDark
+                  ? "text-gray-400 bg-gray-800 hover:bg-gray-700"
+                  : "text-gray-600 bg-white border border-gray-300 hover:bg-gray-50"
+              }`}
           >
-            <RotateCcw size={14} /> Reset
-          </button>
-          <button
+            <RotateCcw size={12} />
+            Reset
+          </button> */}
+        {/*   <button
             onClick={handleSubmit}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
             style={{ background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
           >
-            <Save size={14} /> Submit Admission
-          </button>
+            Submit Admission
+          </button> */}
         </div>
       </div>
 
       {/* Form Body */}
-      <div className="p-6 space-y-5 max-w-6xl mx-auto">
-        {/* ── 1.0 Student Detail ── */}
-        <Section title="1.0  Student Details" icon={User} color="#6366f1">
-          <div className="space-y-5">
+      <div className="px-4 py-4 space-y-3">
+        {/* 1.0 Student Detail */}
+        <Section title="1.0 Student Details" icon={User} color="#6366f1">
+          <div className="space-y-3">
             <G4>
               <Field label="Admission No." required>
                 <TextInput
@@ -627,7 +645,6 @@ export default function StudentAdmissionForm() {
                 />
               </Field>
             </G4>
-
             <G4>
               <Field label="Biometric ID">
                 <TextInput
@@ -678,13 +695,13 @@ export default function StudentAdmissionForm() {
 
             <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
 
-            <div className="flex flex-wrap gap-6 items-start">
+            <div className="flex flex-wrap gap-4 items-start">
               <PhotoUpload
                 label="Student Photo"
                 value={studentPhoto}
                 onChange={setStudentPhoto}
               />
-              <div className="flex-1 min-w-0 space-y-4">
+              <div className="flex-1 min-w-0 space-y-3">
                 <G3>
                   <Field label="First Name" required>
                     <TextInput
@@ -787,7 +804,6 @@ export default function StudentAdmissionForm() {
                 />
               </Field>
             </G4>
-
             <G4>
               <Field label="Mobile Number" required>
                 <TextInput
@@ -820,7 +836,6 @@ export default function StudentAdmissionForm() {
                 />
               </Field>
             </G4>
-
             <G2>
               <Field label="Referral By">
                 <TextInput
@@ -833,67 +848,69 @@ export default function StudentAdmissionForm() {
 
             {/* Siblings */}
             <div>
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-2">
                 <Label>Add Sibling</Label>
                 <button
                   onClick={addSibling}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-indigo-500 hover:text-indigo-600 transition-colors"
+                  className="flex items-center gap-1 text-[11px] font-semibold text-indigo-500 hover:text-indigo-600 transition-colors"
                 >
-                  <Plus size={13} /> Add Sibling
+                  <Plus size={11} /> Add Sibling
                 </button>
               </div>
-              {siblings.length === 0 && (
+              {siblings.length === 0 ? (
                 <div
-                  className={`text-xs py-3 px-4 rounded-xl border border-dashed text-center ${isDark ? "text-gray-600 border-gray-700" : "text-gray-400 border-gray-200"}`}
+                  className={`text-[11px] py-2.5 px-3 rounded-lg border border-dashed text-center
+                  ${isDark ? "text-gray-600 border-gray-700" : "text-gray-400 border-gray-300"}`}
                 >
-                  No siblings added yet. Click "Add Sibling" to add.
+                  No siblings added yet.
+                </div>
+              ) : (
+                <div className="space-y-1.5">
+                  {siblings.map((s, i) => (
+                    <div key={i} className="flex gap-2 items-center">
+                      <TextInput
+                        value={s.name}
+                        onChange={(v) => updateSibling(i, "name", v)}
+                        placeholder="Sibling Name"
+                      />
+                      <SelectInput
+                        value={s.cls}
+                        onChange={(v) => updateSibling(i, "cls", v)}
+                        placeholder="Class"
+                        options={[
+                          "Nursery",
+                          "LKG",
+                          "UKG",
+                          "I",
+                          "II",
+                          "III",
+                          "IV",
+                          "V",
+                          "VI",
+                          "VII",
+                          "VIII",
+                          "IX",
+                          "X",
+                          "XI",
+                          "XII",
+                        ]}
+                      />
+                      <button
+                        onClick={() => removeSibling(i)}
+                        className="text-red-400 hover:text-red-500 flex-shrink-0"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
-              <div className="space-y-2">
-                {siblings.map((s, i) => (
-                  <div key={i} className="flex gap-3 items-center">
-                    <TextInput
-                      value={s.name}
-                      onChange={(v) => updateSibling(i, "name", v)}
-                      placeholder="Sibling Name"
-                    />
-                    <SelectInput
-                      value={s.cls}
-                      onChange={(v) => updateSibling(i, "cls", v)}
-                      placeholder="Class"
-                      options={[
-                        "Nursery",
-                        "LKG",
-                        "UKG",
-                        "I",
-                        "II",
-                        "III",
-                        "IV",
-                        "V",
-                        "VI",
-                        "VII",
-                        "VIII",
-                        "IX",
-                        "X",
-                        "XI",
-                        "XII",
-                      ]}
-                    />
-                    <button
-                      onClick={() => removeSibling(i)}
-                      className="text-red-400 hover:text-red-500 flex-shrink-0"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </Section>
 
-        {/* ── 2.0 Custom Fields ── */}
-        <Section title="2.0  Custom Fields" icon={AlertCircle} color="#0ea5e9">
+        {/* 2.0 Custom Fields */}
+        <Section title="2.0 Custom Fields" icon={AlertCircle} color="#0ea5e9">
           <G2>
             <Field label="PEN Number">
               <TextInput
@@ -912,215 +929,193 @@ export default function StudentAdmissionForm() {
           </G2>
         </Section>
 
-        {/* ── 3.0 Parents / Guardian ── */}
+        {/* 3.0 Parents / Guardian */}
         <Section
-          title="3.0  Parents / Guardian Details"
+          title="3.0 Parents / Guardian Details"
           icon={Users}
           color="#f59e0b"
         >
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Father */}
-            <div>
-              <p
-                className={`text-xs font-bold uppercase tracking-widest mb-4 ${isDark ? "text-indigo-400" : "text-indigo-600"}`}
-              >
-                Father's Information
-              </p>
-              <div className="flex flex-wrap gap-6 items-start">
-                <PhotoUpload
-                  label="Father Photo"
-                  value={fatherPhoto}
-                  onChange={setFatherPhoto}
-                />
-                <div className="flex-1 min-w-0 space-y-4">
-                  <G3>
-                    <Field label="Father Name">
-                      <TextInput
-                        value={fatherName}
-                        onChange={setFatherName}
-                        placeholder="Father's Full Name"
-                      />
-                    </Field>
-                    <Field label="Father's Mobile">
-                      <TextInput
-                        type="tel"
-                        value={fatherMobile}
-                        onChange={setFatherMobile}
-                        placeholder="+91 XXXXX XXXXX"
-                      />
-                    </Field>
-                    <Field label="Father Date of Birth">
-                      <TextInput
-                        type="date"
-                        value={fatherDob}
-                        onChange={setFatherDob}
-                      />
-                    </Field>
-                  </G3>
-                  <G2>
-                    <Field label="Father Occupation">
-                      <TextInput
-                        value={fatherOccupation}
-                        onChange={setFatherOccupation}
-                        placeholder="Occupation"
-                      />
-                    </Field>
-                    <Field label="Marriage Anniversary Date">
-                      <TextInput
-                        type="date"
-                        value={marriageAnniversary}
-                        onChange={setMarriageAnniversary}
-                      />
-                    </Field>
-                  </G2>
-                </div>
+            <SubHeading label="Father's Information" color="#6366f1" />
+            <div className="flex flex-wrap gap-4 items-start">
+              <PhotoUpload
+                label="Father Photo"
+                value={fatherPhoto}
+                onChange={setFatherPhoto}
+              />
+              <div className="flex-1 min-w-0 space-y-3">
+                <G3>
+                  <Field label="Father Name">
+                    <TextInput
+                      value={fatherName}
+                      onChange={setFatherName}
+                      placeholder="Father's Full Name"
+                    />
+                  </Field>
+                  <Field label="Father's Mobile">
+                    <TextInput
+                      type="tel"
+                      value={fatherMobile}
+                      onChange={setFatherMobile}
+                      placeholder="+91 XXXXX XXXXX"
+                    />
+                  </Field>
+                  <Field label="Father Date of Birth">
+                    <TextInput
+                      type="date"
+                      value={fatherDob}
+                      onChange={setFatherDob}
+                    />
+                  </Field>
+                </G3>
+                <G2>
+                  <Field label="Father Occupation">
+                    <TextInput
+                      value={fatherOccupation}
+                      onChange={setFatherOccupation}
+                      placeholder="Occupation"
+                    />
+                  </Field>
+                  <Field label="Marriage Anniversary Date">
+                    <TextInput
+                      type="date"
+                      value={marriageAnniversary}
+                      onChange={setMarriageAnniversary}
+                    />
+                  </Field>
+                </G2>
               </div>
             </div>
 
             <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
 
             {/* Mother */}
-            <div>
-              <p
-                className={`text-xs font-bold uppercase tracking-widest mb-4 ${isDark ? "text-pink-400" : "text-pink-600"}`}
-              >
-                Mother's Information
-              </p>
-              <div className="flex flex-wrap gap-6 items-start">
-                <PhotoUpload
-                  label="Mother Photo"
-                  value={motherPhoto}
-                  onChange={setMotherPhoto}
-                />
-                <div className="flex-1 min-w-0 space-y-4">
-                  <G3>
-                    <Field label="Mother Name">
-                      <TextInput
-                        value={motherName}
-                        onChange={setMotherName}
-                        placeholder="Mother's Full Name"
-                      />
-                    </Field>
-                    <Field label="Mother Mobile">
-                      <TextInput
-                        type="tel"
-                        value={motherMobile}
-                        onChange={setMotherMobile}
-                        placeholder="+91 XXXXX XXXXX"
-                      />
-                    </Field>
-                    <Field label="Mother Date of Birth">
-                      <TextInput
-                        type="date"
-                        value={motherDob}
-                        onChange={setMotherDob}
-                      />
-                    </Field>
-                  </G3>
-                  <Field label="Mother Occupation">
+            <SubHeading label="Mother's Information" color="#ec4899" />
+            <div className="flex flex-wrap gap-4 items-start">
+              <PhotoUpload
+                label="Mother Photo"
+                value={motherPhoto}
+                onChange={setMotherPhoto}
+              />
+              <div className="flex-1 min-w-0 space-y-3">
+                <G3>
+                  <Field label="Mother Name">
                     <TextInput
-                      value={motherOccupation}
-                      onChange={setMotherOccupation}
-                      placeholder="Occupation"
+                      value={motherName}
+                      onChange={setMotherName}
+                      placeholder="Mother's Full Name"
                     />
                   </Field>
-                </div>
+                  <Field label="Mother Mobile">
+                    <TextInput
+                      type="tel"
+                      value={motherMobile}
+                      onChange={setMotherMobile}
+                      placeholder="+91 XXXXX XXXXX"
+                    />
+                  </Field>
+                  <Field label="Mother Date of Birth">
+                    <TextInput
+                      type="date"
+                      value={motherDob}
+                      onChange={setMotherDob}
+                    />
+                  </Field>
+                </G3>
+                <Field label="Mother Occupation">
+                  <TextInput
+                    value={motherOccupation}
+                    onChange={setMotherOccupation}
+                    placeholder="Occupation"
+                  />
+                </Field>
               </div>
             </div>
 
             <div className={`h-px ${isDark ? "bg-gray-800" : "bg-gray-100"}`} />
 
             {/* Guardian */}
-            <div>
-              <p
-                className={`text-xs font-bold uppercase tracking-widest mb-4 ${isDark ? "text-emerald-400" : "text-emerald-600"}`}
-              >
-                Guardian Information
-              </p>
-              <div className="mb-5">
-                <Label>If Guardian is</Label>
-                <RadioGroup
-                  options={["Father", "Mother", "Other"]}
-                  value={guardianType}
-                  onChange={setGuardianType}
+            <SubHeading label="Guardian Information" color="#10b981" />
+            <div className="mb-3">
+              <Label>If Guardian is</Label>
+              <RadioGroup
+                options={["Father", "Mother", "Other"]}
+                value={guardianType}
+                onChange={setGuardianType}
+              />
+            </div>
+            <G3>
+              <Field label="Guardian Name">
+                <TextInput
+                  value={guardianName}
+                  onChange={setGuardianName}
+                  placeholder="Guardian Name"
+                  disabled={guardianType !== "Other"}
                 />
-              </div>
-              <G3>
-                <Field label="Guardian Name">
+              </Field>
+              <Field label="Guardian Relation">
+                <TextInput
+                  value={guardianRelation}
+                  onChange={setGuardianRelation}
+                  placeholder="e.g. Uncle, Aunt"
+                  disabled={guardianType !== "Other"}
+                />
+              </Field>
+              <Field label="Guardian Email">
+                <TextInput
+                  type="email"
+                  value={guardianEmail}
+                  onChange={setGuardianEmail}
+                  placeholder="guardian@example.com"
+                />
+              </Field>
+            </G3>
+            <div className="mt-3 space-y-3">
+              <G2>
+                <Field label="Guardian Mobile">
                   <TextInput
-                    value={guardianName}
-                    onChange={setGuardianName}
-                    placeholder="Guardian Name"
-                    disabled={guardianType !== "Other"}
+                    type="tel"
+                    value={guardianMobile}
+                    onChange={setGuardianMobile}
+                    placeholder="+91 XXXXX XXXXX"
                   />
                 </Field>
-                <Field label="Guardian Relation">
+              </G2>
+              <G2>
+                <Field label="Guardian Address Line 1">
                   <TextInput
-                    value={guardianRelation}
-                    onChange={setGuardianRelation}
-                    placeholder="e.g. Uncle, Aunt"
-                    disabled={guardianType !== "Other"}
+                    value={guardianAddress1}
+                    onChange={setGuardianAddress1}
+                    placeholder="House No., Street Name"
                   />
                 </Field>
-                <Field label="Guardian Email">
+                <Field label="Guardian Address Line 2">
                   <TextInput
-                    type="email"
-                    value={guardianEmail}
-                    onChange={setGuardianEmail}
-                    placeholder="guardian@example.com"
+                    value={guardianAddress2}
+                    onChange={setGuardianAddress2}
+                    placeholder="Locality, Landmark"
                   />
                 </Field>
-              </G3>
-              <div className="mt-4 space-y-4">
-                <G2>
-                  <Field label="Guardian Mobile">
-                    <TextInput
-                      type="tel"
-                      value={guardianMobile}
-                      onChange={setGuardianMobile}
-                      placeholder="+91 XXXXX XXXXX"
-                    />
-                  </Field>
-                </G2>
-                <G2>
-                  <Field label="Guardian Address Line 1">
-                    <TextInput
-                      value={guardianAddress1}
-                      onChange={setGuardianAddress1}
-                      placeholder="House No., Street Name"
-                    />
-                  </Field>
-                  <Field label="Guardian Address Line 2">
-                    <TextInput
-                      value={guardianAddress2}
-                      onChange={setGuardianAddress2}
-                      placeholder="Locality, Landmark"
-                    />
-                  </Field>
-                </G2>
-              </div>
+              </G2>
             </div>
           </div>
         </Section>
 
-        {/* ── Address ── */}
+        {/* Address */}
         <Section title="Student Address Details" icon={MapPin} color="#10b981">
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Current Address */}
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <p
-                  className={`text-xs font-bold uppercase tracking-widest ${isDark ? "text-emerald-400" : "text-emerald-600"}`}
-                >
-                  Current Address
-                </p>
+              <div className="flex items-center justify-between mb-2">
+                <SubHeading label="Current Address" color="#10b981" />
                 <CheckboxField
                   label="Same as Guardian Address"
                   checked={guardianIsCurrent}
                   onChange={setGuardianIsCurrent}
                 />
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <G2>
                   <Field label="Address Line 1">
                     <TextInput
@@ -1173,6 +1168,7 @@ export default function StudentAdmissionForm() {
                         setCurrentAddress({ ...currentAddress, state: v })
                       }
                       placeholder="Select State"
+                      disabled={guardianIsCurrent}
                       options={[
                         "Bihar",
                         "Uttar Pradesh",
@@ -1207,19 +1203,15 @@ export default function StudentAdmissionForm() {
 
             {/* Permanent Address */}
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <p
-                  className={`text-xs font-bold uppercase tracking-widest ${isDark ? "text-blue-400" : "text-blue-600"}`}
-                >
-                  Permanent Address
-                </p>
+              <div className="flex items-center justify-between mb-2">
+                <SubHeading label="Permanent Address" color="#3b82f6" />
                 <CheckboxField
                   label="Same as Current Address"
                   checked={permanentIsCurrent}
                   onChange={setPermanentIsCurrent}
                 />
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <G2>
                   <Field label="Address Line 1">
                     <TextInput
@@ -1280,6 +1272,7 @@ export default function StudentAdmissionForm() {
                         setPermanentAddress({ ...permanentAddress, state: v })
                       }
                       placeholder="Select State"
+                      disabled={permanentIsCurrent}
                       options={[
                         "Bihar",
                         "Uttar Pradesh",
@@ -1316,7 +1309,7 @@ export default function StudentAdmissionForm() {
           </div>
         </Section>
 
-        {/* ── Fee Assignment ── */}
+        {/* Fee */}
         <Section title="Student Fee Assign" icon={DollarSign} color="#8b5cf6">
           <G4>
             <Field label="Fee Group">
@@ -1388,37 +1381,39 @@ export default function StudentAdmissionForm() {
           </G4>
         </Section>
 
-        {/* Submit bar */}
+        {/* Submit Bar */}
         <div
-          className={`flex items-center justify-between p-5 rounded-2xl border ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-100 shadow-sm"}`}
+          className={`flex items-center justify-between px-4 py-3 rounded-xl border
+          ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200 shadow-sm"}`}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <AlertCircle
-              size={15}
+              size={12}
               className={isDark ? "text-gray-600" : "text-gray-400"}
             />
             <span
-              className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}
+              className={`text-[11px] ${isDark ? "text-gray-500" : "text-gray-400"}`}
             >
               Fields marked with <span className="text-red-500">*</span> are
               required.
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={handleReset}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${isDark ? "text-gray-400 bg-gray-800 hover:bg-gray-700" : "text-gray-600 bg-gray-100 hover:bg-gray-200"}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors
+                ${isDark ? "text-gray-400 bg-gray-800 hover:bg-gray-700" : "text-gray-600 bg-gray-100 hover:bg-gray-200"}`}
             >
-              <RotateCcw size={14} /> Reset Form
+              <RotateCcw size={11} /> Reset Form
             </button>
             <button
               onClick={handleSubmit}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+              className="flex items-center gap-1.5 px-5 py-1.5 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90 active:scale-95"
               style={{
                 background: "linear-gradient(135deg, #6366f1, #a855f7)",
               }}
             >
-              <Save size={14} /> Submit Admission
+              Submit Admission
             </button>
           </div>
         </div>

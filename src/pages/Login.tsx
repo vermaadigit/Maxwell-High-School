@@ -213,7 +213,7 @@ function LoginPage({ onLogin }: LoginPageProps) {
       <motion.img
         src="/cartoon.png"
         alt="Students"
-        className="hidden lg:block absolute z-30 pointer-events-none select-none bottom-0 left-[20%] -translate-x-1/2 w-[60vw] max-w-[900px]"
+        className="hidden lg:block absolute z-30 pointer-events-none select-none bottom-0 left-[25%] -translate-x-1/2 w-[50vw] max-w-[900px]"
         style={{
           objectFit: "contain",
           filter:

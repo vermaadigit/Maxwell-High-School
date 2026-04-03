@@ -29,7 +29,7 @@ function Label({
   return (
     <label
       className={`block text-[10.5px] font-bold mb-1.5 tracking-widest uppercase
-      ${isDark ? "text-gray-400" : "text-slate-500"}`}
+      ${isDark ? "text-gray-400" : "text-gray-900"}`}
     >
       {children}
       {required && <span className="text-rose-500 ml-0.5">*</span>}
@@ -75,11 +75,11 @@ function TextInput({
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       disabled={disabled}
-      className={`w-full px-3 py-2 rounded-lg text-xs border-2 outline-none transition-all duration-200
+      className={`w-full px-3 py-4 rounded-lg text-xs border outline-none transition-all duration-200
         ${
           isDark
-            ? "bg-gray-800/80 border-gray-600 text-white placeholder-gray-500 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 focus:bg-gray-800"
-            : "bg-white border-gray-900 text-slate-800 placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 focus:bg-white shadow-sm hover:border-black"
+            ? "bg-gray-800/80 border-gray-600 text-white placeholder-gray-500 focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20 focus:bg-gray-800"
+            : "bg-white border-gray-400 text-slate-800 placeholder-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-400/20 focus:bg-violet-50/30 shadow-sm hover:border-violet-300"
         }
         ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
     />
@@ -106,11 +106,11 @@ function SelectInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className={`w-full px-3 py-2 rounded-lg text-xs border-2 outline-none transition-all duration-200 appearance-none pr-7
+        className={`w-full px-4 py-4 rounded-lg text-xs border outline-none transition-all duration-200 appearance-none pr-7
           ${
             isDark
-              ? "bg-gray-800/80 border-gray-600 text-white focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
-              : "bg-white border-gray-900 text-slate-800 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/15 shadow-sm hover:border-black"
+              ? "bg-gray-800/80 border-gray-600 text-white focus:border-violet-400 focus:ring-2 focus:ring-violet-400/20"
+              : "bg-white border-gray-400 text-slate-800 focus:border-violet-500 focus:ring-2 focus:ring-violet-400/20 focus:bg-violet-50/30 shadow-sm hover:border-violet-300"
           }
           ${!value ? (isDark ? "text-gray-500" : "text-slate-400") : ""}
           ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
@@ -125,7 +125,7 @@ function SelectInput({
       <ChevronDown
         size={12}
         className={`absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none
-        ${isDark ? "text-gray-500" : "text-slate-400"}`}
+        ${isDark ? "text-gray-500" : "text-violet-400"}`}
       />
     </div>
   );
@@ -159,8 +159,8 @@ function PhotoUpload({
         className={`relative ${dim} rounded-xl border-2 border-dashed cursor-pointer transition-all duration-300 overflow-hidden group
           ${
             isDark
-              ? "border-gray-600 hover:border-indigo-400 bg-gray-800"
-              : "border-slate-300 hover:border-indigo-400 bg-gradient-to-br from-slate-50 to-indigo-50"
+              ? "border-gray-600 hover:border-violet-400 bg-gray-800"
+              : "border-violet-300 hover:border-violet-500 bg-gradient-to-br from-violet-50 to-fuchsia-50"
           }`}
       >
         {value ? (
@@ -187,16 +187,16 @@ function PhotoUpload({
           <div className="flex flex-col items-center justify-center h-full gap-1.5 p-2">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center
-              ${isDark ? "bg-gray-700" : "bg-indigo-100"}`}
+              ${isDark ? "bg-gray-700" : "bg-gradient-to-br from-violet-100 to-fuchsia-100"}`}
             >
               <Camera
                 size={18}
-                className={isDark ? "text-gray-400" : "text-indigo-400"}
+                className={isDark ? "text-gray-400" : "text-violet-500"}
               />
             </div>
             <span
               className={`text-[9px] font-semibold text-center leading-tight
-              ${isDark ? "text-gray-500" : "text-slate-400"}`}
+              ${isDark ? "text-gray-500" : "text-violet-400"}`}
             >
               Click to Upload
             </span>
@@ -212,7 +212,7 @@ function PhotoUpload({
       </div>
       <span
         className={`text-[9.5px] font-bold text-center uppercase tracking-wide
-        ${isDark ? "text-gray-500" : "text-slate-400"}`}
+        ${isDark ? "text-gray-500" : "text-violet-500"}`}
       >
         {label}
       </span>
@@ -239,18 +239,18 @@ function RadioGroup({
           className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-2 cursor-pointer transition-all text-xs font-semibold
             ${
               value === opt
-                ? "border-indigo-500 bg-indigo-500/10 text-indigo-600"
+                ? "border-violet-500 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 text-violet-600"
                 : isDark
                   ? "border-gray-700 text-gray-400 hover:border-gray-600"
-                  : "border-slate-200 text-slate-600 hover:border-slate-300"
+                  : "border-slate-200 text-slate-600 hover:border-violet-300 hover:bg-violet-50/50"
             }`}
         >
           <div
             className={`w-3 h-3 rounded-full border-2 flex items-center justify-center
-            ${value === opt ? "border-indigo-500" : isDark ? "border-gray-600" : "border-slate-400"}`}
+            ${value === opt ? "border-violet-500" : isDark ? "border-gray-600" : "border-slate-400"}`}
           >
             {value === opt && (
-              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+              <div className="w-1.5 h-1.5 rounded-full bg-violet-500" />
             )}
           </div>
           {opt}
@@ -277,7 +277,12 @@ function CheckboxField({
     >
       <div
         className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all
-        ${checked ? "bg-indigo-600 border-indigo-600" : isDark ? "border-gray-600" : "border-slate-400"}`}
+        ${checked ? "border-violet-500" : isDark ? "border-gray-600" : "border-slate-300"}`}
+        style={
+          checked
+            ? { background: "linear-gradient(135deg, #7c3aed, #db2777)" }
+            : {}
+        }
       >
         {checked && (
           <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
@@ -306,33 +311,63 @@ function Section({
   color,
   badge,
   children,
+  gradientFrom,
+  gradientTo,
 }: {
   title: string;
   icon: React.ElementType;
   color: string;
   badge?: string;
   children: React.ReactNode;
+  gradientFrom?: string;
+  gradientTo?: string;
 }) {
   const { isDark } = useTheme();
   const [open, setOpen] = useState(true);
   return (
     <div
       className={`rounded-2xl overflow-hidden transition-all
-      ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-slate-200 shadow-sm"}`}
+      ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border shadow-sm"}`}
+      style={
+        !isDark && gradientFrom
+          ? {
+              borderColor: `${gradientFrom}25`,
+              boxShadow: `0 2px 20px ${gradientFrom}12`,
+            }
+          : {}
+      }
     >
       <button
         onClick={() => setOpen(!open)}
         className={`w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors
-          ${isDark ? "hover:bg-gray-800/40" : "hover:bg-slate-50/80"}`}
+          ${isDark ? "hover:bg-gray-800/40" : ""}`}
+        style={
+          !isDark && gradientFrom
+            ? {
+                background: `linear-gradient(135deg, ${gradientFrom}10, ${gradientTo ?? gradientFrom}06)`,
+              }
+            : {}
+        }
       >
         <div
-          className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm"
-          style={{
-            background: `linear-gradient(135deg, ${color}22, ${color}44)`,
-            border: `1.5px solid ${color}40`,
-          }}
+          className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={
+            !isDark && gradientFrom
+              ? {
+                  background: `linear-gradient(135deg, ${gradientFrom}, ${gradientTo ?? gradientFrom})`,
+                  boxShadow: `0 4px 12px ${gradientFrom}40`,
+                }
+              : {
+                  background: `linear-gradient(135deg, ${color}22, ${color}44)`,
+                  border: `1.5px solid ${color}40`,
+                }
+          }
         >
-          <Icon size={15} style={{ color }} />
+          <Icon
+            size={15}
+            className={!isDark && gradientFrom ? "text-white" : ""}
+            style={isDark || !gradientFrom ? { color } : {}}
+          />
         </div>
         <span
           className="font-bold text-sm flex-1"
@@ -343,7 +378,15 @@ function Section({
         {badge && (
           <span
             className="px-2 py-0.5 rounded-full text-[10px] font-bold"
-            style={{ background: `${color}18`, color }}
+            style={
+              !isDark && gradientFrom
+                ? {
+                    background: `${gradientFrom}18`,
+                    color: gradientFrom,
+                    border: `1px solid ${gradientFrom}25`,
+                  }
+                : { background: `${color}18`, color }
+            }
           >
             {badge}
           </span>
@@ -368,13 +411,14 @@ function Section({
             className="overflow-hidden"
           >
             <div
-              className={`px-5 pb-5 pt-4 border-t ${isDark ? "border-gray-800" : "border-slate-100"}`}
+              className="px-5 pb-5 pt-4 border-t"
               style={
-                !isDark
+                !isDark && gradientFrom
                   ? {
-                      background: `linear-gradient(180deg, ${color}04 0%, transparent 60px)`,
+                      borderColor: `${gradientFrom}15`,
+                      background: `linear-gradient(180deg, ${gradientFrom}05 0%, transparent 70px)`,
                     }
-                  : {}
+                  : { borderColor: isDark ? "#1f2937" : "#f1f5f9" }
               }
             >
               {children}
@@ -398,16 +442,30 @@ const G4 = ({ children }: { children: React.ReactNode }) => (
   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">{children}</div>
 );
 
-function SubHeading({ label, color }: { label: string; color: string }) {
+function SubHeading({
+  label,
+  color,
+  gradientFrom,
+  gradientTo,
+}: {
+  label: string;
+  color: string;
+  gradientFrom?: string;
+  gradientTo?: string;
+}) {
   const { isDark } = useTheme();
   return (
     <div
-      className={`flex items-center gap-2 mb-3 pb-2 border-b`}
-      style={{ borderColor: isDark ? "#374151" : `${color}30` }}
+      className="flex items-center gap-2 mb-3 pb-2 border-b"
+      style={{ borderColor: isDark ? "#374151" : `${color}20` }}
     >
       <div
         className="w-1.5 h-4 rounded-full"
-        style={{ background: `linear-gradient(180deg, ${color}, ${color}80)` }}
+        style={{
+          background: gradientFrom
+            ? `linear-gradient(180deg, ${gradientFrom}, ${gradientTo ?? gradientFrom})`
+            : `linear-gradient(180deg, ${color}, ${color}80)`,
+        }}
       />
       <p
         className="text-[10.5px] font-black uppercase tracking-widest"
@@ -422,7 +480,14 @@ function SubHeading({ label, color }: { label: string; color: string }) {
 function Divider() {
   const { isDark } = useTheme();
   return (
-    <div className={`h-px my-2 ${isDark ? "bg-gray-800" : "bg-slate-100"}`} />
+    <div
+      className="h-px my-2"
+      style={{
+        background: isDark
+          ? "#1f2937"
+          : "linear-gradient(90deg, transparent, #e9d5ff 20%, #e9d5ff 80%, transparent)",
+      }}
+    />
   );
 }
 
@@ -455,10 +520,8 @@ export default function StudentAdmissionForm() {
   const [referralBy, setReferralBy] = useState("");
   const [siblings, setSiblings] = useState<{ name: string; cls: string }[]>([]);
   const [studentPhoto, setStudentPhoto] = useState<string | null>(null);
-
   const [penNumber, setPenNumber] = useState("");
   const [apaarId, setApaarId] = useState("");
-
   const [fatherName, setFatherName] = useState("");
   const [fatherMobile, setFatherMobile] = useState("");
   const [fatherDob, setFatherDob] = useState("");
@@ -477,7 +540,6 @@ export default function StudentAdmissionForm() {
   const [guardianMobile, setGuardianMobile] = useState("");
   const [guardianAddress1, setGuardianAddress1] = useState("");
   const [guardianAddress2, setGuardianAddress2] = useState("");
-
   const [guardianIsCurrent, setGuardianIsCurrent] = useState(false);
   const [permanentIsCurrent, setPermanentIsCurrent] = useState(false);
   const [currentAddress, setCurrentAddress] = useState({
@@ -494,7 +556,6 @@ export default function StudentAdmissionForm() {
     state: "",
     pin: "",
   });
-
   const [feeGroup, setFeeGroup] = useState("");
   const [discount, setDiscount] = useState("");
   const [discountList, setDiscountList] = useState("");
@@ -574,13 +635,17 @@ export default function StudentAdmissionForm() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
           className={`text-center max-w-sm p-10 rounded-3xl
-            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-slate-100 shadow-2xl"}`}
+            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-violet-100 shadow-2xl"}`}
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
-            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-500/30"
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #10b981, #059669)",
+              boxShadow: "0 8px 24px rgba(16,185,129,0.35)",
+            }}
           >
             <CheckCircle size={30} className="text-white" />
           </motion.div>
@@ -599,8 +664,8 @@ export default function StudentAdmissionForm() {
             onClick={() => setSubmitted(false)}
             className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
             style={{
-              background: "linear-gradient(135deg, #6366f1, #a855f7)",
-              boxShadow: "0 8px 20px rgba(99,102,241,0.35)",
+              background: "linear-gradient(135deg, #7c3aed, #db2777)",
+              boxShadow: "0 8px 20px rgba(124,58,237,0.35)",
             }}
           >
             + Add Another Student
@@ -643,42 +708,50 @@ export default function StudentAdmissionForm() {
 
   return (
     <div
-      className={`min-h-full ${isDark ? "bg-gray-950" : "bg-gradient-to-br from-slate-100 via-indigo-50/30 to-purple-50/20"}`}
+      className="min-h-full"
+      style={
+        !isDark
+          ? {
+              background:
+                "linear-gradient(135deg, #faf5ff 0%, #fdf2f8 30%, #eff6ff 65%, #f0fdf4 100%)",
+            }
+          : { background: "#030712" }
+      }
     >
       {/* HEADER */}
       <div
         className={`sticky top-0 z-20 border-b backdrop-blur-md
-        ${isDark ? "bg-gray-950/95 border-gray-800" : "bg-white/90 border-indigo-100"}`}
-        style={!isDark ? { boxShadow: "0 2px 16px rgba(99,102,241,0.08)" } : {}}
+        ${isDark ? "bg-gray-950/95 border-gray-800" : "bg-white/85 border-violet-100"}`}
+        style={!isDark ? { boxShadow: "0 2px 20px rgba(124,58,237,0.10)" } : {}}
       >
         {!isDark && (
           <div
             className="h-0.5 w-full"
             style={{
               background:
-                "linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #f59e0b)",
+                "linear-gradient(90deg, #7c3aed, #db2777, #f59e0b, #10b981, #3b82f6, #7c3aed)",
             }}
           />
         )}
         <div className="px-5 py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"
+              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{
-                background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                boxShadow: "0 4px 14px rgba(124,58,237,0.4)",
               }}
             >
               <GraduationCap size={20} className="text-white" />
             </div>
             <div>
               <div
-                className={`flex items-center gap-1 text-[10px] mb-0.5
-                ${isDark ? "text-gray-600" : "text-slate-400"}`}
+                className={`flex items-center gap-1 text-[10px] mb-0.5 ${isDark ? "text-gray-600" : "text-slate-400"}`}
               >
                 <span>Students</span>
                 <ChevronRight size={9} />
                 <span
-                  className={`font-semibold ${isDark ? "text-indigo-400" : "text-indigo-500"}`}
+                  className={`font-semibold ${isDark ? "text-violet-400" : "text-violet-600"}`}
                 >
                   New Admission
                 </span>
@@ -693,7 +766,7 @@ export default function StudentAdmissionForm() {
           <div className="flex items-center gap-2 flex-shrink-0">
             <div
               className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[10px] font-semibold
-              ${isDark ? "bg-gray-800/60 border-gray-700 text-gray-400" : "bg-indigo-50 border-indigo-200 text-indigo-600"}`}
+              ${isDark ? "bg-gray-800/60 border-gray-700 text-gray-400" : "bg-violet-50 border-violet-200 text-violet-600"}`}
             >
               <Sparkles size={10} /> New Admission
             </div>
@@ -703,17 +776,17 @@ export default function StudentAdmissionForm() {
                 ${
                   isDark
                     ? "text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700"
-                    : "text-slate-600 bg-white border-slate-300 hover:bg-slate-50 shadow-sm"
+                    : "text-violet-600 bg-white border-violet-200 hover:bg-violet-50 shadow-sm"
                 }`}
             >
               <RotateCcw size={12} /> Reset
             </button>
             <button
               onClick={handleSubmit}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-md"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95"
               style={{
-                background: "linear-gradient(135deg, #6366f1, #a855f7)",
-                boxShadow: "0 4px 14px rgba(99,102,241,0.4)",
+                background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                boxShadow: "0 4px 14px rgba(124,58,237,0.4)",
               }}
             >
               <CheckCircle size={13} /> Submit Admission
@@ -724,141 +797,82 @@ export default function StudentAdmissionForm() {
 
       {/* FORM BODY */}
       <div className="px-5 py-4 space-y-3">
-        {/* 1.0 Student Detail */}
+        {/* 1.0 Student Details */}
         <Section
           title="1.0 Student Details"
           icon={User}
-          color="#6366f1"
+          color="#7c3aed"
           badge="Required"
+          gradientFrom="#7c3aed"
+          gradientTo="#db2777"
         >
           <div className="space-y-4">
-            <G4>
-              <Field label="Admission No." required>
-                <TextInput
-                  value={admissionNo}
-                  onChange={setAdmissionNo}
-                  placeholder="ADM2024001"
-                />
-              </Field>
-              <Field label="Class" required>
-                <SelectInput
-                  value={cls}
-                  onChange={setCls}
-                  placeholder="Select Class"
-                  options={classOptions}
-                />
-              </Field>
-              <Field label="Section">
-                <SelectInput
-                  value={section}
-                  onChange={setSection}
-                  placeholder="Select Section"
-                  options={["A", "B", "C", "D", "E"]}
-                />
-              </Field>
-              <Field label="Roll Number">
-                <TextInput
-                  value={rollNumber}
-                  onChange={setRollNumber}
-                  placeholder="Roll No."
-                />
-              </Field>
-            </G4>
-            <G4>
-              <Field label="Biometric ID">
-                <TextInput
-                  value={biometricId}
-                  onChange={setBiometricId}
-                  placeholder="Biometric ID"
-                />
-              </Field>
-              <Field label="Admission Date" required>
-                <TextInput
-                  type="date"
-                  value={admissionDate}
-                  onChange={setAdmissionDate}
-                />
-              </Field>
-              <Field label="Admitted Class">
-                <SelectInput
-                  value={admittedClass}
-                  onChange={setAdmittedClass}
-                  placeholder="Select Class"
-                  options={classOptions}
-                />
-              </Field>
-              <Field label="As on Date">
-                <TextInput
-                  type="date"
-                  value={asOnDate}
-                  onChange={setAsOnDate}
-                />
-              </Field>
-            </G4>
-
-            <Divider />
-
-            <div className="flex gap-5">
+            {/* TOP: two field rows + photo */}
+            <div className="flex gap-5 items-start">
               <div className="flex-1 min-w-0 space-y-3">
-                <G3>
-                  <Field label="First Name" required>
+                <G4>
+                  <Field label="Admission No." required>
                     <TextInput
-                      value={firstName}
-                      onChange={setFirstName}
-                      placeholder="First Name"
+                      value={admissionNo}
+                      onChange={setAdmissionNo}
+                      placeholder="ADM2024001"
                     />
                   </Field>
-                  <Field label="Last Name" required>
+                  <Field label="Class" required>
+                    <SelectInput
+                      value={cls}
+                      onChange={setCls}
+                      placeholder="Select Class"
+                      options={classOptions}
+                    />
+                  </Field>
+                  <Field label="Section">
+                    <SelectInput
+                      value={section}
+                      onChange={setSection}
+                      placeholder="Select Section"
+                      options={["A", "B", "C", "D", "E"]}
+                    />
+                  </Field>
+                  <Field label="Roll Number">
                     <TextInput
-                      value={lastName}
-                      onChange={setLastName}
-                      placeholder="Last Name"
+                      value={rollNumber}
+                      onChange={setRollNumber}
+                      placeholder="Roll No."
                     />
                   </Field>
-                  <Field label="Gender" required>
+                </G4>
+                <G4>
+                  <Field label="Biometric ID">
+                    <TextInput
+                      value={biometricId}
+                      onChange={setBiometricId}
+                      placeholder="Biometric ID"
+                    />
+                  </Field>
+                  <Field label="Admission Date" required>
+                    <TextInput
+                      type="date"
+                      value={admissionDate}
+                      onChange={setAdmissionDate}
+                    />
+                  </Field>
+                  <Field label="Admitted Class">
                     <SelectInput
-                      value={gender}
-                      onChange={setGender}
-                      placeholder="Select Gender"
-                      options={["Male", "Female", "Other"]}
+                      value={admittedClass}
+                      onChange={setAdmittedClass}
+                      placeholder="Select Class"
+                      options={classOptions}
                     />
                   </Field>
-                </G3>
-                <G3>
-                  <Field label="Date of Birth" required>
-                    <TextInput type="date" value={dob} onChange={setDob} />
-                  </Field>
-                  <Field label="Blood Group">
-                    <SelectInput
-                      value={bloodGroup}
-                      onChange={setBloodGroup}
-                      placeholder="Select"
-                      options={[
-                        "A+",
-                        "A-",
-                        "B+",
-                        "B-",
-                        "AB+",
-                        "AB-",
-                        "O+",
-                        "O-",
-                      ]}
+                  <Field label="As on Date">
+                    <TextInput
+                      type="date"
+                      value={asOnDate}
+                      onChange={setAsOnDate}
                     />
                   </Field>
-                  <Field label="House">
-                    <SelectInput
-                      value={house}
-                      onChange={setHouse}
-                      placeholder="Select House"
-                      options={[
-                        "Red House",
-                        "Blue House",
-                        "Green House",
-                        "Yellow House",
-                      ]}
-                    />
-                  </Field>
-                </G3>
+                </G4>
               </div>
               <div className="flex-shrink-0 pt-0.5">
                 <PhotoUpload
@@ -868,6 +882,62 @@ export default function StudentAdmissionForm() {
                   size="lg"
                 />
               </div>
+            </div>
+
+            <Divider />
+
+            {/* Personal info */}
+            <div className="space-y-3">
+              <G3>
+                <Field label="First Name" required>
+                  <TextInput
+                    value={firstName}
+                    onChange={setFirstName}
+                    placeholder="First Name"
+                  />
+                </Field>
+                <Field label="Last Name" required>
+                  <TextInput
+                    value={lastName}
+                    onChange={setLastName}
+                    placeholder="Last Name"
+                  />
+                </Field>
+                <Field label="Gender" required>
+                  <SelectInput
+                    value={gender}
+                    onChange={setGender}
+                    placeholder="Select Gender"
+                    options={["Male", "Female", "Other"]}
+                  />
+                </Field>
+              </G3>
+              <G3>
+                <Field label="Date of Birth" required>
+                  <TextInput type="date" value={dob} onChange={setDob} />
+                </Field>
+                <Field label="Blood Group">
+                  <SelectInput
+                    value={bloodGroup}
+                    onChange={setBloodGroup}
+                    placeholder="Select"
+                    options={["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]}
+                  />
+                </Field>
+                <Field label="House">
+                  <SelectInput
+                    value={house}
+                    onChange={setHouse}
+                    placeholder="Select House"
+                    options={[
+                      "Red House",
+                      "Blue House",
+                      "Green House",
+                      "Yellow House",
+                    ]}
+                  />
+                </Field>
+              </G3>
             </div>
 
             <G4>
@@ -910,6 +980,7 @@ export default function StudentAdmissionForm() {
                 />
               </Field>
             </G4>
+
             <G4>
               <Field label="Mobile Number" required>
                 <TextInput
@@ -942,6 +1013,7 @@ export default function StudentAdmissionForm() {
                 />
               </Field>
             </G4>
+
             <G2>
               <Field label="Referral By">
                 <TextInput
@@ -957,7 +1029,7 @@ export default function StudentAdmissionForm() {
                 <Label>Siblings</Label>
                 <button
                   onClick={addSibling}
-                  className="flex items-center gap-1 text-[11px] font-bold text-indigo-500 hover:text-indigo-600 transition-colors px-2 py-1 rounded-lg hover:bg-indigo-50"
+                  className="flex items-center gap-1 text-[11px] font-bold text-violet-600 hover:text-violet-700 transition-colors px-2 py-1 rounded-lg hover:bg-violet-50"
                 >
                   <Plus size={11} /> Add Sibling
                 </button>
@@ -965,7 +1037,7 @@ export default function StudentAdmissionForm() {
               {siblings.length === 0 ? (
                 <div
                   className={`text-[11px] py-3 px-4 rounded-xl border-2 border-dashed text-center
-                  ${isDark ? "text-gray-600 border-gray-700" : "text-slate-400 border-slate-200"}`}
+                  ${isDark ? "text-gray-600 border-gray-700" : "text-violet-400 border-violet-200 bg-violet-50/40"}`}
                 >
                   No siblings added yet. Click "Add Sibling" to add.
                 </div>
@@ -999,7 +1071,13 @@ export default function StudentAdmissionForm() {
         </Section>
 
         {/* 2.0 Custom Fields */}
-        <Section title="2.0 Custom Fields" icon={AlertCircle} color="#0ea5e9">
+        <Section
+          title="2.0 Custom Fields"
+          icon={AlertCircle}
+          color="#0ea5e9"
+          gradientFrom="#0ea5e9"
+          gradientTo="#06b6d4"
+        >
           <G2>
             <Field label="PEN Number">
               <TextInput
@@ -1023,9 +1101,16 @@ export default function StudentAdmissionForm() {
           title="3.0 Parents / Guardian Details"
           icon={Users}
           color="#f59e0b"
+          gradientFrom="#f59e0b"
+          gradientTo="#f97316"
         >
           <div className="space-y-4">
-            <SubHeading label="Father's Information" color="#6366f1" />
+            <SubHeading
+              label="Father's Information"
+              color="#7c3aed"
+              gradientFrom="#7c3aed"
+              gradientTo="#db2777"
+            />
             <div className="flex gap-5">
               <div className="flex-1 min-w-0 space-y-3">
                 <G3>
@@ -1080,7 +1165,12 @@ export default function StudentAdmissionForm() {
 
             <Divider />
 
-            <SubHeading label="Mother's Information" color="#ec4899" />
+            <SubHeading
+              label="Mother's Information"
+              color="#db2777"
+              gradientFrom="#db2777"
+              gradientTo="#f43f5e"
+            />
             <div className="flex gap-5">
               <div className="flex-1 min-w-0 space-y-3">
                 <G3>
@@ -1126,7 +1216,12 @@ export default function StudentAdmissionForm() {
 
             <Divider />
 
-            <SubHeading label="Guardian Information" color="#10b981" />
+            <SubHeading
+              label="Guardian Information"
+              color="#10b981"
+              gradientFrom="#10b981"
+              gradientTo="#059669"
+            />
             <div className="mb-3">
               <Label>If Guardian is</Label>
               <RadioGroup
@@ -1193,11 +1288,22 @@ export default function StudentAdmissionForm() {
         </Section>
 
         {/* Address */}
-        <Section title="Student Address Details" icon={MapPin} color="#10b981">
+        <Section
+          title="Student Address Details"
+          icon={MapPin}
+          color="#10b981"
+          gradientFrom="#10b981"
+          gradientTo="#3b82f6"
+        >
           <div className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-3">
-                <SubHeading label="Current Address" color="#10b981" />
+                <SubHeading
+                  label="Current Address"
+                  color="#10b981"
+                  gradientFrom="#10b981"
+                  gradientTo="#059669"
+                />
                 <CheckboxField
                   label="Same as Guardian Address"
                   checked={guardianIsCurrent}
@@ -1280,7 +1386,12 @@ export default function StudentAdmissionForm() {
 
             <div>
               <div className="flex items-center justify-between mb-3">
-                <SubHeading label="Permanent Address" color="#3b82f6" />
+                <SubHeading
+                  label="Permanent Address"
+                  color="#3b82f6"
+                  gradientFrom="#3b82f6"
+                  gradientTo="#6366f1"
+                />
                 <CheckboxField
                   label="Same as Current Address"
                   checked={permanentIsCurrent}
@@ -1374,7 +1485,13 @@ export default function StudentAdmissionForm() {
         </Section>
 
         {/* Fee */}
-        <Section title="Student Fee Assign" icon={DollarSign} color="#8b5cf6">
+        <Section
+          title="Student Fee Assign"
+          icon={DollarSign}
+          color="#8b5cf6"
+          gradientFrom="#8b5cf6"
+          gradientTo="#a855f7"
+        >
           <G4>
             <Field label="Fee Group">
               <SelectInput
@@ -1448,9 +1565,14 @@ export default function StudentAdmissionForm() {
         {/* Submit Bar */}
         <div
           className={`flex items-center justify-between px-5 py-3.5 rounded-2xl border
-          ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-slate-200 shadow-md"}`}
+          ${isDark ? "bg-gray-900 border-gray-800" : "border-violet-100"}`}
           style={
-            !isDark ? { boxShadow: "0 4px 20px rgba(99,102,241,0.1)" } : {}
+            !isDark
+              ? {
+                  background: "linear-gradient(135deg, #fdf4ff, #faf5ff)",
+                  boxShadow: "0 4px 24px rgba(124,58,237,0.12)",
+                }
+              : {}
           }
         >
           <div className="flex items-center gap-2">
@@ -1469,7 +1591,7 @@ export default function StudentAdmissionForm() {
                 ${
                   isDark
                     ? "text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700"
-                    : "text-slate-600 bg-white border-slate-300 hover:bg-slate-50 shadow-sm"
+                    : "text-violet-600 bg-white border-violet-200 hover:bg-violet-50 shadow-sm"
                 }`}
             >
               <RotateCcw size={11} /> Reset Form
@@ -1478,8 +1600,8 @@ export default function StudentAdmissionForm() {
               onClick={handleSubmit}
               className="flex items-center gap-1.5 px-6 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95"
               style={{
-                background: "linear-gradient(135deg, #6366f1, #a855f7)",
-                boxShadow: "0 4px 14px rgba(99,102,241,0.4)",
+                background: "linear-gradient(135deg, #7c3aed, #db2777)",
+                boxShadow: "0 4px 14px rgba(124,58,237,0.4)",
               }}
             >
               <CheckCircle size={13} /> Submit Admission

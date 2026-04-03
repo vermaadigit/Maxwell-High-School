@@ -17,9 +17,11 @@ import {
   TrendingUp,
   Calendar,
   Award,
+  Eye,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import StudentAdmissionForm from "./StudentAdmissionForm";
+import ViewStudents from "./ViewStudents";
 
 interface DashboardProps {
   onLogout: () => void;
@@ -39,6 +41,11 @@ const MENU_ITEMS: MenuItem[] = [
     label: "Student",
     icon: Users,
     children: [
+      {
+        id: "view-students",
+        label: "View Students",
+        icon: Eye,
+      },
       {
         id: "student-admission",
         label: "Student Admission Form",
@@ -160,6 +167,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
   const renderContent = () => {
     if (activeMenu === "student-admission") return <StudentAdmissionForm />;
+    if (activeMenu === "view-students")
+      return (
+        <ViewStudents
+          onNewAdmission={() => setActiveMenu("student-admission")}
+        />
+      );
     return <DashboardHome />;
   };
 
@@ -377,9 +390,14 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 <span
                   className={`font-medium ${isDark ? "text-gray-200" : "text-gray-700"}`}
                 >
-                  {activeMenu === "student-admission"
-                    ? "Student Admission Form"
-                    : "Dashboard"}
+                  
+                  {(() => {
+                    const labels: Record<string, string> = {
+                      "student-admission": "Student Admission Form",
+                      "view-students": "View Students",
+                    };
+                    return labels[activeMenu] ?? "Dashboard";
+                  })()}
                 </span>
               </>
             )}

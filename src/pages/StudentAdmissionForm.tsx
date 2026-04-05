@@ -10,11 +10,7 @@ import {
   AlertCircle,
   Plus,
   Trash2,
-  RotateCcw,
-  ChevronRight,
-  GraduationCap,
   Camera,
-  Sparkles,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
@@ -569,64 +565,6 @@ export default function StudentAdmissionForm() {
       siblings.map((s, idx) => (idx === i ? { ...s, [field]: val } : s)),
     );
 
-  const handleReset = () => {
-    setFirstName("");
-    setLastName("");
-    setAdmissionNo("");
-    setCls("");
-    setSection("");
-    setRollNumber("");
-    setBiometricId("");
-    setAdmissionDate("");
-    setGender("");
-    setDob("");
-    setCategory("");
-    setReligion("");
-    setCaste("");
-    setMobile("");
-    setEmail("");
-    setBloodGroup("");
-    setHouse("");
-    setHeight("");
-    setWeight("");
-    setAadhar("");
-    setAdmittedClass("");
-    setAsOnDate("");
-    setReferralBy("");
-    setSiblings([]);
-    setStudentPhoto(null);
-    setPenNumber("");
-    setApaarId("");
-    setFatherName("");
-    setFatherMobile("");
-    setFatherDob("");
-    setFatherOccupation("");
-    setFatherPhoto(null);
-    setMarriageAnniversary("");
-    setMotherName("");
-    setMotherMobile("");
-    setMotherDob("");
-    setMotherOccupation("");
-    setMotherPhoto(null);
-    setGuardianType("Father");
-    setGuardianName("");
-    setGuardianRelation("");
-    setGuardianEmail("");
-    setGuardianMobile("");
-    setGuardianAddress1("");
-    setGuardianAddress2("");
-    setGuardianIsCurrent(false);
-    setPermanentIsCurrent(false);
-    setCurrentAddress({ line1: "", line2: "", city: "", state: "", pin: "" });
-    setPermanentAddress({ line1: "", line2: "", city: "", state: "", pin: "" });
-    setFeeGroup("");
-    setDiscount("");
-    setDiscountList("");
-    setFeeMonth("");
-  };
-
-  const handleSubmit = () => setSubmitted(true);
-
   if (submitted) {
     return (
       <div className="flex items-center justify-center h-full p-6">
@@ -709,92 +647,8 @@ export default function StudentAdmissionForm() {
   return (
     <div
       className="min-h-full"
-      style={
-        !isDark
-          ? {
-              background:
-                "linear-gradient(135deg, #faf5ff 0%, #fdf2f8 30%, #eff6ff 65%, #f0fdf4 100%)",
-            }
-          : { background: "#030712" }
-      }
+      style={!isDark ? { background: "#ffffff" } : { background: "#030712" }}
     >
-      {/* HEADER */}
-      <div
-        className={`sticky top-0 z-20 border-b backdrop-blur-md
-        ${isDark ? "bg-gray-950/95 border-gray-800" : "bg-white/85 border-violet-100"}`}
-        style={!isDark ? { boxShadow: "0 2px 20px rgba(124,58,237,0.10)" } : {}}
-      >
-        {!isDark && (
-          <div
-            className="h-0.5 w-full"
-            style={{
-              background:
-                "linear-gradient(90deg, #7c3aed, #db2777, #f59e0b, #10b981, #3b82f6, #7c3aed)",
-            }}
-          />
-        )}
-        <div className="px-5 py-3 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{
-                background: "linear-gradient(135deg, #7c3aed, #db2777)",
-                boxShadow: "0 4px 14px rgba(124,58,237,0.4)",
-              }}
-            >
-              <GraduationCap size={20} className="text-white" />
-            </div>
-            <div>
-              <div
-                className={`flex items-center gap-1 text-[10px] mb-0.5 ${isDark ? "text-gray-600" : "text-slate-400"}`}
-              >
-                <span>Students</span>
-                <ChevronRight size={9} />
-                <span
-                  className={`font-semibold ${isDark ? "text-violet-400" : "text-violet-600"}`}
-                >
-                  New Admission
-                </span>
-              </div>
-              <h1
-                className={`text-sm font-bold leading-tight ${isDark ? "text-white" : "text-slate-800"}`}
-              >
-                Student Admission Form
-              </h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <div
-              className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[10px] font-semibold
-              ${isDark ? "bg-gray-800/60 border-gray-700 text-gray-400" : "bg-violet-50 border-violet-200 text-violet-600"}`}
-            >
-              <Sparkles size={10} /> New Admission
-            </div>
-            <button
-              onClick={handleReset}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all hover:scale-105 active:scale-95
-                ${
-                  isDark
-                    ? "text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700"
-                    : "text-violet-600 bg-white border-violet-200 hover:bg-violet-50 shadow-sm"
-                }`}
-            >
-              <RotateCcw size={12} /> Reset
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95"
-              style={{
-                background: "linear-gradient(135deg, #7c3aed, #db2777)",
-                boxShadow: "0 4px 14px rgba(124,58,237,0.4)",
-              }}
-            >
-              <CheckCircle size={13} /> Submit Admission
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* FORM BODY */}
       <div className="px-5 py-4 space-y-3">
         {/* 1.0 Student Details */}
@@ -1561,53 +1415,6 @@ export default function StudentAdmissionForm() {
             </Field>
           </G4>
         </Section>
-
-        {/* Submit Bar */}
-        <div
-          className={`flex items-center justify-between px-5 py-3.5 rounded-2xl border
-          ${isDark ? "bg-gray-900 border-gray-800" : "border-violet-100"}`}
-          style={
-            !isDark
-              ? {
-                  background: "linear-gradient(135deg, #fdf4ff, #faf5ff)",
-                  boxShadow: "0 4px 24px rgba(124,58,237,0.12)",
-                }
-              : {}
-          }
-        >
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-            <span
-              className={`text-[11px] font-medium ${isDark ? "text-gray-500" : "text-slate-500"}`}
-            >
-              Fields marked <span className="text-rose-500 font-bold">*</span>{" "}
-              are required
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleReset}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all hover:scale-105 active:scale-95
-                ${
-                  isDark
-                    ? "text-gray-400 bg-gray-800 border-gray-700 hover:bg-gray-700"
-                    : "text-violet-600 bg-white border-violet-200 hover:bg-violet-50 shadow-sm"
-                }`}
-            >
-              <RotateCcw size={11} /> Reset Form
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="flex items-center gap-1.5 px-6 py-2 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95"
-              style={{
-                background: "linear-gradient(135deg, #7c3aed, #db2777)",
-                boxShadow: "0 4px 14px rgba(124,58,237,0.4)",
-              }}
-            >
-              <CheckCircle size={13} /> Submit Admission
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

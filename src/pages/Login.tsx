@@ -30,7 +30,7 @@ interface LoginPageProps {
   onLogin: () => void;
 }
 
-const DEMO_CREDENTIALS = { username: "student", password: "maxwell2024" };
+const DEMO_CREDENTIALS = { username: "admin", password: "admin@123" };
 
 const containerVariants = {
   hidden: { opacity: 0 },

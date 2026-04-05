@@ -16,7 +16,6 @@ import {
   ClipboardList,
   TrendingUp,
   Calendar,
-  Award,
   Eye,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
@@ -43,12 +42,12 @@ const MENU_ITEMS: MenuItem[] = [
     children: [
       {
         id: "view-students",
-        label: "View Students",
+        label: "List",
         icon: Eye,
       },
       {
         id: "student-admission",
-        label: "Student Admission Form",
+        label: "Admission Form",
         icon: ClipboardList,
       },
     ],
@@ -184,11 +183,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       <div
         className={`flex items-center gap-3 px-5 h-16 border-b ${isDark ? "border-gray-800" : "border-gray-200"}`}
       >
-        <div
-          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-          style={{ background: "linear-gradient(135deg, #6366f1, #a855f7)" }}
-        >
-          <Award size={16} className="text-white" />
+        <div className="w-14 h-14 rounded-lg flex-shrink-0 overflow-hidden">
+          <img
+            src="/logomain.png"
+            alt="App Logo"
+            className="w-full h-full object-cover"
+          />
         </div>
         {sidebarOpen && (
           <motion.div
@@ -199,12 +199,12 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             <p
               className={`text-xs font-bold leading-none ${isDark ? "text-white" : "text-gray-900"}`}
             >
-              Maxwell
+              VidyaSetu
             </p>
             <p
               className={`text-[10px] mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}
             >
-              High School ERP
+              S.R.B Public School
             </p>
           </motion.div>
         )}
@@ -288,7 +288,16 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                   : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                             }`}
                           >
-                            <child.icon size={15} />
+                            <ChevronRight
+                              size={13}
+                              className={`flex-shrink-0 ${
+                                activeMenu === child.id
+                                  ? "text-indigo-500"
+                                  : isDark
+                                    ? "text-gray-600"
+                                    : "text-gray-400"
+                              }`}
+                            />
                             {child.label}
                           </button>
                         ))}

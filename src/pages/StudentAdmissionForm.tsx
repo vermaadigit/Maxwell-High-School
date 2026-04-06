@@ -11,6 +11,9 @@ import {
   Plus,
   Trash2,
   Camera,
+  Download,
+  Printer,
+  X,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
@@ -487,9 +490,197 @@ function Divider() {
   );
 }
 
+// ─── Sibling Modal ───────────────────────────────────────────────────────────
+function SiblingModal({
+  isOpen,
+  onClose,
+  onAdd,
+  classOptions,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (sibling: { name: string; cls: string; section: string }) => void;
+  classOptions: string[];
+}) {
+  const { isDark } = useTheme();
+  const [name, setName] = useState("");
+  const [cls, setCls] = useState("");
+  const [section, setSection] = useState("");
+  const [errors, setErrors] = useState<{ name?: string; cls?: string }>({});
+
+  const handleAdd = () => {
+    const newErrors: { name?: string; cls?: string } = {};
+    if (!name.trim()) newErrors.name = "Sibling name is required";
+    if (!cls) newErrors.cls = "Class is required";
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    onAdd({ name: name.trim(), cls, section });
+    setName("");
+    setCls("");
+    setSection("");
+    setErrors({});
+    onClose();
+  };
+
+  const handleClose = () => {
+    setName("");
+    setCls("");
+    setSection("");
+    setErrors({});
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(0,0,0,0.55)" }}
+      onClick={handleClose}
+    >
+      <motion.div
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.92, opacity: 0 }}
+        transition={{ duration: 0.18, ease: "easeOut" }}
+        onClick={(e) => e.stopPropagation()}
+        className={`w-full max-w-md rounded-2xl overflow-hidden shadow-2xl
+          ${isDark ? "bg-gray-900 border border-gray-700" : "bg-white border border-violet-100"}`}
+        style={
+          !isDark ? { boxShadow: "0 20px 60px rgba(124,58,237,0.18)" } : {}
+        }
+      >
+        {/* Modal Header */}
+        <div
+          className="flex items-center justify-between px-5 py-4"
+          style={
+            !isDark
+              ? { background: "linear-gradient(135deg, #7c3aed10, #db287706)" }
+              : { borderBottom: "1px solid #1f2937" }
+          }
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, #7c3aed, #db2877)",
+                boxShadow: "0 4px 12px rgba(124,58,237,0.35)",
+              }}
+            >
+              <Users size={15} className="text-white" />
+            </div>
+            <span
+              className={`font-bold text-sm ${isDark ? "text-white" : "text-slate-800"}`}
+            >
+              Add Sibling
+            </span>
+          </div>
+          <button
+            onClick={handleClose}
+            className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors
+              ${isDark ? "hover:bg-gray-800 text-gray-400" : "hover:bg-violet-50 text-slate-400"}`}
+          >
+            <X size={15} />
+          </button>
+        </div>
+
+        {/* Modal Body */}
+        <div
+          className="px-5 pt-4 pb-5 space-y-3"
+          style={
+            !isDark
+              ? {
+                  borderTop: "1px solid rgba(124,58,237,0.1)",
+                  background:
+                    "linear-gradient(180deg, rgba(124,58,237,0.03) 0%, transparent 60px)",
+                }
+              : {}
+          }
+        >
+          {/* Class */}
+          <div>
+            <Label required>Class</Label>
+            <SelectInput
+              value={cls}
+              onChange={(v) => {
+                setCls(v);
+                if (errors.cls) setErrors((e) => ({ ...e, cls: undefined }));
+              }}
+              placeholder="Select Class"
+              options={classOptions}
+            />
+            {errors.cls && (
+              <p className="text-rose-500 text-[10px] mt-1 font-semibold">
+                {errors.cls}
+              </p>
+            )}
+          </div>
+
+          {/* Section */}
+          <div>
+            <Label>Section</Label>
+            <SelectInput
+              value={section}
+              onChange={setSection}
+              placeholder="Select Section"
+              options={["A", "B", "C", "D", "E"]}
+            />
+          </div>
+
+          {/* Name */}
+          <div>
+            <Label required>Name</Label>
+            <TextInput
+              value={name}
+              onChange={(v) => {
+                setName(v);
+                if (errors.name) setErrors((e) => ({ ...e, name: undefined }));
+              }}
+              placeholder="Sibling's Full Name"
+            />
+            {errors.name && (
+              <p className="text-rose-500 text-[10px] mt-1 font-semibold">
+                {errors.name}
+              </p>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-2 pt-1">
+            <button
+              onClick={handleClose}
+              className={`flex-1 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all
+                ${
+                  isDark
+                    ? "border-gray-700 text-gray-400 hover:bg-gray-800"
+                    : "border-slate-200 text-slate-500 hover:bg-slate-50"
+                }`}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleAdd}
+              className="flex-1 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+              style={{
+                background: "linear-gradient(135deg, #7c3aed, #db2877)",
+                boxShadow: "0 6px 16px rgba(124,58,237,0.3)",
+              }}
+            >
+              Add Sibling
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function StudentAdmissionForm() {
   const { isDark } = useTheme();
   const [submitted, setSubmitted] = useState(false);
+  const [siblingModalOpen, setSiblingModalOpen] = useState(false);
 
   const [admissionNo, setAdmissionNo] = useState("");
   const [cls, setCls] = useState("");
@@ -514,7 +705,9 @@ export default function StudentAdmissionForm() {
   const [admittedClass, setAdmittedClass] = useState("");
   const [asOnDate, setAsOnDate] = useState("");
   const [referralBy, setReferralBy] = useState("");
-  const [siblings, setSiblings] = useState<{ name: string; cls: string }[]>([]);
+  const [siblings, setSiblings] = useState<
+    { name: string; cls: string; section: string }[]
+  >([]);
   const [studentPhoto, setStudentPhoto] = useState<string | null>(null);
   const [penNumber, setPenNumber] = useState("");
   const [apaarId, setApaarId] = useState("");
@@ -557,13 +750,261 @@ export default function StudentAdmissionForm() {
   const [discountList, setDiscountList] = useState("");
   const [feeMonth, setFeeMonth] = useState("");
 
-  const addSibling = () => setSiblings([...siblings, { name: "", cls: "" }]);
+  const addSibling = (sibling: {
+    name: string;
+    cls: string;
+    section: string;
+  }) => {
+    setSiblings([...siblings, sibling]);
+  };
   const removeSibling = (i: number) =>
     setSiblings(siblings.filter((_, idx) => idx !== i));
-  const updateSibling = (i: number, field: "name" | "cls", val: string) =>
-    setSiblings(
-      siblings.map((s, idx) => (idx === i ? { ...s, [field]: val } : s)),
-    );
+
+  // ─── Download JSON ────────────────────────────────────────────────────────
+  const handleDownload = () => {
+    const formData = {
+      studentDetails: {
+        admissionNo,
+        class: cls,
+        section,
+        rollNumber,
+        biometricId,
+        admissionDate,
+        admittedClass,
+        asOnDate,
+        firstName,
+        lastName,
+        gender,
+        dateOfBirth: dob,
+        bloodGroup,
+        house,
+        category,
+        religion,
+        caste,
+        aadharNumber: aadhar,
+        mobileNumber: mobile,
+        email,
+        height,
+        weight,
+        referralBy,
+        siblings,
+      },
+      customFields: {
+        penNumber,
+        apaarId,
+      },
+      parentsGuardian: {
+        father: {
+          name: fatherName,
+          mobile: fatherMobile,
+          dateOfBirth: fatherDob,
+          occupation: fatherOccupation,
+          marriageAnniversary,
+        },
+        mother: {
+          name: motherName,
+          mobile: motherMobile,
+          dateOfBirth: motherDob,
+          occupation: motherOccupation,
+        },
+        guardian: {
+          type: guardianType,
+          name: guardianName,
+          relation: guardianRelation,
+          email: guardianEmail,
+          mobile: guardianMobile,
+          addressLine1: guardianAddress1,
+          addressLine2: guardianAddress2,
+        },
+      },
+      addresses: {
+        current: guardianIsCurrent
+          ? {
+              line1: guardianAddress1,
+              line2: guardianAddress2,
+              city: currentAddress.city,
+              state: currentAddress.state,
+              pin: currentAddress.pin,
+            }
+          : currentAddress,
+        permanent: permanentIsCurrent ? currentAddress : permanentAddress,
+      },
+      feeAssignment: {
+        feeGroup,
+        discount,
+        discountList,
+        feeMonth,
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(formData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `admission_form_${admissionNo || "draft"}_${firstName || "student"}${lastName ? "_" + lastName : ""}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // ─── Print ────────────────────────────────────────────────────────────────
+  const handlePrint = () => {
+    const printStyles = `
+      <style>
+        @media print {
+          * { box-sizing: border-box; }
+          body { font-family: Arial, sans-serif; font-size: 11px; color: #111; background: #fff; margin: 0; padding: 16px; }
+          h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #7c3aed; }
+          h2 { font-size: 13px; font-weight: 700; margin: 14px 0 6px; color: #7c3aed; border-bottom: 1.5px solid #7c3aed30; padding-bottom: 3px; }
+          h3 { font-size: 11px; font-weight: 700; margin: 8px 0 4px; color: #555; }
+          .subtitle { font-size: 10px; color: #888; margin-bottom: 16px; }
+          .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 16px; margin-bottom: 10px; }
+          .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-bottom: 10px; }
+          .field { margin-bottom: 4px; }
+          .field-label { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 1px; }
+          .field-value { font-size: 10.5px; color: #111; border-bottom: 0.5px solid #ccc; padding-bottom: 2px; min-height: 14px; }
+          .section-divider { border: none; border-top: 0.5px solid #e5e7eb; margin: 10px 0; }
+          .sibling-list { margin: 0; padding: 0; list-style: none; }
+          .sibling-list li { font-size: 10px; padding: 2px 0; border-bottom: 0.5px dashed #ddd; }
+          .page-break { page-break-before: always; }
+          @page { margin: 15mm; size: A4; }
+        }
+      </style>
+    `;
+
+    const val = (v: string) => v || '<span style="color:#bbb">—</span>';
+
+    const content = `
+      <!DOCTYPE html>
+      <html>
+        <head><title>Student Admission Form</title>${printStyles}</head>
+        <body>
+          <h1>Student Admission Form</h1>
+          <p class="subtitle">Printed on: ${new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })}</p>
+
+          <h2>1. Student Details</h2>
+          <div class="grid">
+            <div class="field"><div class="field-label">Admission No.</div><div class="field-value">${val(admissionNo)}</div></div>
+            <div class="field"><div class="field-label">Class</div><div class="field-value">${val(cls)}</div></div>
+            <div class="field"><div class="field-label">Section</div><div class="field-value">${val(section)}</div></div>
+            <div class="field"><div class="field-label">Roll Number</div><div class="field-value">${val(rollNumber)}</div></div>
+            <div class="field"><div class="field-label">Biometric ID</div><div class="field-value">${val(biometricId)}</div></div>
+            <div class="field"><div class="field-label">Admission Date</div><div class="field-value">${val(admissionDate)}</div></div>
+            <div class="field"><div class="field-label">Admitted Class</div><div class="field-value">${val(admittedClass)}</div></div>
+            <div class="field"><div class="field-label">As on Date</div><div class="field-value">${val(asOnDate)}</div></div>
+          </div>
+          <div class="grid">
+            <div class="field"><div class="field-label">First Name</div><div class="field-value">${val(firstName)}</div></div>
+            <div class="field"><div class="field-label">Last Name</div><div class="field-value">${val(lastName)}</div></div>
+            <div class="field"><div class="field-label">Gender</div><div class="field-value">${val(gender)}</div></div>
+            <div class="field"><div class="field-label">Date of Birth</div><div class="field-value">${val(dob)}</div></div>
+            <div class="field"><div class="field-label">Blood Group</div><div class="field-value">${val(bloodGroup)}</div></div>
+            <div class="field"><div class="field-label">House</div><div class="field-value">${val(house)}</div></div>
+            <div class="field"><div class="field-label">Category</div><div class="field-value">${val(category)}</div></div>
+            <div class="field"><div class="field-label">Religion</div><div class="field-value">${val(religion)}</div></div>
+            <div class="field"><div class="field-label">Caste</div><div class="field-value">${val(caste)}</div></div>
+            <div class="field"><div class="field-label">Aadhar Number</div><div class="field-value">${val(aadhar)}</div></div>
+            <div class="field"><div class="field-label">Mobile Number</div><div class="field-value">${val(mobile)}</div></div>
+            <div class="field"><div class="field-label">Email</div><div class="field-value">${val(email)}</div></div>
+            <div class="field"><div class="field-label">Height (cm)</div><div class="field-value">${val(height)}</div></div>
+            <div class="field"><div class="field-label">Weight (kg)</div><div class="field-value">${val(weight)}</div></div>
+            <div class="field"><div class="field-label">Referral By</div><div class="field-value">${val(referralBy)}</div></div>
+          </div>
+
+          ${
+            siblings.length > 0
+              ? `<div class="field">
+                  <div class="field-label">Siblings</div>
+                  <ul class="sibling-list">
+                    ${siblings.map((s) => `<li>${s.name} — Class ${s.cls}${s.section ? ", Section " + s.section : ""}</li>`).join("")}
+                  </ul>
+                </div>`
+              : ""
+          }
+
+          <hr class="section-divider"/>
+          <h2>2. Custom Fields</h2>
+          <div class="grid-2">
+            <div class="field"><div class="field-label">PEN Number</div><div class="field-value">${val(penNumber)}</div></div>
+            <div class="field"><div class="field-label">APAAR ID</div><div class="field-value">${val(apaarId)}</div></div>
+          </div>
+
+          <hr class="section-divider"/>
+          <h2>3. Parents / Guardian Details</h2>
+          <h3>Father's Information</h3>
+          <div class="grid">
+            <div class="field"><div class="field-label">Father Name</div><div class="field-value">${val(fatherName)}</div></div>
+            <div class="field"><div class="field-label">Mobile</div><div class="field-value">${val(fatherMobile)}</div></div>
+            <div class="field"><div class="field-label">Date of Birth</div><div class="field-value">${val(fatherDob)}</div></div>
+            <div class="field"><div class="field-label">Occupation</div><div class="field-value">${val(fatherOccupation)}</div></div>
+            <div class="field"><div class="field-label">Marriage Anniversary</div><div class="field-value">${val(marriageAnniversary)}</div></div>
+          </div>
+          <h3>Mother's Information</h3>
+          <div class="grid">
+            <div class="field"><div class="field-label">Mother Name</div><div class="field-value">${val(motherName)}</div></div>
+            <div class="field"><div class="field-label">Mobile</div><div class="field-value">${val(motherMobile)}</div></div>
+            <div class="field"><div class="field-label">Date of Birth</div><div class="field-value">${val(motherDob)}</div></div>
+            <div class="field"><div class="field-label">Occupation</div><div class="field-value">${val(motherOccupation)}</div></div>
+          </div>
+          <h3>Guardian Information</h3>
+          <div class="grid">
+            <div class="field"><div class="field-label">Guardian Type</div><div class="field-value">${val(guardianType)}</div></div>
+            <div class="field"><div class="field-label">Guardian Name</div><div class="field-value">${val(guardianName)}</div></div>
+            <div class="field"><div class="field-label">Relation</div><div class="field-value">${val(guardianRelation)}</div></div>
+            <div class="field"><div class="field-label">Mobile</div><div class="field-value">${val(guardianMobile)}</div></div>
+            <div class="field"><div class="field-label">Email</div><div class="field-value">${val(guardianEmail)}</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="field"><div class="field-label">Address Line 1</div><div class="field-value">${val(guardianAddress1)}</div></div>
+            <div class="field"><div class="field-label">Address Line 2</div><div class="field-value">${val(guardianAddress2)}</div></div>
+          </div>
+
+          <div class="page-break"></div>
+
+          <h2>4. Student Address Details</h2>
+          <h3>Current Address</h3>
+          <div class="grid">
+            <div class="field"><div class="field-label">Address Line 1</div><div class="field-value">${val(guardianIsCurrent ? guardianAddress1 : currentAddress.line1)}</div></div>
+            <div class="field"><div class="field-label">Address Line 2</div><div class="field-value">${val(guardianIsCurrent ? guardianAddress2 : currentAddress.line2)}</div></div>
+            <div class="field"><div class="field-label">City</div><div class="field-value">${val(currentAddress.city)}</div></div>
+            <div class="field"><div class="field-label">State</div><div class="field-value">${val(currentAddress.state)}</div></div>
+            <div class="field"><div class="field-label">PIN Code</div><div class="field-value">${val(currentAddress.pin)}</div></div>
+          </div>
+          <h3>Permanent Address</h3>
+          <div class="grid">
+            <div class="field"><div class="field-label">Address Line 1</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.line1 : permanentAddress.line1)}</div></div>
+            <div class="field"><div class="field-label">Address Line 2</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.line2 : permanentAddress.line2)}</div></div>
+            <div class="field"><div class="field-label">City</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.city : permanentAddress.city)}</div></div>
+            <div class="field"><div class="field-label">State</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.state : permanentAddress.state)}</div></div>
+            <div class="field"><div class="field-label">PIN Code</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.pin : permanentAddress.pin)}</div></div>
+          </div>
+
+          <hr class="section-divider"/>
+          <h2>5. Fee Assignment</h2>
+          <div class="grid">
+            <div class="field"><div class="field-label">Fee Group</div><div class="field-value">${val(feeGroup)}</div></div>
+            <div class="field"><div class="field-label">Discount</div><div class="field-value">${val(discount)}</div></div>
+            <div class="field"><div class="field-label">Discount List</div><div class="field-value">${val(discountList)}</div></div>
+            <div class="field"><div class="field-label">Month</div><div class="field-value">${val(feeMonth)}</div></div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open("", "_blank", "width=900,height=700");
+    if (printWindow) {
+      printWindow.document.write(content);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 400);
+    }
+  };
 
   if (submitted) {
     return (
@@ -602,7 +1043,7 @@ export default function StudentAdmissionForm() {
             onClick={() => setSubmitted(false)}
             className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
             style={{
-              background: "linear-gradient(135deg, #7c3aed, #db2777)",
+              background: "linear-gradient(135deg, #7c3aed, #db2877)",
               boxShadow: "0 8px 20px rgba(124,58,237,0.35)",
             }}
           >
@@ -649,6 +1090,52 @@ export default function StudentAdmissionForm() {
       className="min-h-full"
       style={!isDark ? { background: "#ffffff" } : { background: "#030712" }}
     >
+      {/* Sibling Modal */}
+      <AnimatePresence>
+        {siblingModalOpen && (
+          <SiblingModal
+            isOpen={siblingModalOpen}
+            onClose={() => setSiblingModalOpen(false)}
+            onAdd={addSibling}
+            classOptions={classOptions}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Top Action Bar ─────────────────────────────────────────────────── */}
+      <div
+        className={`sticky top-0 z-40 flex items-center justify-between px-5 py-3 border-b
+          ${isDark ? "bg-gray-950/95 border-gray-800" : "bg-white/95 border-violet-100"}`}
+        style={{ backdropFilter: "blur(12px)" }}
+      >
+        <div>
+          <p
+            className={`text-xs font-black uppercase tracking-widest
+            ${isDark ? "text-violet-400" : "text-violet-600"}`}
+          >
+            Student Admission
+          </p>
+          <p
+            className={`text-[10px] font-medium
+            ${isDark ? "text-gray-600" : "text-slate-400"}`}
+          >
+            Fill all required fields marked with *
+          </p>
+        </div>
+        <button
+          onClick={handleDownload}
+          className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all hover:scale-[1.02] active:scale-[0.98]
+            ${
+              isDark
+                ? "border-violet-500/40 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20"
+                : "border-violet-200 text-violet-600 bg-violet-50 hover:bg-violet-100"
+            }`}
+        >
+          <Download size={12} />
+          Download JSON
+        </button>
+      </div>
+
       {/* FORM BODY */}
       <div className="px-5 py-4 space-y-3">
         {/* 1.0 Student Details */}
@@ -658,7 +1145,7 @@ export default function StudentAdmissionForm() {
           color="#7c3aed"
           badge="Required"
           gradientFrom="#7c3aed"
-          gradientTo="#db2777"
+          gradientTo="#db2877"
         >
           <div className="space-y-4">
             {/* TOP: two field rows + photo */}
@@ -878,16 +1365,18 @@ export default function StudentAdmissionForm() {
               </Field>
             </G2>
 
+            {/* ── Siblings ──────────────────────────────────────────────────── */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <Label>Siblings</Label>
                 <button
-                  onClick={addSibling}
+                  onClick={() => setSiblingModalOpen(true)}
                   className="flex items-center gap-1 text-[11px] font-bold text-violet-600 hover:text-violet-700 transition-colors px-2 py-1 rounded-lg hover:bg-violet-50"
                 >
                   <Plus size={11} /> Add Sibling
                 </button>
               </div>
+
               {siblings.length === 0 ? (
                 <div
                   className={`text-[11px] py-3 px-4 rounded-xl border-2 border-dashed text-center
@@ -896,27 +1385,53 @@ export default function StudentAdmissionForm() {
                   No siblings added yet. Click "Add Sibling" to add.
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {siblings.map((s, i) => (
-                    <div key={i} className="flex gap-2 items-center">
-                      <TextInput
-                        value={s.name}
-                        onChange={(v) => updateSibling(i, "name", v)}
-                        placeholder="Sibling Name"
-                      />
-                      <SelectInput
-                        value={s.cls}
-                        onChange={(v) => updateSibling(i, "cls", v)}
-                        placeholder="Class"
-                        options={classOptions}
-                      />
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border
+                        ${
+                          isDark
+                            ? "bg-gray-800/60 border-gray-700"
+                            : "bg-violet-50/60 border-violet-100"
+                        }`}
+                    >
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px] font-black text-white"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #7c3aed, #db2877)",
+                        }}
+                      >
+                        {i + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className={`text-xs font-bold truncate
+                          ${isDark ? "text-white" : "text-slate-800"}`}
+                        >
+                          {s.name}
+                        </p>
+                        <p
+                          className={`text-[10px] font-medium
+                          ${isDark ? "text-gray-500" : "text-slate-400"}`}
+                        >
+                          Class {s.cls}
+                          {s.section ? ` · Section ${s.section}` : ""}
+                        </p>
+                      </div>
                       <button
                         onClick={() => removeSibling(i)}
-                        className="text-red-400 hover:text-red-500 flex-shrink-0 p-1 rounded-lg hover:bg-red-50 transition-colors"
+                        className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors
+                          ${isDark ? "hover:bg-red-500/20 text-red-400" : "hover:bg-red-50 text-red-400 hover:text-red-500"}`}
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={12} />
                       </button>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               )}
@@ -963,7 +1478,7 @@ export default function StudentAdmissionForm() {
               label="Father's Information"
               color="#7c3aed"
               gradientFrom="#7c3aed"
-              gradientTo="#db2777"
+              gradientTo="#db2877"
             />
             <div className="flex gap-5">
               <div className="flex-1 min-w-0 space-y-3">
@@ -1021,8 +1536,8 @@ export default function StudentAdmissionForm() {
 
             <SubHeading
               label="Mother's Information"
-              color="#db2777"
-              gradientFrom="#db2777"
+              color="#db2877"
+              gradientFrom="#db2877"
               gradientTo="#f43f5e"
             />
             <div className="flex gap-5">
@@ -1415,6 +1930,39 @@ export default function StudentAdmissionForm() {
             </Field>
           </G4>
         </Section>
+
+        {/* ── Bottom Print Button ──────────────────────────────────────────── */}
+        <div
+          className={`flex items-center justify-between px-5 py-4 rounded-2xl border
+            ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-violet-100"}`}
+          style={
+            !isDark ? { boxShadow: "0 2px 20px rgba(124,58,237,0.08)" } : {}
+          }
+        >
+          <div>
+            <p
+              className={`text-xs font-bold ${isDark ? "text-white" : "text-slate-800"}`}
+            >
+              Ready to print?
+            </p>
+            <p
+              className={`text-[10px] font-medium ${isDark ? "text-gray-600" : "text-slate-400"}`}
+            >
+              Print a clean, formatted copy of this form
+            </p>
+          </div>
+          <button
+            onClick={handlePrint}
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #7c3aed, #db2877)",
+              boxShadow: "0 6px 16px rgba(124,58,237,0.3)",
+            }}
+          >
+            <Printer size={13} />
+            Print Form
+          </button>
+        </div>
       </div>
     </div>
   );

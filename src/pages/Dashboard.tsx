@@ -227,7 +227,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                   } else setActiveMenu(item.id);
                   setMobileSidebarOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group ${
                   isActive
                     ? isDark
                       ? "bg-indigo-600/20 text-indigo-400"
@@ -284,8 +284,8 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                                   ? "bg-indigo-600/20 text-indigo-400 font-semibold"
                                   : "bg-indigo-50 text-indigo-700 font-semibold"
                                 : isDark
-                                  ? "text-gray-500 hover:text-gray-300 hover:bg-gray-800/50"
-                                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                  ? "text-gray-500 hover:text-gray-300 hover:bg-gray-800/50 font-medium"
+                                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50 font-medium"
                             }`}
                           >
                             <ChevronRight
@@ -392,14 +392,17 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           <div
             className={`hidden sm:flex items-center gap-2 text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}
           >
-            <span>Home</span>
+            <span
+              className={`font-semibold ${isDark ? "text-gray-100" : "text-gray-700"}`}
+            >
+              Home
+            </span>
             {activeMenu !== "dashboard" && (
               <>
                 <ChevronRight size={12} />
                 <span
-                  className={`font-medium ${isDark ? "text-gray-200" : "text-gray-700"}`}
+                  className={`font-semibold ${isDark ? "text-gray-100" : "text-gray-700"}`}
                 >
-                  
                   {(() => {
                     const labels: Record<string, string> = {
                       "student-admission": "Student Admission Form",
@@ -549,7 +552,7 @@ function DashboardHome() {
           <h2 className="text-xl font-bold mb-1" style={{ color: "#f1f5f9" }}>
             Welcome back, <span style={{ color: "#fbbf24" }}>Admin</span>
           </h2>
-          <p className="text-white/40 text-xs max-w-xs">
+          <p className="text-white/60 text-xs font-medium max-w-xs">
             Here's what's happening at Maxwell High School today.
           </p>
         </div>
@@ -614,7 +617,7 @@ function DashboardHome() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <p
-                  className={`text-base font-bold leading-tight ${isDark ? "text-white" : "text-gray-900"}`}
+                  className={`text-base font-extrabold leading-tight ${isDark ? "text-white" : "text-gray-900"}`}
                 >
                   {stat.value}
                 </p>
@@ -635,7 +638,7 @@ function DashboardHome() {
                 </span>
               </div>
               <p
-                className={`text-[11px] mt-0.5 truncate ${isDark ? "text-gray-500" : "text-gray-500"}`}
+                className={`text-[11px] mt-0.5 truncate font-medium ${isDark ? "text-gray-400" : "text-gray-600"}`}
               >
                 {stat.label}
               </p>
@@ -675,7 +678,7 @@ function DashboardHome() {
                   (h) => (
                     <th
                       key={h}
-                      className={`px-5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider ${isDark ? "text-gray-500" : "text-gray-400"}`}
+                      className={`px-5 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider ${isDark ? "text-gray-500" : "text-gray-400"}`}
                     >
                       {h}
                     </th>
@@ -695,7 +698,7 @@ function DashboardHome() {
                   className={`transition-colors ${isDark ? "hover:bg-gray-800/50" : "hover:bg-indigo-50/40"}`}
                 >
                   <td
-                    className={`px-5 py-3 text-xs font-medium ${isDark ? "text-gray-200" : "text-gray-800"}`}
+                    className={`px-5 py-3 text-xs font-semibold ${isDark ? "text-gray-100" : "text-gray-800"}`}
                   >
                     <div className="flex items-center gap-2.5">
                       <div

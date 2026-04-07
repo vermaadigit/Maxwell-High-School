@@ -7,15 +7,17 @@ import {
   DollarSign,
   ChevronDown,
   CheckCircle,
-  AlertCircle,
   Plus,
   Trash2,
   Camera,
   Download,
   Printer,
   X,
+  Send,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+
+// ─── Reusable Primitives ─────────────────────────────────────────────────────
 
 function Label({
   children,
@@ -490,7 +492,6 @@ function Divider() {
   );
 }
 
-// ─── Sibling Modal ───────────────────────────────────────────────────────────
 function SiblingModal({
   isOpen,
   onClose,
@@ -552,7 +553,6 @@ function SiblingModal({
           !isDark ? { boxShadow: "0 20px 60px rgba(124,58,237,0.18)" } : {}
         }
       >
-        {/* Modal Header */}
         <div
           className="flex items-center justify-between px-5 py-4"
           style={
@@ -585,8 +585,6 @@ function SiblingModal({
             <X size={15} />
           </button>
         </div>
-
-        {/* Modal Body */}
         <div
           className="px-5 pt-4 pb-5 space-y-3"
           style={
@@ -599,7 +597,6 @@ function SiblingModal({
               : {}
           }
         >
-          {/* Class */}
           <div>
             <Label required>Class</Label>
             <SelectInput
@@ -617,8 +614,6 @@ function SiblingModal({
               </p>
             )}
           </div>
-
-          {/* Section */}
           <div>
             <Label>Section</Label>
             <SelectInput
@@ -628,8 +623,6 @@ function SiblingModal({
               options={["A", "B", "C", "D", "E"]}
             />
           </div>
-
-          {/* Name */}
           <div>
             <Label required>Name</Label>
             <TextInput
@@ -646,17 +639,11 @@ function SiblingModal({
               </p>
             )}
           </div>
-
-          {/* Actions */}
           <div className="flex gap-2 pt-1">
             <button
               onClick={handleClose}
               className={`flex-1 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all
-                ${
-                  isDark
-                    ? "border-gray-700 text-gray-400 hover:bg-gray-800"
-                    : "border-slate-200 text-slate-500 hover:bg-slate-50"
-                }`}
+                ${isDark ? "border-gray-700 text-gray-400 hover:bg-gray-800" : "border-slate-200 text-slate-500 hover:bg-slate-50"}`}
             >
               Cancel
             </button>
@@ -675,6 +662,91 @@ function SiblingModal({
       </motion.div>
     </div>
   );
+}
+
+function buildPrintStyles() {
+  return `<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; font-size: 10px; color: #111; background: #fff; padding: 10mm 12mm; }
+    .school-header { display: flex; align-items: center; justify-content: center; gap: 16px; padding-bottom: 10px; border-bottom: 2px solid #7c3aed; margin-bottom: 8px; }
+    .school-logo { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; color: #7c3aed; background: linear-gradient(135deg, #f5f0ff, #fdf4ff); flex-shrink: 0; }
+    .school-info { text-align: center; }
+    .school-name { font-size: 18px; font-weight: 900; color: #7c3aed; letter-spacing: 0.03em; text-transform: uppercase; }
+    .school-sub { font-size: 9.5px; color: #555; margin-top: 2px; }
+    .school-contact { font-size: 8.5px; color: #888; margin-top: 2px; }
+    .form-title-bar { background: linear-gradient(135deg, #7c3aed, #db2877); color: #fff; text-align: center; padding: 5px 0; font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 4px; margin-bottom: 10px; }
+    .photo-box { width: 90px; height: 105px; border: 1.5px solid #7c3aed; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 4px; background: linear-gradient(135deg, #faf5ff, #fdf4ff); flex-shrink: 0; overflow: hidden; }
+    .photo-icon { font-size: 22px; color: #c4b5fd; }
+    .photo-box-label { font-size: 7.5px; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; line-height: 1.3; }
+    .section-heading { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: #fff; background: linear-gradient(90deg, #7c3aed, #a855f7); padding: 3.5px 10px; border-radius: 3px; margin: 10px 0 6px 0; display: flex; align-items: center; gap: 6px; }
+    .section-heading span { font-size: 9px; opacity: 0.85; }
+    .sub-heading { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #7c3aed; border-left: 3px solid #7c3aed; padding-left: 6px; margin: 8px 0 5px 0; }
+    .field-label { font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #666; margin-bottom: 1.5px; }
+    .field-label .req { color: #e11d48; }
+    .field-line { border-bottom: 1px solid #bbb; height: 18px; width: 100%; }
+    .field-value { border-bottom: 1px solid #999; height: 18px; width: 100%; font-size: 10.5px; color: #111; font-weight: 600; padding-bottom: 2px; display: flex; align-items: flex-end; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-bottom: 6px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px 12px; margin-bottom: 6px; }
+    .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px 12px; margin-bottom: 6px; }
+    .top-row { display: flex; gap: 12px; align-items: flex-start; }
+    .top-row .fields { flex: 1; min-width: 0; }
+    .sibling-table { width: 100%; border-collapse: collapse; font-size: 9px; margin-top: 4px; }
+    .sibling-table th { background: linear-gradient(90deg, #ede9fe, #fce7f3); color: #7c3aed; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 6px; border: 1px solid #ddd6fe; text-align: left; font-size: 7.5px; }
+    .sibling-table td { border: 1px solid #e5e7eb; padding: 14px 6px 4px; vertical-align: bottom; }
+    .sibling-table td.filled { padding: 4px 6px; vertical-align: middle; font-weight: 600; }
+    .page-break { page-break-before: always; }
+    .divider { border: none; border-top: 0.5px solid #e9d5ff; margin: 8px 0; }
+    .declaration-box { border: 1px solid #ddd6fe; border-radius: 5px; padding: 8px 10px; background: linear-gradient(135deg, #faf5ff, #fdf4ff); font-size: 8.5px; color: #444; line-height: 1.6; margin-top: 10px; }
+    .declaration-box strong { color: #7c3aed; }
+    .signature-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 16px; }
+    .sig-block { text-align: center; }
+    .sig-line { border-bottom: 1px solid #666; height: 36px; margin-bottom: 4px; }
+    .sig-label { font-size: 8px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+    .office-box { border: 1.5px dashed #7c3aed; border-radius: 5px; padding: 6px 10px 8px; margin-top: 10px; }
+    .office-title { font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: #7c3aed; margin-bottom: 6px; border-bottom: 0.5px solid #ddd6fe; padding-bottom: 3px; }
+    .form-footer { text-align: center; font-size: 7.5px; color: #aaa; margin-top: 12px; padding-top: 6px; border-top: 0.5px solid #eee; }
+    @page { margin: 10mm; size: A4; }
+  </style>`;
+}
+
+function buildSchoolHeader() {
+  return `<div class="school-header">
+    <div class="school-logo">S</div>
+    <div class="school-info">
+      <div class="school-name">Your School Name</div>
+      <div class="school-sub">Affiliated to CBSE / ICSE &nbsp;|&nbsp; Estd. 2001 &nbsp;|&nbsp; NAAC Accredited</div>
+      <div class="school-contact">School Address, City, State - PIN &nbsp;|&nbsp; +91 XXXXX XXXXX &nbsp;|&nbsp; info@school.edu.in</div>
+    </div>
+  </div>
+  <div class="form-title-bar">Student Admission Form &mdash; Academic Year _________</div>`;
+}
+
+function buildFooterBlocks() {
+  return `<div class="declaration-box">
+    <strong>Declaration:</strong> I / We hereby declare that the information provided in this form is true and correct to the best of my / our knowledge and belief. I / We agree to abide by the rules and regulations of the school and undertake to pay all fees and dues as and when demanded. I / We understand that providing false or misleading information may lead to cancellation of admission without prior notice.
+  </div>
+  <div class="signature-row">
+    <div class="sig-block"><div class="sig-line"></div><div class="sig-label">Signature of Father / Guardian</div></div>
+    <div class="sig-block"><div class="sig-line"></div><div class="sig-label">Signature of Mother</div></div>
+    <div class="sig-block"><div class="sig-line"></div><div class="sig-label">Date</div></div>
+  </div>
+  <div class="office-box">
+    <div class="office-title">For Office Use Only &mdash; Do Not Fill</div>
+    <div class="g4">
+      <div><div class="field-label">Admission Approved By</div><div class="field-line"></div></div>
+      <div><div class="field-label">Approval Date</div><div class="field-line"></div></div>
+      <div><div class="field-label">Student ID Assigned</div><div class="field-line"></div></div>
+      <div><div class="field-label">Fee Receipt No.</div><div class="field-line"></div></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:4px;">
+      <div style="flex:1;"><div class="field-label">Remarks</div><div class="field-line"></div><div class="field-line" style="margin-top:6px;"></div></div>
+      <div style="text-align:center;padding-left:20px;flex-shrink:0;">
+        <div style="border-bottom:1px solid #aaa;height:40px;width:130px;margin-bottom:4px;"></div>
+        <div style="font-size:8px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:0.05em;">Principal Signature &amp; Stamp</div>
+      </div>
+    </div>
+  </div>
+  <div class="form-footer">This is an official admission form. Please fill in BLOCK LETTERS using a blue or black pen only. &nbsp;|&nbsp; Form issued by: School Administration &nbsp;|&nbsp; www.school.edu.in</div>`;
 }
 
 export default function StudentAdmissionForm() {
@@ -760,300 +832,338 @@ export default function StudentAdmissionForm() {
   const removeSibling = (i: number) =>
     setSiblings(siblings.filter((_, idx) => idx !== i));
 
-  // ─── Download JSON ────────────────────────────────────────────────────────
-  const handleDownload = () => {
-    const formData = {
-      studentDetails: {
-        admissionNo,
-        class: cls,
-        section,
-        rollNumber,
-        biometricId,
-        admissionDate,
-        admittedClass,
-        asOnDate,
-        firstName,
-        lastName,
-        gender,
-        dateOfBirth: dob,
-        bloodGroup,
-        house,
-        category,
-        religion,
-        caste,
-        aadharNumber: aadhar,
-        mobileNumber: mobile,
-        email,
-        height,
-        weight,
-        referralBy,
-        siblings,
-      },
-      customFields: {
-        penNumber,
-        apaarId,
-      },
-      parentsGuardian: {
-        father: {
-          name: fatherName,
-          mobile: fatherMobile,
-          dateOfBirth: fatherDob,
-          occupation: fatherOccupation,
-          marriageAnniversary,
-        },
-        mother: {
-          name: motherName,
-          mobile: motherMobile,
-          dateOfBirth: motherDob,
-          occupation: motherOccupation,
-        },
-        guardian: {
-          type: guardianType,
-          name: guardianName,
-          relation: guardianRelation,
-          email: guardianEmail,
-          mobile: guardianMobile,
-          addressLine1: guardianAddress1,
-          addressLine2: guardianAddress2,
-        },
-      },
-      addresses: {
-        current: guardianIsCurrent
-          ? {
-              line1: guardianAddress1,
-              line2: guardianAddress2,
-              city: currentAddress.city,
-              state: currentAddress.state,
-              pin: currentAddress.pin,
-            }
-          : currentAddress,
-        permanent: permanentIsCurrent ? currentAddress : permanentAddress,
-      },
-      feeAssignment: {
-        feeGroup,
-        discount,
-        discountList,
-        feeMonth,
-      },
-    };
-
-    const blob = new Blob([JSON.stringify(formData, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `admission_form_${admissionNo || "draft"}_${firstName || "student"}${lastName ? "_" + lastName : ""}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const curAddr = {
+    line1: guardianIsCurrent ? guardianAddress1 : currentAddress.line1,
+    line2: guardianIsCurrent ? guardianAddress2 : currentAddress.line2,
+    city: currentAddress.city,
+    state: currentAddress.state,
+    pin: currentAddress.pin,
+  };
+  const perAddr = {
+    line1: permanentIsCurrent ? curAddr.line1 : permanentAddress.line1,
+    line2: permanentIsCurrent ? curAddr.line2 : permanentAddress.line2,
+    city: permanentIsCurrent ? curAddr.city : permanentAddress.city,
+    state: permanentIsCurrent ? curAddr.state : permanentAddress.state,
+    pin: permanentIsCurrent ? curAddr.pin : permanentAddress.pin,
   };
 
-  // ─── Print ────────────────────────────────────────────────────────────────
-  const handlePrint = () => {
-    const printStyles = `
-      <style>
-        @media print {
-          * { box-sizing: border-box; }
-          body { font-family: Arial, sans-serif; font-size: 11px; color: #111; background: #fff; margin: 0; padding: 16px; }
-          h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #7c3aed; }
-          h2 { font-size: 13px; font-weight: 700; margin: 14px 0 6px; color: #7c3aed; border-bottom: 1.5px solid #7c3aed30; padding-bottom: 3px; }
-          h3 { font-size: 11px; font-weight: 700; margin: 8px 0 4px; color: #555; }
-          .subtitle { font-size: 10px; color: #888; margin-bottom: 16px; }
-          .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 16px; margin-bottom: 10px; }
-          .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-bottom: 10px; }
-          .field { margin-bottom: 4px; }
-          .field-label { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #888; margin-bottom: 1px; }
-          .field-value { font-size: 10.5px; color: #111; border-bottom: 0.5px solid #ccc; padding-bottom: 2px; min-height: 14px; }
-          .section-divider { border: none; border-top: 0.5px solid #e5e7eb; margin: 10px 0; }
-          .sibling-list { margin: 0; padding: 0; list-style: none; }
-          .sibling-list li { font-size: 10px; padding: 2px 0; border-bottom: 0.5px dashed #ddd; }
-          .page-break { page-break-before: always; }
-          @page { margin: 15mm; size: A4; }
-        }
-      </style>
-    `;
+  const handleDownloadBlankForm = () => {
+    const field = (label: string, req?: boolean) => `
+      <div>
+        <div class="field-label">${label}${req ? ' <span class="req">*</span>' : ""}</div>
+        <div class="field-line"></div>
+      </div>`;
 
-    const val = (v: string) => v || '<span style="color:#bbb">—</span>';
+    const content = `<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Blank Student Admission Form</title>${buildPrintStyles()}</head><body>
+      ${buildSchoolHeader()}
+      <div class="section-heading">1. &nbsp; Student Details <span>( Fill all fields marked * )</span></div>
+      <div class="top-row">
+        <div class="fields">
+          <div class="g4">${field("Admission No.", true)}${field("Class / Grade", true)}${field("Section")}${field("Roll Number")}</div>
+          <div class="g4">${field("Biometric ID")}${field("Admission Date", true)}${field("Admitted Class")}${field("As on Date")}</div>
+        </div>
+        <div class="photo-box"><div class="photo-icon">📷</div><div class="photo-box-label">Affix Recent<br/>Passport<br/>Size Photo</div></div>
+      </div>
+      <hr class="divider"/>
+      <div class="g3">${field("First Name", true)}${field("Last Name", true)}${field("Gender", true)}</div>
+      <div class="g4">${field("Date of Birth", true)}${field("Blood Group")}${field("House / Color")}${field("Category (Gen/OBC/SC/ST/EWS)")}</div>
+      <div class="g4">${field("Religion")}${field("Caste")}${field("Aadhar Number")}${field("Mobile Number", true)}</div>
+      <div class="g4">${field("E-mail ID")}${field("Height (cm)")}${field("Weight (kg)")}${field("Referral By")}</div>
+      <div class="sub-heading">Sibling(s) Studying in This School</div>
+      <table class="sibling-table">
+        <thead><tr><th style="width:32px;">S.No.</th><th>Sibling Full Name</th><th style="width:70px;">Class</th><th style="width:60px;">Section</th><th style="width:90px;">Admission No.</th></tr></thead>
+        <tbody><tr><td>1.</td><td></td><td></td><td></td><td></td></tr><tr><td>2.</td><td></td><td></td><td></td><td></td></tr><tr><td>3.</td><td></td><td></td><td></td><td></td></tr></tbody>
+      </table>
+      <div class="section-heading">2. &nbsp; Custom / Academic Fields</div>
+      <div class="g2">${field("PEN Number (Permanent Education Number)")}${field("APAAR ID (Academic Bank of Credits ID)")}</div>
+      <div class="section-heading">3. &nbsp; Parents / Guardian Details</div>
+      <div class="sub-heading">Father's Information</div>
+      <div class="top-row">
+        <div class="fields">
+          <div class="g3">${field("Father Full Name")}${field("Father Mobile")}${field("Father Date of Birth")}</div>
+          <div class="g2">${field("Father Occupation")}${field("Marriage Anniversary Date")}</div>
+        </div>
+        <div class="photo-box" style="width:70px;height:82px;"><div class="photo-icon" style="font-size:16px;">📷</div><div class="photo-box-label" style="font-size:6.5px;">Father<br/>Photo</div></div>
+      </div>
+      <hr class="divider"/>
+      <div class="sub-heading">Mother's Information</div>
+      <div class="top-row">
+        <div class="fields">
+          <div class="g3">${field("Mother Full Name")}${field("Mother Mobile")}${field("Mother Date of Birth")}</div>
+          <div class="g2">${field("Mother Occupation")}</div>
+        </div>
+        <div class="photo-box" style="width:70px;height:82px;"><div class="photo-icon" style="font-size:16px;">📷</div><div class="photo-box-label" style="font-size:6.5px;">Mother<br/>Photo</div></div>
+      </div>
+      <hr class="divider"/>
+      <div class="sub-heading">Guardian Information</div>
+      <div style="margin-bottom:5px;font-size:8.5px;color:#555;">If Guardian is: &nbsp;&nbsp; &#9744; Father &nbsp;&nbsp; &#9744; Mother &nbsp;&nbsp; &#9744; Other (specify below)</div>
+      <div class="g3">${field("Guardian Name")}${field("Relation with Student")}${field("Guardian Email")}</div>
+      <div class="g2">${field("Guardian Mobile")}${field("Guardian Address Line 1")}</div>
+      <div class="g2">${field("Guardian Address Line 2")}</div>
+      <div class="page-break"></div>
+      <div class="section-heading">4. &nbsp; Student Address Details</div>
+      <div class="sub-heading">Current Address</div>
+      <div style="margin-bottom:4px;font-size:8.5px;color:#555;">&#9744; Same as Guardian Address</div>
+      <div class="g2">${field("Address Line 1")}${field("Address Line 2")}</div>
+      <div class="g3">${field("City")}${field("State")}${field("PIN Code")}</div>
+      <hr class="divider"/>
+      <div class="sub-heading">Permanent Address</div>
+      <div style="margin-bottom:4px;font-size:8.5px;color:#555;">&#9744; Same as Current Address</div>
+      <div class="g2">${field("Address Line 1")}${field("Address Line 2")}</div>
+      <div class="g3">${field("City")}${field("State")}${field("PIN Code")}</div>
+      <div class="section-heading">5. &nbsp; Fee Assignment</div>
+      <div class="g4">${field("Fee Group")}${field("Assign Discount")}${field("Discount List")}${field("Month")}</div>
+      <div class="section-heading">6. &nbsp; Documents Checklist <span>( Tick &#10003; for submitted documents )</span></div>
+      <div class="g3" style="margin-bottom:6px;line-height:1.8;">
+        <div style="font-size:8.5px;">&#9744; Birth Certificate</div>
+        <div style="font-size:8.5px;">&#9744; Aadhar Card (Student)</div>
+        <div style="font-size:8.5px;">&#9744; Previous School TC</div>
+        <div style="font-size:8.5px;">&#9744; Previous Class Marksheet</div>
+        <div style="font-size:8.5px;">&#9744; Caste Certificate</div>
+        <div style="font-size:8.5px;">&#9744; Passport Size Photos (4)</div>
+        <div style="font-size:8.5px;">&#9744; Address Proof</div>
+        <div style="font-size:8.5px;">&#9744; Medical Certificate</div>
+        <div style="font-size:8.5px;">&#9744; Income Certificate (EWS/RTE)</div>
+      </div>
+      ${buildFooterBlocks()}
+    </body></html>`;
 
-    const content = `
-      <!DOCTYPE html>
-      <html>
-        <head><title>Student Admission Form</title>${printStyles}</head>
-        <body>
-          <h1>Student Admission Form</h1>
-          <p class="subtitle">Printed on: ${new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })}</p>
-
-          <h2>1. Student Details</h2>
-          <div class="grid">
-            <div class="field"><div class="field-label">Admission No.</div><div class="field-value">${val(admissionNo)}</div></div>
-            <div class="field"><div class="field-label">Class</div><div class="field-value">${val(cls)}</div></div>
-            <div class="field"><div class="field-label">Section</div><div class="field-value">${val(section)}</div></div>
-            <div class="field"><div class="field-label">Roll Number</div><div class="field-value">${val(rollNumber)}</div></div>
-            <div class="field"><div class="field-label">Biometric ID</div><div class="field-value">${val(biometricId)}</div></div>
-            <div class="field"><div class="field-label">Admission Date</div><div class="field-value">${val(admissionDate)}</div></div>
-            <div class="field"><div class="field-label">Admitted Class</div><div class="field-value">${val(admittedClass)}</div></div>
-            <div class="field"><div class="field-label">As on Date</div><div class="field-value">${val(asOnDate)}</div></div>
-          </div>
-          <div class="grid">
-            <div class="field"><div class="field-label">First Name</div><div class="field-value">${val(firstName)}</div></div>
-            <div class="field"><div class="field-label">Last Name</div><div class="field-value">${val(lastName)}</div></div>
-            <div class="field"><div class="field-label">Gender</div><div class="field-value">${val(gender)}</div></div>
-            <div class="field"><div class="field-label">Date of Birth</div><div class="field-value">${val(dob)}</div></div>
-            <div class="field"><div class="field-label">Blood Group</div><div class="field-value">${val(bloodGroup)}</div></div>
-            <div class="field"><div class="field-label">House</div><div class="field-value">${val(house)}</div></div>
-            <div class="field"><div class="field-label">Category</div><div class="field-value">${val(category)}</div></div>
-            <div class="field"><div class="field-label">Religion</div><div class="field-value">${val(religion)}</div></div>
-            <div class="field"><div class="field-label">Caste</div><div class="field-value">${val(caste)}</div></div>
-            <div class="field"><div class="field-label">Aadhar Number</div><div class="field-value">${val(aadhar)}</div></div>
-            <div class="field"><div class="field-label">Mobile Number</div><div class="field-value">${val(mobile)}</div></div>
-            <div class="field"><div class="field-label">Email</div><div class="field-value">${val(email)}</div></div>
-            <div class="field"><div class="field-label">Height (cm)</div><div class="field-value">${val(height)}</div></div>
-            <div class="field"><div class="field-label">Weight (kg)</div><div class="field-value">${val(weight)}</div></div>
-            <div class="field"><div class="field-label">Referral By</div><div class="field-value">${val(referralBy)}</div></div>
-          </div>
-
-          ${
-            siblings.length > 0
-              ? `<div class="field">
-                  <div class="field-label">Siblings</div>
-                  <ul class="sibling-list">
-                    ${siblings.map((s) => `<li>${s.name} — Class ${s.cls}${s.section ? ", Section " + s.section : ""}</li>`).join("")}
-                  </ul>
-                </div>`
-              : ""
-          }
-
-          <hr class="section-divider"/>
-          <h2>2. Custom Fields</h2>
-          <div class="grid-2">
-            <div class="field"><div class="field-label">PEN Number</div><div class="field-value">${val(penNumber)}</div></div>
-            <div class="field"><div class="field-label">APAAR ID</div><div class="field-value">${val(apaarId)}</div></div>
-          </div>
-
-          <hr class="section-divider"/>
-          <h2>3. Parents / Guardian Details</h2>
-          <h3>Father's Information</h3>
-          <div class="grid">
-            <div class="field"><div class="field-label">Father Name</div><div class="field-value">${val(fatherName)}</div></div>
-            <div class="field"><div class="field-label">Mobile</div><div class="field-value">${val(fatherMobile)}</div></div>
-            <div class="field"><div class="field-label">Date of Birth</div><div class="field-value">${val(fatherDob)}</div></div>
-            <div class="field"><div class="field-label">Occupation</div><div class="field-value">${val(fatherOccupation)}</div></div>
-            <div class="field"><div class="field-label">Marriage Anniversary</div><div class="field-value">${val(marriageAnniversary)}</div></div>
-          </div>
-          <h3>Mother's Information</h3>
-          <div class="grid">
-            <div class="field"><div class="field-label">Mother Name</div><div class="field-value">${val(motherName)}</div></div>
-            <div class="field"><div class="field-label">Mobile</div><div class="field-value">${val(motherMobile)}</div></div>
-            <div class="field"><div class="field-label">Date of Birth</div><div class="field-value">${val(motherDob)}</div></div>
-            <div class="field"><div class="field-label">Occupation</div><div class="field-value">${val(motherOccupation)}</div></div>
-          </div>
-          <h3>Guardian Information</h3>
-          <div class="grid">
-            <div class="field"><div class="field-label">Guardian Type</div><div class="field-value">${val(guardianType)}</div></div>
-            <div class="field"><div class="field-label">Guardian Name</div><div class="field-value">${val(guardianName)}</div></div>
-            <div class="field"><div class="field-label">Relation</div><div class="field-value">${val(guardianRelation)}</div></div>
-            <div class="field"><div class="field-label">Mobile</div><div class="field-value">${val(guardianMobile)}</div></div>
-            <div class="field"><div class="field-label">Email</div><div class="field-value">${val(guardianEmail)}</div></div>
-          </div>
-          <div class="grid-2">
-            <div class="field"><div class="field-label">Address Line 1</div><div class="field-value">${val(guardianAddress1)}</div></div>
-            <div class="field"><div class="field-label">Address Line 2</div><div class="field-value">${val(guardianAddress2)}</div></div>
-          </div>
-
-          <div class="page-break"></div>
-
-          <h2>4. Student Address Details</h2>
-          <h3>Current Address</h3>
-          <div class="grid">
-            <div class="field"><div class="field-label">Address Line 1</div><div class="field-value">${val(guardianIsCurrent ? guardianAddress1 : currentAddress.line1)}</div></div>
-            <div class="field"><div class="field-label">Address Line 2</div><div class="field-value">${val(guardianIsCurrent ? guardianAddress2 : currentAddress.line2)}</div></div>
-            <div class="field"><div class="field-label">City</div><div class="field-value">${val(currentAddress.city)}</div></div>
-            <div class="field"><div class="field-label">State</div><div class="field-value">${val(currentAddress.state)}</div></div>
-            <div class="field"><div class="field-label">PIN Code</div><div class="field-value">${val(currentAddress.pin)}</div></div>
-          </div>
-          <h3>Permanent Address</h3>
-          <div class="grid">
-            <div class="field"><div class="field-label">Address Line 1</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.line1 : permanentAddress.line1)}</div></div>
-            <div class="field"><div class="field-label">Address Line 2</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.line2 : permanentAddress.line2)}</div></div>
-            <div class="field"><div class="field-label">City</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.city : permanentAddress.city)}</div></div>
-            <div class="field"><div class="field-label">State</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.state : permanentAddress.state)}</div></div>
-            <div class="field"><div class="field-label">PIN Code</div><div class="field-value">${val(permanentIsCurrent ? currentAddress.pin : permanentAddress.pin)}</div></div>
-          </div>
-
-          <hr class="section-divider"/>
-          <h2>5. Fee Assignment</h2>
-          <div class="grid">
-            <div class="field"><div class="field-label">Fee Group</div><div class="field-value">${val(feeGroup)}</div></div>
-            <div class="field"><div class="field-label">Discount</div><div class="field-value">${val(discount)}</div></div>
-            <div class="field"><div class="field-label">Discount List</div><div class="field-value">${val(discountList)}</div></div>
-            <div class="field"><div class="field-label">Month</div><div class="field-value">${val(feeMonth)}</div></div>
-          </div>
-        </body>
-      </html>
-    `;
-
-    const printWindow = window.open("", "_blank", "width=900,height=700");
+    const printWindow = window.open("", "_blank", "width=950,height=800");
     if (printWindow) {
       printWindow.document.write(content);
       printWindow.document.close();
       printWindow.focus();
       setTimeout(() => {
         printWindow.print();
-        printWindow.close();
-      }, 400);
+      }, 500);
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="flex items-center justify-center h-full p-6">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 200 }}
-          className={`text-center max-w-sm p-10 rounded-3xl
-            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-violet-100 shadow-2xl"}`}
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg"
-            style={{
-              background: "linear-gradient(135deg, #10b981, #059669)",
-              boxShadow: "0 8px 24px rgba(16,185,129,0.35)",
-            }}
-          >
-            <CheckCircle size={30} className="text-white" />
-          </motion.div>
-          <h2
-            className={`text-lg font-bold mb-2 ${isDark ? "text-white" : "text-slate-900"}`}
-          >
-            Admission Submitted! 🎉
-          </h2>
-          <p
-            className={`text-xs mb-6 leading-relaxed ${isDark ? "text-gray-500" : "text-slate-500"}`}
-          >
-            Student admission form has been successfully submitted for review by
-            the administration.
-          </p>
-          <button
-            onClick={() => setSubmitted(false)}
-            className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
-            style={{
-              background: "linear-gradient(135deg, #7c3aed, #db2877)",
-              boxShadow: "0 8px 20px rgba(124,58,237,0.35)",
-            }}
-          >
-            + Add Another Student
-          </button>
-        </motion.div>
+  const handlePrint = () => {
+    openFilledForm(false);
+  };
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+  };
+
+
+  const handleDownloadFilledPDF = () => {
+    openFilledForm(true);
+  };
+
+  function openFilledForm(isPdf: boolean) {
+    const v = (val: string) => val || '<span style="color:#bbb;">—</span>';
+    const fv = (val: string) => val || "—";
+
+    const resolvedGuardianName =
+      guardianType === "Father"
+        ? fatherName
+        : guardianType === "Mother"
+          ? motherName
+          : guardianName;
+    const resolvedGuardianRelation =
+      guardianType === "Father"
+        ? "Father"
+        : guardianType === "Mother"
+          ? "Mother"
+          : guardianRelation;
+
+    const fld = (label: string, val: string, req?: boolean) => `
+      <div>
+        <div class="field-label">${label}${req ? ' <span class="req">*</span>' : ""}</div>
+        <div class="field-value">${v(val)}</div>
+      </div>`;
+
+    const siblingsRows =
+      siblings.length > 0
+        ? siblings
+            .map(
+              (s, i) =>
+                `<tr><td class="filled">${i + 1}.</td><td class="filled">${s.name}</td><td class="filled">${s.cls}</td><td class="filled">${s.section || "—"}</td><td class="filled">—</td></tr>`,
+            )
+            .join("")
+        : `<tr><td>1.</td><td></td><td></td><td></td><td></td></tr><tr><td>2.</td><td></td><td></td><td></td><td></td></tr>`;
+
+    const studentImg = studentPhoto
+      ? `<img src="${studentPhoto}" style="width:100%;height:100%;object-fit:cover;" />`
+      : `<div class="photo-icon">📷</div><div class="photo-box-label">Affix Recent<br/>Passport<br/>Size Photo</div>`;
+    const fatherImg = fatherPhoto
+      ? `<img src="${fatherPhoto}" style="width:100%;height:100%;object-fit:cover;" />`
+      : `<div class="photo-icon" style="font-size:16px;">📷</div><div class="photo-box-label" style="font-size:6.5px;">Father<br/>Photo</div>`;
+    const motherImg = motherPhoto
+      ? `<img src="${motherPhoto}" style="width:100%;height:100%;object-fit:cover;" />`
+      : `<div class="photo-icon" style="font-size:16px;">📷</div><div class="photo-box-label" style="font-size:6.5px;">Mother<br/>Photo</div>`;
+
+    const printDate = new Date().toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+
+    const content = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+      <title>Student Admission Form${isPdf ? " — Filled" : ""}</title>
+      ${buildPrintStyles()}
+      <style>
+        .print-info { text-align: right; font-size: 8px; color: #888; margin-bottom: 8px; }
+        .filled-badge { display: inline-block; background: linear-gradient(135deg,#7c3aed,#db2877); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 4px; margin-left: 8px; }
+      </style>
+    </head><body>
+      ${buildSchoolHeader()}
+      ${isPdf ? `<div class="print-info">Printed on: ${printDate} <span class="filled-badge">FILLED COPY</span></div>` : `<div class="print-info">Printed on: ${printDate}</div>`}
+      <div class="section-heading">1. &nbsp; Student Details <span>( Fill all fields marked * )</span></div>
+      <div class="top-row">
+        <div class="fields">
+          <div class="g4">
+            ${fld("Admission No.", admissionNo, true)}
+            ${fld("Class / Grade", cls, true)}
+            ${fld("Section", section)}
+            ${fld("Roll Number", rollNumber)}
+          </div>
+          <div class="g4">
+            ${fld("Biometric ID", biometricId)}
+            ${fld("Admission Date", admissionDate, true)}
+            ${fld("Admitted Class", admittedClass)}
+            ${fld("As on Date", asOnDate)}
+          </div>
+        </div>
+        <div class="photo-box">${studentImg}</div>
       </div>
-    );
+      <hr class="divider"/>
+      <div class="g3">
+        ${fld("First Name", firstName, true)}
+        ${fld("Last Name", lastName, true)}
+        ${fld("Gender", gender, true)}
+      </div>
+      <div class="g4">
+        ${fld("Date of Birth", dob, true)}
+        ${fld("Blood Group", bloodGroup)}
+        ${fld("House / Color", house)}
+        ${fld("Category", category)}
+      </div>
+      <div class="g4">
+        ${fld("Religion", religion)}
+        ${fld("Caste", caste)}
+        ${fld("Aadhar Number", aadhar)}
+        ${fld("Mobile Number", mobile, true)}
+      </div>
+      <div class="g4">
+        ${fld("E-mail ID", email)}
+        ${fld("Height (cm)", height)}
+        ${fld("Weight (kg)", weight)}
+        ${fld("Referral By", referralBy)}
+      </div>
+      <div class="sub-heading">Sibling(s) Studying in This School</div>
+      <table class="sibling-table">
+        <thead><tr><th style="width:32px;">S.No.</th><th>Sibling Full Name</th><th style="width:70px;">Class</th><th style="width:60px;">Section</th><th style="width:90px;">Admission No.</th></tr></thead>
+        <tbody>${siblingsRows}</tbody>
+      </table>
+      <div class="section-heading">2. &nbsp; Custom / Academic Fields</div>
+      <div class="g2">
+        ${fld("PEN Number", penNumber)}
+        ${fld("APAAR ID", apaarId)}
+      </div>
+      <div class="section-heading">3. &nbsp; Parents / Guardian Details</div>
+      <div class="sub-heading">Father's Information</div>
+      <div class="top-row">
+        <div class="fields">
+          <div class="g3">
+            ${fld("Father Full Name", fatherName)}
+            ${fld("Father Mobile", fatherMobile)}
+            ${fld("Father Date of Birth", fatherDob)}
+          </div>
+          <div class="g2">
+            ${fld("Father Occupation", fatherOccupation)}
+            ${fld("Marriage Anniversary Date", marriageAnniversary)}
+          </div>
+        </div>
+        <div class="photo-box" style="width:70px;height:82px;">${fatherImg}</div>
+      </div>
+      <hr class="divider"/>
+      <div class="sub-heading">Mother's Information</div>
+      <div class="top-row">
+        <div class="fields">
+          <div class="g3">
+            ${fld("Mother Full Name", motherName)}
+            ${fld("Mother Mobile", motherMobile)}
+            ${fld("Mother Date of Birth", motherDob)}
+          </div>
+          <div class="g2">${fld("Mother Occupation", motherOccupation)}</div>
+        </div>
+        <div class="photo-box" style="width:70px;height:82px;">${motherImg}</div>
+      </div>
+      <hr class="divider"/>
+      <div class="sub-heading">Guardian Information</div>
+      <div style="margin-bottom:5px;font-size:8.5px;color:#555;">
+        Guardian is: <strong style="color:#7c3aed;">${fv(guardianType)}</strong>
+      </div>
+      <div class="g3">
+        ${fld("Guardian Name", resolvedGuardianName)}
+        ${fld("Relation with Student", resolvedGuardianRelation)}
+        ${fld("Guardian Email", guardianEmail)}
+      </div>
+      <div class="g2">
+        ${fld("Guardian Mobile", guardianMobile)}
+        ${fld("Guardian Address Line 1", guardianAddress1)}
+      </div>
+      <div class="g2">${fld("Guardian Address Line 2", guardianAddress2)}</div>
+      <div class="page-break"></div>
+      <div class="section-heading">4. &nbsp; Student Address Details</div>
+      <div class="sub-heading">Current Address</div>
+      <div class="g2">
+        ${fld("Address Line 1", curAddr.line1)}
+        ${fld("Address Line 2", curAddr.line2)}
+      </div>
+      <div class="g3">
+        ${fld("City", curAddr.city)}
+        ${fld("State", curAddr.state)}
+        ${fld("PIN Code", curAddr.pin)}
+      </div>
+      <hr class="divider"/>
+      <div class="sub-heading">Permanent Address</div>
+      <div class="g2">
+        ${fld("Address Line 1", perAddr.line1)}
+        ${fld("Address Line 2", perAddr.line2)}
+      </div>
+      <div class="g3">
+        ${fld("City", perAddr.city)}
+        ${fld("State", perAddr.state)}
+        ${fld("PIN Code", perAddr.pin)}
+      </div>
+      <div class="section-heading">5. &nbsp; Fee Assignment</div>
+      <div class="g4">
+        ${fld("Fee Group", feeGroup)}
+        ${fld("Assign Discount", discount)}
+        ${fld("Discount List", discountList)}
+        ${fld("Month", feeMonth)}
+      </div>
+      <div class="section-heading">6. &nbsp; Documents Checklist <span>( Tick &#10003; for submitted documents )</span></div>
+      <div class="g3" style="margin-bottom:6px;line-height:1.8;">
+        <div style="font-size:8.5px;">&#9744; Birth Certificate</div>
+        <div style="font-size:8.5px;">&#9744; Aadhar Card (Student)</div>
+        <div style="font-size:8.5px;">&#9744; Previous School TC</div>
+        <div style="font-size:8.5px;">&#9744; Previous Class Marksheet</div>
+        <div style="font-size:8.5px;">&#9744; Caste Certificate</div>
+        <div style="font-size:8.5px;">&#9744; Passport Size Photos (4)</div>
+        <div style="font-size:8.5px;">&#9744; Address Proof</div>
+        <div style="font-size:8.5px;">&#9744; Medical Certificate</div>
+        <div style="font-size:8.5px;">&#9744; Income Certificate (EWS/RTE)</div>
+      </div>
+      ${buildFooterBlocks()}
+    </body></html>`;
+
+    const printWindow = window.open("", "_blank", "width=950,height=800");
+    if (printWindow) {
+      printWindow.document.write(content);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        printWindow.print();
+      }, 500);
+    }
   }
 
+  // ── Constants ───────────────────────────────────────────────────────────────
   const classOptions = [
     "Nursery",
     "LKG",
@@ -1085,6 +1195,86 @@ export default function StudentAdmissionForm() {
     "Other",
   ];
 
+  // ── Submitted Screen ────────────────────────────────────────────────────────
+  if (submitted) {
+    return (
+      <div className="flex items-center justify-center h-full p-6">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className={`text-center max-w-sm w-full p-10 rounded-3xl
+            ${isDark ? "bg-gray-900 border border-gray-800" : "bg-white border border-violet-100 shadow-2xl"}`}
+          style={
+            !isDark ? { boxShadow: "0 20px 60px rgba(124,58,237,0.15)" } : {}
+          }
+        >
+          {/* Success Icon */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #10b981, #059669)",
+              boxShadow: "0 8px 24px rgba(16,185,129,0.35)",
+            }}
+          >
+            <CheckCircle size={30} className="text-white" />
+          </motion.div>
+
+          <h2
+            className={`text-lg font-bold mb-2 ${isDark ? "text-white" : "text-slate-900"}`}
+          >
+            Admission Submitted! 🎉
+          </h2>
+          <p
+            className={`text-xs mb-3 leading-relaxed ${isDark ? "text-gray-500" : "text-slate-500"}`}
+          >
+            Student admission form has been successfully submitted for review by
+            the administration.
+          </p>
+
+          {/* Ref line */}
+          <div
+            className={`text-xs font-semibold px-4 py-2 rounded-xl mb-6
+              ${isDark ? "bg-gray-800 text-violet-400" : "bg-violet-50 text-violet-700"}`}
+          >
+            Admission No: {admissionNo || "—"} &nbsp;|&nbsp; {firstName}{" "}
+            {lastName}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-3">
+            {/* Download Filled PDF */}
+            <button
+              onClick={handleDownloadFilledPDF}
+              className="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+              style={{
+                background: "linear-gradient(135deg, #7c3aed, #db2877)",
+                boxShadow: "0 8px 20px rgba(124,58,237,0.35)",
+              }}
+            >
+              <Download size={14} />
+              Download Filled Form (PDF)
+            </button>
+
+            {/* Add Another Student */}
+            <button
+              onClick={() => setSubmitted(false)}
+              className={`flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl text-xs font-bold border transition-all hover:scale-[1.02]
+                ${isDark ? "border-gray-700 text-gray-300 hover:bg-gray-800" : "border-violet-200 text-violet-600 hover:bg-violet-50"}`}
+            >
+              <Plus size={14} />
+              Add Another Student
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // ── Main Form ───────────────────────────────────────────────────────────────
   return (
     <div
       className="min-h-full"
@@ -1102,7 +1292,7 @@ export default function StudentAdmissionForm() {
         )}
       </AnimatePresence>
 
-      {/* ── Top Action Bar ─────────────────────────────────────────────────── */}
+      {/* ── Top Action Bar ──────────────────────────────────────────────────── */}
       <div
         className={`sticky top-0 z-40 flex items-center justify-between px-5 py-3 border-b
           ${isDark ? "bg-gray-950/95 border-gray-800" : "bg-white/95 border-violet-100"}`}
@@ -1110,33 +1300,27 @@ export default function StudentAdmissionForm() {
       >
         <div>
           <p
-            className={`text-xs font-black uppercase tracking-widest
-            ${isDark ? "text-violet-400" : "text-violet-600"}`}
+            className={`text-xs font-black uppercase tracking-widest ${isDark ? "text-violet-400" : "text-violet-600"}`}
           >
             Student Admission
           </p>
           <p
-            className={`text-[10px] font-medium
-            ${isDark ? "text-gray-600" : "text-slate-400"}`}
+            className={`text-[10px] font-medium ${isDark ? "text-gray-600" : "text-slate-400"}`}
           >
             Fill all required fields marked with *
           </p>
         </div>
         <button
-          onClick={handleDownload}
+          onClick={handleDownloadBlankForm}
           className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all hover:scale-[1.02] active:scale-[0.98]
-            ${
-              isDark
-                ? "border-violet-500/40 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20"
-                : "border-violet-200 text-violet-600 bg-violet-50 hover:bg-violet-100"
-            }`}
+            ${isDark ? "border-violet-500/40 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20" : "border-violet-200 text-violet-600 bg-violet-50 hover:bg-violet-100"}`}
         >
           <Download size={12} />
-          Download JSON
+          Download Blank Form
         </button>
       </div>
 
-      {/* FORM BODY */}
+      {/* ── FORM BODY ───────────────────────────────────────────────────────── */}
       <div className="px-5 py-4 space-y-3">
         {/* 1.0 Student Details */}
         <Section
@@ -1148,7 +1332,6 @@ export default function StudentAdmissionForm() {
           gradientTo="#db2877"
         >
           <div className="space-y-4">
-            {/* TOP: two field rows + photo */}
             <div className="flex gap-5 items-start">
               <div className="flex-1 min-w-0 space-y-3">
                 <G4>
@@ -1227,7 +1410,6 @@ export default function StudentAdmissionForm() {
 
             <Divider />
 
-            {/* Personal info */}
             <div className="space-y-3">
               <G3>
                 <Field label="First Name" required>
@@ -1365,7 +1547,7 @@ export default function StudentAdmissionForm() {
               </Field>
             </G2>
 
-            {/* ── Siblings ──────────────────────────────────────────────────── */}
+            {/* Siblings */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <Label>Siblings</Label>
@@ -1376,11 +1558,9 @@ export default function StudentAdmissionForm() {
                   <Plus size={11} /> Add Sibling
                 </button>
               </div>
-
               {siblings.length === 0 ? (
                 <div
-                  className={`text-[11px] py-3 px-4 rounded-xl border-2 border-dashed text-center
-                  ${isDark ? "text-gray-600 border-gray-700" : "text-violet-400 border-violet-200 bg-violet-50/40"}`}
+                  className={`text-[11px] py-3 px-4 rounded-xl border-2 border-dashed text-center ${isDark ? "text-gray-600 border-gray-700" : "text-violet-400 border-violet-200 bg-violet-50/40"}`}
                 >
                   No siblings added yet. Click "Add Sibling" to add.
                 </div>
@@ -1391,14 +1571,7 @@ export default function StudentAdmissionForm() {
                       key={i}
                       initial={{ opacity: 0, y: -6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -6 }}
-                      transition={{ duration: 0.15 }}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border
-                        ${
-                          isDark
-                            ? "bg-gray-800/60 border-gray-700"
-                            : "bg-violet-50/60 border-violet-100"
-                        }`}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border ${isDark ? "bg-gray-800/60 border-gray-700" : "bg-violet-50/60 border-violet-100"}`}
                     >
                       <div
                         className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px] font-black text-white"
@@ -1411,14 +1584,12 @@ export default function StudentAdmissionForm() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p
-                          className={`text-xs font-bold truncate
-                          ${isDark ? "text-white" : "text-slate-800"}`}
+                          className={`text-xs font-bold truncate ${isDark ? "text-white" : "text-slate-800"}`}
                         >
                           {s.name}
                         </p>
                         <p
-                          className={`text-[10px] font-medium
-                          ${isDark ? "text-gray-500" : "text-slate-400"}`}
+                          className={`text-[10px] font-medium ${isDark ? "text-gray-500" : "text-slate-400"}`}
                         >
                           Class {s.cls}
                           {s.section ? ` · Section ${s.section}` : ""}
@@ -1426,8 +1597,7 @@ export default function StudentAdmissionForm() {
                       </div>
                       <button
                         onClick={() => removeSibling(i)}
-                        className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors
-                          ${isDark ? "hover:bg-red-500/20 text-red-400" : "hover:bg-red-50 text-red-400 hover:text-red-500"}`}
+                        className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${isDark ? "hover:bg-red-500/20 text-red-400" : "hover:bg-red-50 text-red-400"}`}
                       >
                         <Trash2 size={12} />
                       </button>
@@ -1442,7 +1612,7 @@ export default function StudentAdmissionForm() {
         {/* 2.0 Custom Fields */}
         <Section
           title="2.0 Custom Fields"
-          icon={AlertCircle}
+          icon={User}
           color="#0ea5e9"
           gradientFrom="#0ea5e9"
           gradientTo="#06b6d4"
@@ -1656,7 +1826,7 @@ export default function StudentAdmissionForm() {
           </div>
         </Section>
 
-        {/* Address */}
+        {/* 4.0 Address */}
         <Section
           title="Student Address Details"
           icon={MapPin}
@@ -1853,7 +2023,7 @@ export default function StudentAdmissionForm() {
           </div>
         </Section>
 
-        {/* Fee */}
+        {/* 5.0 Fee */}
         <Section
           title="Student Fee Assign"
           icon={DollarSign}
@@ -1931,7 +2101,7 @@ export default function StudentAdmissionForm() {
           </G4>
         </Section>
 
-        {/* ── Bottom Print Button ──────────────────────────────────────────── */}
+        {/* ── Bottom Action Bar ──────────────────────────────────────────────── */}
         <div
           className={`flex items-center justify-between px-5 py-4 rounded-2xl border
             ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-violet-100"}`}
@@ -1943,25 +2113,37 @@ export default function StudentAdmissionForm() {
             <p
               className={`text-xs font-bold ${isDark ? "text-white" : "text-slate-800"}`}
             >
-              Ready to print?
+              Ready to submit & print?
             </p>
             <p
               className={`text-[10px] font-medium ${isDark ? "text-gray-600" : "text-slate-400"}`}
             >
-              Print a clean, formatted copy of this form
+              Submit the form or print a formatted copy
             </p>
           </div>
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
-            style={{
-              background: "linear-gradient(135deg, #7c3aed, #db2877)",
-              boxShadow: "0 6px 16px rgba(124,58,237,0.3)",
-            }}
-          >
-            <Printer size={13} />
-            Print Form
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Print Button */}
+            <button
+              onClick={handlePrint}
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold border transition-all hover:scale-[1.02] active:scale-[0.98]
+                ${isDark ? "border-violet-500/40 text-violet-400 bg-violet-500/10 hover:bg-violet-500/20" : "border-violet-200 text-violet-600 bg-violet-50 hover:bg-violet-100"}`}
+            >
+              <Printer size={13} />
+              Print Form
+            </button>
+            {/* Submit Button */}
+            <button
+              onClick={handleSubmit}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+              style={{
+                background: "linear-gradient(135deg, #10b981, #059669)",
+                boxShadow: "0 6px 16px rgba(16,185,129,0.3)",
+              }}
+            >
+              <Send size={13} />
+              Submit Form
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -777,6 +777,7 @@ export default function StudentAdmissionForm() {
   const [admittedClass, setAdmittedClass] = useState("");
   const [asOnDate, setAsOnDate] = useState("");
   const [referralBy, setReferralBy] = useState("");
+  const [referralType, setReferralType] = useState("");
   const [siblings, setSiblings] = useState<
     { name: string; cls: string; section: string }[]
   >([]);
@@ -1537,15 +1538,26 @@ export default function StudentAdmissionForm() {
               </Field>
             </G4>
 
-            <G2>
-              <Field label="Referral By">
-                <TextInput
-                  value={referralBy}
-                  onChange={setReferralBy}
-                  placeholder="Referred by whom?"
+            <div>
+              <Label>Referral By</Label>
+              <div className="flex flex-col gap-2.5">
+                <RadioGroup
+                  options={["By Student", "By Other"]}
+                  value={referralType}
+                  onChange={(v) => {
+                    setReferralType(v);
+                    setReferralBy("");
+                  }}
                 />
-              </Field>
-            </G2>
+                {referralType === "By Other" && (
+                  <TextInput
+                    value={referralBy}
+                    onChange={setReferralBy}
+                    placeholder="Enter referral name / source"
+                  />
+                )}
+              </div>
+            </div>
 
             {/* Siblings */}
             <div>

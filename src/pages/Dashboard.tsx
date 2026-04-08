@@ -16,11 +16,13 @@ import {
   ClipboardList,
   TrendingUp,
   Calendar,
+  Settings2,
   Eye,
 } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import StudentAdmissionForm from "./StudentAdmissionForm";
 import ViewStudents from "./ViewStudents";
+import MasterSettings from "./MasterSettings";
 
 interface DashboardProps {
   onLogout: () => void;
@@ -50,6 +52,7 @@ const MENU_ITEMS: MenuItem[] = [
         label: "Admission Form",
         icon: ClipboardList,
       },
+      { id: "master-settings", label: "Master Settings", icon: Settings2 },
     ],
   },
 ];
@@ -166,6 +169,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
   const renderContent = () => {
     if (activeMenu === "student-admission") return <StudentAdmissionForm />;
+    if (activeMenu === "master-settings") return <MasterSettings />;
     if (activeMenu === "view-students")
       return (
         <ViewStudents
@@ -407,6 +411,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                     const labels: Record<string, string> = {
                       "student-admission": "Student Admission Form",
                       "view-students": "View Students",
+                      "master-settings": "Master Settings",
                     };
                     return labels[activeMenu] ?? "Dashboard";
                   })()}

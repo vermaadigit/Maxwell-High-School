@@ -42,16 +42,8 @@ const MENU_ITEMS: MenuItem[] = [
     label: "Student",
     icon: Users,
     children: [
-      {
-        id: "view-students",
-        label: "List",
-        icon: Eye,
-      },
-      {
-        id: "student-admission",
-        label: "Admission Form",
-        icon: ClipboardList,
-      },
+      { id: "view-students", label: "List", icon: Eye },
+      { id: "student-admission", label: "Admission Form", icon: ClipboardList },
       { id: "master-settings", label: "Master Settings", icon: Settings2 },
     ],
   },
@@ -201,14 +193,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             className="overflow-hidden"
           >
             <p
-              className={`text-xs font-bold leading-none ${isDark ? "text-white" : "text-gray-900"}`}
+              className={`text-xs font-bold ${isDark ? "text-white" : "text-gray-900"}`}
             >
               VidyaSetu
-            </p>
-            <p
-              className={`text-[10px] mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}
-            >
-              S.R.B Public School
             </p>
           </motion.div>
         )}
@@ -263,7 +250,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 )}
               </button>
 
-              {/* Children */}
               {item.children && sidebarOpen && (
                 <AnimatePresence>
                   {isExpanded && (
@@ -294,13 +280,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                           >
                             <ChevronRight
                               size={13}
-                              className={`flex-shrink-0 ${
-                                activeMenu === child.id
-                                  ? "text-indigo-500"
-                                  : isDark
-                                    ? "text-gray-600"
-                                    : "text-gray-400"
-                              }`}
+                              className={`flex-shrink-0 ${activeMenu === child.id ? "text-indigo-500" : isDark ? "text-gray-600" : "text-gray-400"}`}
                             />
                             {child.label}
                           </button>
@@ -375,113 +355,152 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         {/* Topbar */}
         <header
-          className={`flex items-center gap-4 h-16 px-6 border-b flex-shrink-0 ${isDark ? "bg-gray-900 border-gray-800" : "bg-white border-gray-200"} transition-colors duration-300`}
+          className={`flex-shrink-0 border-b transition-colors duration-300 ${isDark ? "border-gray-800" : "border-gray-200"}`}
+          style={
+            isDark
+              ? {
+                  background:
+                    "linear-gradient(135deg, #1a1a3e 0%, #16213e 45%, #0f3460 100%)",
+                }
+              : {
+                  background:
+                    "linear-gradient(135deg, #1a1a3e 0%, #16213e 45%, #0f3460 100%)",
+                }
+          }
         >
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className={`hidden lg:flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${isDark ? "hover:bg-gray-800 text-gray-400" : "hover:bg-gray-100 text-gray-500"}`}
-            >
-              <Menu size={18} />
-            </button>
-            <button
-              onClick={() => setMobileSidebarOpen(true)}
-              className={`lg:hidden flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${isDark ? "hover:bg-gray-800 text-gray-400" : "hover:bg-gray-100 text-gray-500"}`}
-            >
-              <Menu size={18} />
-            </button>
-          </div>
+          {/* Colored top accent line */}
+          {/* <div
+            className="h-[3px] w-full"
+            style={{
+              background: "linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b)",
+            }}
+          /> */}
 
-          {/* Breadcrumb */}
+          {/* Dot pattern overlay */}
           <div
-            className={`hidden sm:flex items-center gap-2 text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}
-          >
-            <span
-              className={`font-semibold ${isDark ? "text-gray-100" : "text-gray-700"}`}
-            >
-              Home
-            </span>
-            {activeMenu !== "dashboard" && (
-              <>
-                <ChevronRight size={12} />
-                <span
-                  className={`font-semibold ${isDark ? "text-gray-100" : "text-gray-700"}`}
-                >
-                  {(() => {
-                    const labels: Record<string, string> = {
-                      "student-admission": "Student Admission Form",
-                      "view-students": "View Students",
-                      "master-settings": "Master Settings",
-                    };
-                    return labels[activeMenu] ?? "Dashboard";
-                  })()}
-                </span>
-              </>
-            )}
-          </div>
+            className="absolute inset-0 opacity-[0.04] pointer-events-none"
+            style={{
+              backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
+              backgroundSize: "22px 22px",
+            }}
+          />
 
-          <div className="flex-1" />
-
-          {/* Search */}
+          {/* Glow accents */}
           <div
-            className={`hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs ${isDark ? "bg-gray-800 text-gray-400" : "bg-gray-100 text-gray-400 border border-gray-200"} transition-colors`}
-          >
-            <Search size={13} />
-            <span>Search...</span>
-            <span
-              className={`ml-4 text-[10px] px-1.5 py-0.5 rounded ${isDark ? "bg-gray-700" : "bg-gray-200"}`}
-            >
-              ⌘K
-            </span>
-          </div>
+            className="absolute top-0 right-0 w-64 h-24 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(circle at top right, rgba(251,191,36,0.12), transparent 70%)",
+            }}
+          />
+          <div
+            className="absolute bottom-0 left-0 w-48 h-24 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(circle at bottom left, rgba(99,102,241,0.15), transparent 70%)",
+            }}
+          />
 
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-300 ${isDark ? "bg-gray-800 text-amber-400 hover:bg-gray-700" : "bg-gray-100 text-indigo-600 hover:bg-gray-200 border border-gray-200"}`}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={isDark ? "sun" : "moon"}
-                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                transition={{ duration: 0.2 }}
+          {/* Topbar row */}
+          <div className="relative z-10 flex items-center gap-4 h-16 px-6">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10 text-white/70"
               >
-                {isDark ? <Sun size={15} /> : <Moon size={15} />}
-              </motion.div>
-            </AnimatePresence>
-          </button>
-
-          {/* Notifications */}
-          <button
-            className={`relative flex items-center justify-center w-8 h-8 rounded-xl transition-colors ${isDark ? "bg-gray-800 text-gray-400 hover:bg-gray-700" : "bg-gray-100 text-gray-500 hover:bg-gray-200 border border-gray-200"}`}
-          >
-            <Bell size={15} />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
-          </button>
-
-          {/* Avatar */}
-          <div className="flex items-center gap-2 ml-1">
-            <div
-              className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
-              style={{
-                background: "linear-gradient(135deg, #6366f1, #a855f7)",
-              }}
-            >
-              S
+                <Menu size={18} />
+              </button>
+              <button
+                onClick={() => setMobileSidebarOpen(true)}
+                className="lg:hidden flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10 text-white/70"
+              >
+                <Menu size={18} />
+              </button>
             </div>
-            <div className="hidden sm:block">
-              <p
-                className={`text-xs font-semibold leading-none ${isDark ? "text-white" : "text-gray-800"}`}
+
+            {/* Breadcrumb */}
+            <div className="hidden sm:flex items-center gap-2 text-xs text-white/40">
+              <span className="font-semibold text-white/90">Home</span>
+              {activeMenu !== "dashboard" && (
+                <>
+                  <ChevronRight size={12} />
+                  <span className="font-semibold text-white/90">
+                    {(() => {
+                      const labels: Record<string, string> = {
+                        "student-admission": "Student Admission Form",
+                        "view-students": "View Students",
+                        "master-settings": "Master Settings",
+                      };
+                      return labels[activeMenu] ?? "Dashboard";
+                    })()}
+                  </span>
+                </>
+              )}
+            </div>
+
+            {/* Welcome text - center */}
+            <div className="flex-1 flex flex-col items-center justify-center leading-tight select-none">
+              {/* <p className="text-white/50 text-[10px] font-medium tracking-wide">
+                Good morning 👋
+              </p> */}
+              <h2 className="text-lg font-bold text-white/90 leading-tight">
+                S.R.B Public School
+                {/* ,{" "} <span style={{ color: "#fbbf24" }}>Admin</span> */}
+              </h2>
+              {/* <p className="text-white/40 text-[10px] font-medium hidden md:block">
+                Here's what's happening at S.R.B Public School today.
+              </p> */}
+            </div>
+
+            {/* Search */}
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs bg-white/10 text-white/50 border border-white/10 transition-colors">
+              <Search size={13} />
+              <span>Search...</span>
+              <span className="ml-4 text-[10px] px-1.5 py-0.5 rounded bg-white/10">
+                ⌘K
+              </span>
+            </div>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-center w-8 h-8 rounded-xl transition-all duration-300 bg-white/10 text-amber-400 hover:bg-white/20 border border-white/10"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isDark ? "sun" : "moon"}
+                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isDark ? <Sun size={15} /> : <Moon size={15} />}
+                </motion.div>
+              </AnimatePresence>
+            </button>
+
+            {/* Notifications */}
+            <button className="relative flex items-center justify-center w-8 h-8 rounded-xl transition-colors bg-white/10 text-white/60 hover:bg-white/20 border border-white/10">
+              <Bell size={15} />
+              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
+            </button>
+
+            {/* Avatar */}
+            <div className="flex items-center gap-2 ml-1">
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                style={{
+                  background: "linear-gradient(135deg, #6366f1, #a855f7)",
+                }}
               >
-                Student
-              </p>
-              <p
-                className={`text-[10px] mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}
-              >
-                Admin
-              </p>
+                S
+              </div>
+              <div className="hidden sm:block">
+                <p className="text-xs font-semibold leading-none text-white/90">
+                  Student
+                </p>
+                <p className="text-[10px] mt-0.5 text-white/40">Admin</p>
+              </div>
             </div>
           </div>
         </header>
@@ -513,74 +532,6 @@ function DashboardHome() {
 
   return (
     <div className="p-5 space-y-5">
-      {/* Welcome Banner */}
-      <div
-        className="relative rounded-2xl overflow-hidden p-6"
-        style={{
-          background:
-            "linear-gradient(135deg, #1a1a3e 0%, #16213e 45%, #0f3460 100%)",
-          border: "1px solid rgba(255,255,255,0.07)",
-          boxShadow: "0 8px 32px rgba(15, 52, 96, 0.35)",
-        }}
-      >
-        <div
-          className="absolute top-0 left-0 right-0 h-[3px]"
-          style={{
-            background: "linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b)",
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
-            backgroundSize: "22px 22px",
-          }}
-        />
-        <div
-          className="absolute top-0 right-0 w-48 h-48 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle at top right, rgba(251,191,36,0.14), transparent 70%)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-40 h-40 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle at bottom left, rgba(99,102,241,0.18), transparent 70%)",
-          }}
-        />
-        <div className="relative z-10">
-          <p className="text-white/50 text-xs font-medium mb-1 tracking-wide">
-            Good morning 👋
-          </p>
-          <h2 className="text-xl font-bold mb-1" style={{ color: "#f1f5f9" }}>
-            Welcome back, <span style={{ color: "#fbbf24" }}>Admin</span>
-          </h2>
-          <p className="text-white/60 text-xs font-medium max-w-xs">
-            Here's what's happening at Maxwell High School today.
-          </p>
-        </div>
-        <div className="absolute right-5 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-2">
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{
-              background: "rgba(251,191,36,0.10)",
-              border: "1px solid rgba(251,191,36,0.22)",
-              backdropFilter: "blur(8px)",
-            }}
-          >
-            <GraduationCap size={28} style={{ color: "#fbbf24" }} />
-          </div>
-          <span
-            className="text-[9px] font-semibold tracking-widest uppercase"
-            style={{ color: "rgba(251,191,36,0.5)" }}
-          >
-            Maxwell
-          </span>
-        </div>
-      </div>
-
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {STATS.map((stat, i) => (
@@ -602,23 +553,18 @@ function DashboardHome() {
                 : {}
             }
           >
-            {/* Light theme colored top border */}
             {!isDark && (
               <div
                 className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl"
                 style={{ background: stat.color }}
               />
             )}
-
-            {/* Icon */}
             <div
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: `${stat.color}18` }}
             >
               <stat.icon size={18} style={{ color: stat.color }} />
             </div>
-
-            {/* Value + label */}
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 flex-wrap">
                 <p
